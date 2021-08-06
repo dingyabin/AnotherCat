@@ -46,6 +46,23 @@ public class MySqlSchemaMeta implements SchemaMeta {
 
 
     @Override
+    public String connectUrl(String host, String port, String dbName) {
+        return String.format("jdbc:mysql://%s:%s/%s?characterEncoding=UTF-8&useSSL=false", host, port, dbName);
+    }
+
+
+    @Override
+    public String driverClassName() {
+        return "com.mysql.jdbc.Driver";
+    }
+
+
+    @Override
+    public String getDefaultDbName() {
+        return "information_schema";
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         SchemaMetaManager.registerSchema(DataBaseTypeEnum.MYSQL,this);
     }

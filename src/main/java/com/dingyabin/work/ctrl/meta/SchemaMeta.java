@@ -42,6 +42,29 @@ public interface SchemaMeta extends InitializingBean {
     String getIndexSql(String tableName);
 
 
+    /**
+     * 连接url
+     * @param host 域名
+     * @param port 端口
+     * @param dbName 库名
+     * @return 连接url
+     */
+    String connectUrl(String host, String port, String dbName);
+
+    /**
+     * 驱动名
+     * @return 驱动名
+     */
+    String driverClassName();
+
+
+    /**
+     * 默认的库名(通常是系统库，用来查找系统配置的库)
+     * @return  默认的库名
+     */
+    String getDefaultDbName();
+
+
     @Override
     default void afterPropertiesSet() throws Exception {
 
