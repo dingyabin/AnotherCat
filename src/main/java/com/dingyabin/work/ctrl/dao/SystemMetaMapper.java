@@ -41,8 +41,6 @@ public interface SystemMetaMapper {
     List<ColumnSchema> selectTheWholeColumnSchema(@Param("sql")String sql);
 
 
-
-
     /**
      * 查找所有索引信息
      * @param sql sql
