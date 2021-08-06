@@ -1,5 +1,7 @@
 package com.dingyabin.work.ctrl.config;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
 import com.dingyabin.work.ctrl.model.DataSourceKey;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
@@ -40,6 +42,15 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
 
     public void addDataSource(String host, String port, String dbName, DataSource dataSource) {
+        addDataSource(new DataSourceKey(host, port, dbName), dataSource);
+    }
+
+
+    public void addDataSource(DataBaseTypeEnum dataBaseTypeEnum, String host, String port, String dbName, String userName, String pwd) {
+        DruidDataSource dataSource = SpringBeanUtil.getBean(DruidDataSource.class);
+        dataSource.setUrl(dataBaseTypeEnum.connectUrl(host, port, dbName));
+        dataSource.setUsername(userName);
+        dataSource.setPassword(pwd);
         addDataSource(new DataSourceKey(host, port, dbName), dataSource);
     }
 

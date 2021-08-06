@@ -1,11 +1,11 @@
 package com.dingyabin.work.ctrl.config;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.*;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.io.IOException;
@@ -19,7 +19,16 @@ import java.io.IOException;
 public class DataSourceConf {
 
 
+    @Bean
+    @Scope("prototype")
+    @ConfigurationProperties(prefix = "cat.ds.default")
+    public DruidDataSource druidDataSource() {
+        return new DruidDataSource();
+    }
+
+
     @Lazy
+    @Primary
     @Bean("dynamicDataSource")
     public DynamicDataSource dynamicDataSource() {
         return new DynamicDataSource();
