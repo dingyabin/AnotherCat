@@ -1,0 +1,12 @@
+${AnsiColor.BRIGHT_GREEN}
+                       _   _                  _____      _
+     /\               | | | |                / ____|    | |
+    /  \   _ __   ___ | |_| |__   ___ _ __  | |     __ _| |_
+   / /\ \ | '_ \ / _ \| __| '_ \ / _ \ '__| | |    / _` | __|
+  / ____ \| | | | (_) | |_| | | |  __/ |    | |___| (_| | |_
+ /_/    \_\_| |_|\___/ \__|_| |_|\___|_|     \_____\__,_|\__|
+
+${AnsiColor.BRIGHT_GREEN}
+author: 丁亚宾
+github: git@github.com:dingyabin/AnotherCat.git
+github: git@github.com:dingyabin/AnotherCat.git
