@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dingyabin.work.ctrl.dao.SystemMetaMapper" >
+
+    <resultMap id="DataBaseSchemaBaseResultMap" type="com.dingyabin.work.ctrl.model.DataBaseSchema">
+        <result column="schemaName" jdbcType="VARCHAR" property="schemaName" />
+    </resultMap>
+
+    <resultMap id="TableSchemaBaseResultMap" type="com.dingyabin.work.ctrl.model.TableSchema">
+        <result column="tableName" jdbcType="VARCHAR" property="tableName" />
+    </resultMap>
+
+    <resultMap id="ColumnSchemaBaseResultMap" type="com.dingyabin.work.ctrl.model.ColumnSchema">
+        <result column="columnName" jdbcType="VARCHAR" property="columnName" />
+        <result column="columnType" jdbcType="VARCHAR" property="columnType" />
+        <result column="columnComment" jdbcType="VARCHAR" property="columnComment" />
+    </resultMap>
+
+    <resultMap id="IndexSchemaBaseResultMap" type="com.dingyabin.work.ctrl.model.IndexSchema">
+        <result column="indexName" jdbcType="VARCHAR" property="indexName" />
+        <result column="indexType" jdbcType="INTEGER" property="indexType" />
+        <result column="indexColumns" jdbcType="VARCHAR" property="indexColumns" />
+        <result column="indexComment" jdbcType="VARCHAR" property="indexComment" />
+    </resultMap>
+
+
+  <select id="selectTheWholeDataBaseSchema" resultMap="DataBaseSchemaBaseResultMap">
+      ${sql};
+  </select>
+
+  <select id="selectTheWholeTableSchema" resultMap="TableSchemaBaseResultMap">
+      ${sql};
+  </select>
+
+  <select id="selectTheWholeColumnSchema" resultMap="ColumnSchemaBaseResultMap">
+      ${sql};
+  </select>
+
+  <select id="selectTheWholeIndexSchema" resultMap="IndexSchemaBaseResultMap">
+      ${sql};
+  </select>
+
+</mapper>
