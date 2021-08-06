@@ -47,6 +47,6 @@ public class MySqlSchemaMeta implements SchemaMeta {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        SchemaManager.registerSchema(DataBaseTypeEnum.MYSQL,this);
+        SchemaMetaManager.registerSchema(DataBaseTypeEnum.MYSQL,this);
     }
 }

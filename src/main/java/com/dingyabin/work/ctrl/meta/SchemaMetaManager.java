@@ -10,7 +10,7 @@ import java.util.Map;
  * Date: 2021/8/6.
  * Time:23:59
  */
-public class SchemaManager {
+public class SchemaMetaManager {
 
 
     private static final Map<DataBaseTypeEnum, SchemaMeta> META_MAP = new HashMap<>();
@@ -20,7 +20,7 @@ public class SchemaManager {
         META_MAP.put(dataBaseTypeEnum, schemaMeta);
     }
 
-    public SchemaMeta getSchemaMeta(DataBaseTypeEnum dataBaseTypeEnum){
+    public static SchemaMeta getSchemaMeta(DataBaseTypeEnum dataBaseTypeEnum){
         return META_MAP.get(dataBaseTypeEnum);
     }
 
