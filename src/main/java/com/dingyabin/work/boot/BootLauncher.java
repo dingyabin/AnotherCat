@@ -16,8 +16,8 @@ import javax.annotation.Resource;
 public class BootLauncher implements CommandLineRunner {
 
 
-//    @Resource
-//    private AnotherCatSwingLauncher anotherCatSwingLauncher;
+    @Resource
+    private AnotherCatSwingLauncher anotherCatSwingLauncher;
 
 
 
@@ -25,6 +25,7 @@ public class BootLauncher implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //加载配置文件
         ConnectConfigManager.loadConnectConfigs();
+        anotherCatSwingLauncher.init();
     }
 
 
