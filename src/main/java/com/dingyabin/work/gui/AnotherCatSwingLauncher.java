@@ -7,7 +7,6 @@ import com.dingyabin.work.ctrl.model.DataBaseSchema;
 import com.dingyabin.work.ctrl.model.TableSchema;
 import com.dingyabin.work.gui.componet.CatComBox;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.swing.*;
@@ -25,8 +24,8 @@ import java.util.List;
  * Date: 2021/8/1.
  * Time:23:47
  */
-@Component
-public class SwingCompentDemo {
+
+public class AnotherCatSwingLauncher {
 
     @Resource
     private Adapter adapter;
@@ -112,7 +111,6 @@ public class SwingCompentDemo {
                 ConnectConfig connectConfig = getColorSelect().getConnectConfig();
 
                 getTableSelect().setConnectConfig(connectConfig);
-
                 List<TableSchema> tables = adapter.getTablesOnDbSchemaChange(connectConfig, (DataBaseSchema) e.getItem());
                 getTableSelect().removeAllItems();
                 tables.forEach(this::addTableSelectItem);
