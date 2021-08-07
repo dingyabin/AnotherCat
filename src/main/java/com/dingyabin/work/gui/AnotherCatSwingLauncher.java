@@ -1,7 +1,10 @@
 package com.dingyabin.work.gui;
 
 import com.dingyabin.work.adapter.Adapter;
-import com.dingyabin.work.ctrl.model.*;
+import com.dingyabin.work.ctrl.model.ConnectConfig;
+import com.dingyabin.work.ctrl.model.ConnectConfigManager;
+import com.dingyabin.work.ctrl.model.DataBaseSchema;
+import com.dingyabin.work.ctrl.model.TableSchema;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -31,6 +34,8 @@ public class AnotherCatSwingLauncher {
     private JList<DataBaseSchema> dataBaseSchema = new JList<>();
 
     private JList<TableSchema> tableSchema = new JList<>();
+
+    private JList<String> tableContentSchema = new JList<>();
 
 
     public void init() {
@@ -62,20 +67,26 @@ public class AnotherCatSwingLauncher {
         });
 
 
-        JSplitPane dbAndTable = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(dataBaseSchema), new JScrollPane(tableSchema));
-        dbAndTable.setOneTouchExpandable(true);
-        dbAndTable.setContinuousLayout(true);
+        JSplitPane tableSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tableSchema), new JScrollPane(tableContentSchema));
+        tableSplit.setOneTouchExpandable(true);
+        tableSplit.setContinuousLayout(true);
 
 
 
-        JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(connectSchema), dbAndTable);
-
-        jSplitPane.setOneTouchExpandable(true);
-        jSplitPane.setContinuousLayout(true);
-
+        JSplitPane dbSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(connectSchema), new JScrollPane(dataBaseSchema));
+        dbSplit.setOneTouchExpandable(true);
+        dbSplit.setContinuousLayout(true);
 
 
-        jf.add(jSplitPane);
+
+        JSplitPane total = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, dbSplit, tableSplit);
+        total.setOneTouchExpandable(true);
+        total.setContinuousLayout(true);
+
+
+
+
+        jf.add(total);
 
         jf.pack();
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
