@@ -1,13 +1,11 @@
 package com.dingyabin.work.ctrl.service;
 
+import com.dingyabin.work.ctrl.config.DataSourceKeyHolder;
 import com.dingyabin.work.ctrl.dao.SystemMetaMapper;
 import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
 import com.dingyabin.work.ctrl.meta.SchemaMeta;
 import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
-import com.dingyabin.work.ctrl.model.ColumnSchema;
-import com.dingyabin.work.ctrl.model.DataBaseSchema;
-import com.dingyabin.work.ctrl.model.IndexSchema;
-import com.dingyabin.work.ctrl.model.TableSchema;
+import com.dingyabin.work.ctrl.model.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,11 +30,12 @@ public class SystemMetaService {
      * @param dataBaseTypeEnum dataBaseTypeEnum
      * @return 结果
      */
-    public List<DataBaseSchema> selectDataBaseSchema(DataBaseTypeEnum dataBaseTypeEnum) {
+    public List<DataBaseSchema> selectDataBaseSchema(DataSourceKey dataSourceKey, DataBaseTypeEnum dataBaseTypeEnum) {
         SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(dataBaseTypeEnum);
         if (schemaMeta == null) {
             return Collections.emptyList();
         }
+        DataSourceKeyHolder.setKey(dataSourceKey);
         return systemMetaMapper.selectTheWholeDataBaseSchema(schemaMeta.getDbNameSql());
     }
 
@@ -48,11 +47,12 @@ public class SystemMetaService {
      * @param dbName           库名
      * @return 结果
      */
-    public List<TableSchema> selectTableSchema(DataBaseTypeEnum dataBaseTypeEnum, String dbName) {
+    public List<TableSchema> selectTableSchema(DataSourceKey dataSourceKey, DataBaseTypeEnum dataBaseTypeEnum, String dbName) {
         SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(dataBaseTypeEnum);
         if (schemaMeta == null) {
             return Collections.emptyList();
         }
+        DataSourceKeyHolder.setKey(dataSourceKey);
         return systemMetaMapper.selectTheWholeTableSchema(schemaMeta.getTableSql(dbName));
     }
 
@@ -64,11 +64,12 @@ public class SystemMetaService {
      * @param tableName        表名
      * @return 结果
      */
-    public List<ColumnSchema> selectColumnSchema(DataBaseTypeEnum dataBaseTypeEnum, String tableName) {
+    public List<ColumnSchema> selectColumnSchema(DataSourceKey dataSourceKey, DataBaseTypeEnum dataBaseTypeEnum, String tableName) {
         SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(dataBaseTypeEnum);
         if (schemaMeta == null) {
             return Collections.emptyList();
         }
+        DataSourceKeyHolder.setKey(dataSourceKey);
         return systemMetaMapper.selectTheWholeColumnSchema(schemaMeta.getColumnSql(tableName));
     }
 
@@ -80,11 +81,12 @@ public class SystemMetaService {
      * @param tableName        表名
      * @return 结果
      */
-    public List<IndexSchema> selectIndexSchema(DataBaseTypeEnum dataBaseTypeEnum, String tableName) {
+    public List<IndexSchema> selectIndexSchema(DataSourceKey dataSourceKey, DataBaseTypeEnum dataBaseTypeEnum, String tableName) {
         SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(dataBaseTypeEnum);
         if (schemaMeta == null) {
             return Collections.emptyList();
         }
+        DataSourceKeyHolder.setKey(dataSourceKey);
         return systemMetaMapper.selectTheWholeIndexSchema(schemaMeta.getIndexSql(tableName));
     }
 
