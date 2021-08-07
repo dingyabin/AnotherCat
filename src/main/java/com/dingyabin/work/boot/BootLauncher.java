@@ -29,7 +29,6 @@ public class BootLauncher implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
         DynamicDataSource dataSource = SpringBeanUtil.getBean(DynamicDataSource.class);
 
         dataSource.addDataSource(MYSQL,"127.0.0.1","3306","root","12345678");

@@ -1,5 +1,7 @@
 package com.dingyabin.work.common.cons;
 
+import java.io.File;
+
 /**
  * @author 丁亚宾
  * Date: 2021/8/7.
@@ -7,6 +9,6 @@ package com.dingyabin.work.common.cons;
  */
 public class Const {
 
-    public static final String CONNECT_CONFIG_FILE_NAME = "con.db";
+    public static final String CONNECT_CONFIG_FILE = System.getProperty("user.home") + File.separator + "anotherCat" + File.separator + "db.dat";
 
 }

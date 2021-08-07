@@ -19,22 +19,23 @@ public class ConnectConfigManager {
 
 
     private static File getConfigFile() {
-        String basePath = System.getProperty("user.dir");
-        return new File(basePath + File.separator + Const.CONNECT_CONFIG_FILE_NAME);
+        return new File(Const.CONNECT_CONFIG_FILE);
     }
 
 
 
-    private static boolean saveConnectConfigs(Object object){
-        try {
+    private static boolean saveConnectConfigs(Object object) {
+        try{
             File configFile = getConfigFile();
-            System.out.println(configFile.getAbsolutePath());
+            File parentFile = configFile.getParentFile();
+            if (!parentFile.exists()) {
+                parentFile.mkdirs();
+            }
             if (!configFile.exists()) {
                 configFile.createNewFile();
             }
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(configFile));
             outputStream.writeObject(object);
-            outputStream.flush();
             outputStream.close();
             return true;
         } catch (Exception e) {
@@ -44,15 +45,16 @@ public class ConnectConfigManager {
     }
 
 
+
+
     @SuppressWarnings("unchecked")
     public static boolean loadConnectConfigs() {
-        try {
-            //如果配置文件存在则读取出来
-            File configFile = getConfigFile();
-            if (!configFile.exists()) {
-                return true;
-            }
-            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(configFile));
+        //如果配置文件存在则读取出来
+        File configFile = getConfigFile();
+        if (!configFile.exists()) {
+            return true;
+        }
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(configFile))) {
             Object object = inputStream.readObject();
             if (object instanceof List) {
                 connectMetas = (Set<ConnectConfig>) object;

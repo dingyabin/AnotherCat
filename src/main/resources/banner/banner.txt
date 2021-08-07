@@ -9,4 +9,3 @@ ${AnsiColor.BRIGHT_GREEN}
 ${AnsiColor.BRIGHT_GREEN}
 author: 丁亚宾
 github: git@github.com:dingyabin/AnotherCat.git
-github: git@github.com:dingyabin/AnotherCat.git
