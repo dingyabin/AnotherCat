@@ -4,6 +4,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
 import com.dingyabin.work.ctrl.meta.SchemaMeta;
 import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
+import com.dingyabin.work.ctrl.model.ConnectConfigManager;
 import com.dingyabin.work.ctrl.model.DataSourceKey;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
@@ -43,21 +44,23 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
 
-    public void addDataSource(String host, String port, String dbName, DataSource dataSource) {
-        addDataSource(new DataSourceKey(host, port, dbName), dataSource);
-    }
 
-
-    public void addDataSource(DataBaseTypeEnum dataBaseTypeEnum, String host, String port, String userName, String pwd) {
+    public boolean addDataSource(DataBaseTypeEnum dataBaseTypeEnum, String host, String port, String userName, String pwd) {
         SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(dataBaseTypeEnum);
         if (schemaMeta == null) {
-            return;
+            return false;
         }
+        //配置数据源连接池
         DruidDataSource dataSource = SpringBeanUtil.getBean(DruidDataSource.class);
         dataSource.setUrl(schemaMeta.connectUrl(host, port, schemaMeta.getDefaultDbName()));
         dataSource.setUsername(userName);
         dataSource.setPassword(pwd);
+
+        //注册数据源到内存
         addDataSource(new DataSourceKey(host, port, schemaMeta.getDefaultDbName()), dataSource);
+
+        //将配置写入文件，以便下次加载
+        return ConnectConfigManager.addConnectConfig(dataBaseTypeEnum.getType(), host, port, userName, pwd);
     }
 
 

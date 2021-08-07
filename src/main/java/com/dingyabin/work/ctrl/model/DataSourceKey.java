@@ -14,6 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 public class DataSourceKey implements Serializable {
+    private static final long serialVersionUID = 3270984248700791508L;
 
     private String host;
 

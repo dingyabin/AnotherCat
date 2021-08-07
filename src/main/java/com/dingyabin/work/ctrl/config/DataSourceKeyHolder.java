@@ -10,18 +10,22 @@ import com.dingyabin.work.ctrl.model.DataSourceKey;
 public class DataSourceKeyHolder {
 
 
-    private static DataSourceKey  currentKey = null;
+    private static ThreadLocal<DataSourceKey> currentKeyHolder = new ThreadLocal<>();
 
 
     private DataSourceKeyHolder() {
     }
 
     public static DataSourceKey getKey() {
-        return currentKey;
+        return currentKeyHolder.get();
     }
 
     public static void setKey(DataSourceKey dataSourceKey) {
-        currentKey = dataSourceKey;
+        currentKeyHolder.set(dataSourceKey);
+    }
+
+    public static void remove() {
+        currentKeyHolder.remove();
     }
 
 }
