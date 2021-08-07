@@ -1,7 +1,8 @@
 package com.dingyabin.work;
 
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 
 /**
@@ -12,7 +13,8 @@ public class AnotherCatApplication {
 
 
     public static void main(String[] args) {
-        SpringApplication.run(AnotherCatApplication.class, args);
+        SpringApplicationBuilder builder = new SpringApplicationBuilder(AnotherCatApplication.class);
+        builder.headless(false).web(WebApplicationType.NONE).run(args);
     }
 
 }

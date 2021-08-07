@@ -19,6 +19,11 @@ public class TableSchema implements Serializable {
      */
     private String tableName;
 
+
+    @Override
+    public String toString() {
+        return tableName;
+    }
 }
 
 

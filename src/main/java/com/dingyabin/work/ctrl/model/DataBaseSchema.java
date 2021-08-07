@@ -21,4 +21,8 @@ public class DataBaseSchema implements Serializable {
     private String schemaName;
 
 
+    @Override
+    public String toString() {
+        return schemaName;
+    }
 }

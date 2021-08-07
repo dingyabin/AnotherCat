@@ -5,6 +5,7 @@ import com.dingyabin.work.ctrl.config.DynamicDataSource;
 import com.dingyabin.work.ctrl.config.SpringBeanUtil;
 import com.dingyabin.work.ctrl.model.*;
 import com.dingyabin.work.ctrl.service.SystemMetaService;
+import com.dingyabin.work.gui.SwingCompentDemo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -25,20 +26,20 @@ public class BootLauncher implements CommandLineRunner {
     @Resource
     private SystemMetaService systemMetaService;
 
+
+    @Resource
+    private SwingCompentDemo swingCompentDemo;
+
     @Override
     public void run(String... args) throws Exception {
+
+        swingCompentDemo.init();
 
         Set<ConnectConfig> connectConfigs = null;
         if (ConnectConfigManager.loadConnectConfigs()) {
             connectConfigs = ConnectConfigManager.getConnectConfigs();
-            System.out.println(String.format("共有%s个数据库:", connectConfigs.size()));
-            connectConfigs.forEach(connect -> System.out.println(JSON.toJSONString(connect)));
-            System.out.println("请选择一个");
         }
 
-
-        Scanner scanner = new Scanner(System.in);
-        String command = scanner.nextLine();
 
         ConnectConfig connectConfig = connectConfigs.stream().findFirst().orElse(null);
 
@@ -47,20 +48,25 @@ public class BootLauncher implements CommandLineRunner {
         DataSourceKey dataSourceKey = dataSource.addDefaultDataSource(connectConfig);
 
 
+        swingCompentDemo.getColorSelect().setConnectConfig(connectConfig);
+
+
         List<DataBaseSchema> dataBaseSchemas = systemMetaService.selectDataBaseSchema(dataSourceKey, connectConfig.typeEnum());
-        System.out.println(JSON.toJSONString(dataBaseSchemas));
+
+        dataBaseSchemas.forEach(connect -> swingCompentDemo.addDbSelectItem(connect));
 
 
-        List<TableSchema> tableSchemas = systemMetaService.selectTableSchema(dataSourceKey, connectConfig.typeEnum(), dataBaseSchemas.get(0).getSchemaName());
-        System.out.println(JSON.toJSONString(tableSchemas));
 
-
-        List<ColumnSchema> columnSchemas = systemMetaService.selectColumnSchema(dataSourceKey, connectConfig.typeEnum(), tableSchemas.get(0).getTableName());
-        System.out.println(JSON.toJSONString(columnSchemas));
-
-
-        List<IndexSchema> indexSchemas = systemMetaService.selectIndexSchema(dataSourceKey, connectConfig.typeEnum(), tableSchemas.get(0).getTableName());
-        System.out.println(JSON.toJSONString(indexSchemas));
+//        List<TableSchema> tableSchemas = systemMetaService.selectTableSchema(dataSourceKey, connectConfig.typeEnum(), "");
+//        System.out.println(JSON.toJSONString(tableSchemas));
+//
+//
+//        List<ColumnSchema> columnSchemas = systemMetaService.selectColumnSchema(dataSourceKey, connectConfig.typeEnum(), tableSchemas.get(0).getTableName());
+//        System.out.println(JSON.toJSONString(columnSchemas));
+//
+//
+//        List<IndexSchema> indexSchemas = systemMetaService.selectIndexSchema(dataSourceKey, connectConfig.typeEnum(), tableSchemas.get(0).getTableName());
+//        System.out.println(JSON.toJSONString(indexSchemas));
     }
 
 

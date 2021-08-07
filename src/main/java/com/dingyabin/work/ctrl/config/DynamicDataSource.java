@@ -88,16 +88,22 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
             return null;
         }
         //配置数据源连接池
-        DruidDataSource dataSource = SpringBeanUtil.getBean(DruidDataSource.class);
         if (StringUtils.isBlank(dbName)) {
             dbName = schemaMeta.getDefaultDbName();
         }
+        //已经包含了，就不在添加了
+        DataSourceKey dataSourceKey = new DataSourceKey(host, port, dbName);
+        if (dynamicDataSources.containsKey(dataSourceKey)) {
+            return dataSourceKey;
+        }
+
+        //没包含，继续添加
+        DruidDataSource dataSource = SpringBeanUtil.getBean(DruidDataSource.class);
         dataSource.setUrl(schemaMeta.connectUrl(host, port, dbName));
         dataSource.setUsername(userName);
         dataSource.setPassword(pwd);
 
         //注册数据源连接池，连接默认的库
-        DataSourceKey dataSourceKey = new DataSourceKey(host, port, dbName);
         addDataSource(dataSourceKey, dataSource);
         return dataSourceKey;
     }

@@ -56,7 +56,6 @@ public class ConnectConfig implements Serializable {
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -66,7 +65,7 @@ public class ConnectConfig implements Serializable {
             return false;
         }
         ConnectConfig that = (ConnectConfig) o;
-        return Objects.equals(name, that.name) &&  Objects.equals(type, that.type) && Objects.equals(host, that.host) && Objects.equals(port, that.port) && Objects.equals(userName, that.userName) && Objects.equals(pwd, that.pwd);
+        return Objects.equals(name, that.name) && Objects.equals(type, that.type) && Objects.equals(host, that.host) && Objects.equals(port, that.port) && Objects.equals(userName, that.userName) && Objects.equals(pwd, that.pwd);
     }
 
 
@@ -74,4 +73,11 @@ public class ConnectConfig implements Serializable {
     public int hashCode() {
         return Objects.hash(name, type, host, port, userName, pwd);
     }
+
+
+    @Override
+    public String toString() {
+        return String.format("%s-%s-%s-%s", name, host, port, userName);
+    }
+
 }

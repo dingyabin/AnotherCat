@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class ColumnSchema implements Serializable {
+    private static final long serialVersionUID = -96296771934823599L;
 
     private String columnName;
 
@@ -20,6 +21,12 @@ public class ColumnSchema implements Serializable {
 
     private String columnComment;
 
+
+
+    @Override
+    public String toString() {
+        return String.format("%s-%s-%s", columnName, columnType, columnComment);
+    }
 
 
 }
