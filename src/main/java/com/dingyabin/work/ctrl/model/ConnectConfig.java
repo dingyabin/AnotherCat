@@ -1,5 +1,8 @@
 package com.dingyabin.work.ctrl.model;
 
+import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
+import com.dingyabin.work.ctrl.meta.SchemaMeta;
+import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +19,8 @@ import java.util.Objects;
 public class ConnectConfig implements Serializable {
     private static final long serialVersionUID = -264703268549826760L;
 
+    private String name;
+
     private String type;
 
     private String host;
@@ -30,13 +35,26 @@ public class ConnectConfig implements Serializable {
     }
 
 
-    public ConnectConfig(String type, String host, String port, String userName, String pwd) {
+    public ConnectConfig(String name, String type, String host, String port, String userName, String pwd) {
+        this.name = name;
         this.type = type;
         this.host = host;
         this.port = port;
         this.userName = userName;
         this.pwd = pwd;
     }
+
+
+    public DataBaseTypeEnum typeEnum() {
+        return DataBaseTypeEnum.getByType(type);
+    }
+
+
+    public DataSourceKey defaultDataSourceKey() {
+        SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(typeEnum());
+        return new DataSourceKey(host, port, schemaMeta.getDefaultDbName());
+    }
+
 
 
     @Override
@@ -48,11 +66,12 @@ public class ConnectConfig implements Serializable {
             return false;
         }
         ConnectConfig that = (ConnectConfig) o;
-        return Objects.equals(type, that.type) && Objects.equals(host, that.host) && Objects.equals(port, that.port) && Objects.equals(userName, that.userName) && Objects.equals(pwd, that.pwd);
+        return Objects.equals(name, that.name) &&  Objects.equals(type, that.type) && Objects.equals(host, that.host) && Objects.equals(port, that.port) && Objects.equals(userName, that.userName) && Objects.equals(pwd, that.pwd);
     }
+
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, host, port, userName, pwd);
+        return Objects.hash(name, type, host, port, userName, pwd);
     }
 }

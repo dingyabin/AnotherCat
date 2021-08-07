@@ -5,7 +5,6 @@ import com.google.common.collect.Sets;
 
 import java.io.*;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -56,10 +55,9 @@ public class ConnectConfigManager {
         }
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(configFile))) {
             Object object = inputStream.readObject();
-            if (object instanceof List) {
+            if (object instanceof Set) {
                 connectMetas = (Set<ConnectConfig>) object;
             }
-            inputStream.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,8 +67,8 @@ public class ConnectConfigManager {
 
 
 
-    public static boolean addConnectConfig(String type, String host, String port, String userName, String pwd) {
-        connectMetas.add(new ConnectConfig(type, host, port, userName, pwd));
+    public static boolean addConnectConfig(String name, String type, String host, String port, String userName, String pwd) {
+        connectMetas.add(new ConnectConfig(name, type, host, port, userName, pwd));
         return saveConnectConfigs(connectMetas);
     }
 

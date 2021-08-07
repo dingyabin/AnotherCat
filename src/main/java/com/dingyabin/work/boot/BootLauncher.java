@@ -3,8 +3,6 @@ package com.dingyabin.work.boot;
 import com.alibaba.fastjson.JSON;
 import com.dingyabin.work.ctrl.config.DynamicDataSource;
 import com.dingyabin.work.ctrl.config.SpringBeanUtil;
-import com.dingyabin.work.ctrl.meta.SchemaMeta;
-import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
 import com.dingyabin.work.ctrl.model.*;
 import com.dingyabin.work.ctrl.service.SystemMetaService;
 import org.springframework.boot.CommandLineRunner;
@@ -12,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
-
-import static com.dingyabin.work.ctrl.enums.DataBaseTypeEnum.MYSQL;
+import java.util.Scanner;
+import java.util.Set;
 
 /**
  * @author 丁亚宾
@@ -29,30 +27,39 @@ public class BootLauncher implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        Set<ConnectConfig> connectConfigs = null;
+        if (ConnectConfigManager.loadConnectConfigs()) {
+            connectConfigs = ConnectConfigManager.getConnectConfigs();
+            System.out.println(String.format("共有%s个数据库:", connectConfigs.size()));
+            connectConfigs.forEach(connect -> System.out.println(JSON.toJSONString(connect)));
+            System.out.println("请选择一个");
+        }
+
+
+        Scanner scanner = new Scanner(System.in);
+        String command = scanner.nextLine();
+
+        ConnectConfig connectConfig = connectConfigs.stream().findFirst().orElse(null);
+
+
         DynamicDataSource dataSource = SpringBeanUtil.getBean(DynamicDataSource.class);
-
-        dataSource.addDataSource(MYSQL,"127.0.0.1","3306","root","12345678");
-
-
-        SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(MYSQL);
+        DataSourceKey dataSourceKey = dataSource.addDefaultDataSource(connectConfig);
 
 
-        DataSourceKey dataSourceKey = new DataSourceKey("127.0.0.1", "3306", schemaMeta.getDefaultDbName());
-
-
-        List<DataBaseSchema> dataBaseSchemas = systemMetaService.selectDataBaseSchema(dataSourceKey, MYSQL);
+        List<DataBaseSchema> dataBaseSchemas = systemMetaService.selectDataBaseSchema(dataSourceKey, connectConfig.typeEnum());
         System.out.println(JSON.toJSONString(dataBaseSchemas));
 
 
-        List<TableSchema> tableSchemas = systemMetaService.selectTableSchema(dataSourceKey, MYSQL, dataBaseSchemas.get(0).getSchemaName());
+        List<TableSchema> tableSchemas = systemMetaService.selectTableSchema(dataSourceKey, connectConfig.typeEnum(), dataBaseSchemas.get(0).getSchemaName());
         System.out.println(JSON.toJSONString(tableSchemas));
 
 
-        List<ColumnSchema> columnSchemas = systemMetaService.selectColumnSchema(dataSourceKey, MYSQL, tableSchemas.get(0).getTableName());
+        List<ColumnSchema> columnSchemas = systemMetaService.selectColumnSchema(dataSourceKey, connectConfig.typeEnum(), tableSchemas.get(0).getTableName());
         System.out.println(JSON.toJSONString(columnSchemas));
 
 
-        List<IndexSchema> indexSchemas = systemMetaService.selectIndexSchema(dataSourceKey, MYSQL, tableSchemas.get(0).getTableName());
+        List<IndexSchema> indexSchemas = systemMetaService.selectIndexSchema(dataSourceKey, connectConfig.typeEnum(), tableSchemas.get(0).getTableName());
         System.out.println(JSON.toJSONString(indexSchemas));
     }
 

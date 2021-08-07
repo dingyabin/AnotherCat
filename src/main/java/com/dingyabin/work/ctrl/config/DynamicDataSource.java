@@ -4,8 +4,9 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
 import com.dingyabin.work.ctrl.meta.SchemaMeta;
 import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
-import com.dingyabin.work.ctrl.model.ConnectConfigManager;
+import com.dingyabin.work.ctrl.model.ConnectConfig;
 import com.dingyabin.work.ctrl.model.DataSourceKey;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 import javax.sql.DataSource;
@@ -34,7 +35,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
 
-    public void addDataSource(DataSourceKey key, DataSource dataSource) {
+    private void addDataSource(DataSourceKey key, DataSource dataSource) {
         //如果是已经包含的key，就不添加了
         if (dynamicDataSources.containsKey(key)) {
             return;
@@ -44,23 +45,61 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
 
+    /**
+     * 增加一个新的数据库连接池, 连接默认的库
+     *
+     * @param config 类型
+     * @return dataSourceKey
+     */
+    public DataSourceKey addDefaultDataSource(ConnectConfig config) {
+        return addDefaultDataSource(config.typeEnum(), config.getHost(), config.getPort(), config.getUserName(), config.getPwd());
+    }
 
-    public boolean addDataSource(DataBaseTypeEnum dataBaseTypeEnum, String host, String port, String userName, String pwd) {
+
+    /**
+     * 增加一个新的数据库连接池, 连接默认的库
+     *
+     * @param dataBaseTypeEnum 类型
+     * @param host             主机地址
+     * @param port             端口
+     * @param userName         用户名
+     * @param pwd              密码
+     * @return dataSourceKey
+     */
+    public DataSourceKey addDefaultDataSource(DataBaseTypeEnum dataBaseTypeEnum, String host, String port, String userName, String pwd) {
+        return addDataSource(dataBaseTypeEnum, host, port, userName, pwd, null);
+    }
+
+
+    /**
+     * 增加一个新的数据库连接池
+     *
+     * @param dataBaseTypeEnum 类型
+     * @param host             主机地址
+     * @param port             端口
+     * @param userName         用户名
+     * @param pwd              密码
+     * @param dbName           库名
+     * @return dataSourceKey
+     */
+    public DataSourceKey addDataSource(DataBaseTypeEnum dataBaseTypeEnum, String host, String port, String userName, String pwd, String dbName) {
         SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(dataBaseTypeEnum);
         if (schemaMeta == null) {
-            return false;
+            return null;
         }
         //配置数据源连接池
         DruidDataSource dataSource = SpringBeanUtil.getBean(DruidDataSource.class);
-        dataSource.setUrl(schemaMeta.connectUrl(host, port, schemaMeta.getDefaultDbName()));
+        if (StringUtils.isBlank(dbName)) {
+            dbName = schemaMeta.getDefaultDbName();
+        }
+        dataSource.setUrl(schemaMeta.connectUrl(host, port, dbName));
         dataSource.setUsername(userName);
         dataSource.setPassword(pwd);
 
-        //注册数据源到内存
-        addDataSource(new DataSourceKey(host, port, schemaMeta.getDefaultDbName()), dataSource);
-
-        //将配置写入文件，以便下次加载
-        return ConnectConfigManager.addConnectConfig(dataBaseTypeEnum.getType(), host, port, userName, pwd);
+        //注册数据源连接池，连接默认的库
+        DataSourceKey dataSourceKey = new DataSourceKey(host, port, dbName);
+        addDataSource(dataSourceKey, dataSource);
+        return dataSourceKey;
     }
 
 
