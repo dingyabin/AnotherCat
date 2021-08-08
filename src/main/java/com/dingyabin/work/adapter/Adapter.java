@@ -1,13 +1,16 @@
 package com.dingyabin.work.adapter;
 
+import com.dingyabin.work.ctrl.config.DataSourceKeyHolder;
 import com.dingyabin.work.ctrl.config.DynamicDataSource;
 import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
 import com.dingyabin.work.ctrl.model.*;
 import com.dingyabin.work.ctrl.service.SystemMetaService;
+import com.dingyabin.work.ctrl.service.TableContentDataService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 丁亚宾
@@ -23,6 +26,9 @@ public class Adapter {
 
     @Resource
     private DynamicDataSource dynamicDataSource;
+
+    @Resource
+    private TableContentDataService tableContentDataService;
 
 
     public List<DataBaseSchema> getDbsOnConnectChange(ConnectConfig connectConfig){
@@ -55,6 +61,8 @@ public class Adapter {
     }
 
 
-
+    public List<Map<String,Object>> queryTable(DataSourceKey dataSourceKey, String tableName){
+        return tableContentDataService.queryTable(dataSourceKey ,tableName);
+    }
 
 }

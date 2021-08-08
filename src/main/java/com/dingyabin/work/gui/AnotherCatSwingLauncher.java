@@ -1,15 +1,17 @@
 package com.dingyabin.work.gui;
 
+import com.alee.managers.style.StyleId;
 import com.dingyabin.work.adapter.Adapter;
-import com.dingyabin.work.ctrl.model.ConnectConfig;
-import com.dingyabin.work.ctrl.model.ConnectConfigManager;
-import com.dingyabin.work.ctrl.model.DataBaseSchema;
-import com.dingyabin.work.ctrl.model.TableSchema;
+import com.dingyabin.work.ctrl.model.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -43,6 +45,9 @@ public class AnotherCatSwingLauncher {
         jf.setPreferredSize(new Dimension(1600,1000));
 
 
+        tableSchema.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+
         Vector<ConnectConfig> connectConfigs = new Vector<>(ConnectConfigManager.getConnectConfigs());
         connectSchema.setListData(connectConfigs);
 
@@ -56,6 +61,7 @@ public class AnotherCatSwingLauncher {
         });
 
 
+
         dataBaseSchema.addListSelectionListener(e -> {
             ConnectConfig connectConfig = connectSchema.getSelectedValue();
             DataBaseSchema dataBaseSchema = this.dataBaseSchema.getSelectedValue();
@@ -67,13 +73,44 @@ public class AnotherCatSwingLauncher {
         });
 
 
-        JSplitPane tableSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tableSchema), new JScrollPane(tableContentSchema));
+
+        tableSchema.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    TableSchema table = tableSchema.getSelectedValue();
+                    ConnectConfig con = connectSchema.getSelectedValue();
+                    DataBaseSchema db = dataBaseSchema.getSelectedValue();
+                    List<Map<String, Object>> maps = adapter.queryTable(new DataSourceKey(con.getHost(), con.getPort(), db.getSchemaName()), table.getTableName());
+                    DefaultListModel<String> listModel = new DefaultListModel<>();
+                    maps.forEach(stringObjectMap -> listModel.addElement(stringObjectMap.toString()));
+                    tableContentSchema.setModel(listModel);
+                }
+            }
+        });
+
+
+
+        JScrollPane tableContentScrollPane = new JScrollPane(tableContentSchema);
+        tableContentScrollPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.scrollpaneTransparentButtonless );
+
+        JScrollPane tableSchemaScrollPane = new JScrollPane(tableSchema);
+        tableSchemaScrollPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.scrollpaneTransparentButtonless );
+
+        JSplitPane tableSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tableSchemaScrollPane, tableContentScrollPane);
         tableSplit.setOneTouchExpandable(true);
         tableSplit.setContinuousLayout(true);
 
 
 
-        JSplitPane dbSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(connectSchema), new JScrollPane(dataBaseSchema));
+        JScrollPane connectSchemaScrollPane = new JScrollPane(connectSchema);
+        connectSchemaScrollPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.scrollpaneTransparentButtonless );
+
+        JScrollPane dataBaseSchemaScrollPane = new JScrollPane(dataBaseSchema);
+        dataBaseSchemaScrollPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.scrollpaneTransparentButtonless );
+
+
+        JSplitPane dbSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, connectSchemaScrollPane, dataBaseSchemaScrollPane);
         dbSplit.setOneTouchExpandable(true);
         dbSplit.setContinuousLayout(true);
 
