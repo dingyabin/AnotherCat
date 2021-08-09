@@ -8,6 +8,9 @@ import com.alee.utils.ArrayUtils;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * @author 丁亚宾
@@ -84,14 +87,6 @@ public class JtabPaneTest {
             Component componentPre = tabbedPane.getComponentAt(index - 1);
             tabbedPane.setComponentAt(index ,componentPre);
             tabbedPane.setComponentAt(index - 1, content);
-
-//            int indexTab = tabbedPane.indexOfTabComponent(horizontalBox);
-//            if (indexTab == 0) {
-//                return;
-//            }
-//            Component componentTabPre = tabbedPane.getTabComponentAt(indexTab - 1);
-//            tabbedPane.setTabComponentAt(indexTab ,componentTabPre);
-//            tabbedPane.setTabComponentAt(indexTab - 1, horizontalBox);
 
         });
         jPopupMenu.add(move);
