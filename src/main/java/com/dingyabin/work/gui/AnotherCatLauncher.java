@@ -1,6 +1,7 @@
 package com.dingyabin.work.gui;
 
 import com.alee.managers.style.StyleId;
+import com.dingyabin.work.gui.component.CatMenuBar;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,9 @@ public class AnotherCatLauncher {
      * 主窗口
      */
     private final JFrame jf = new JFrame("AnotherCat");
+
+
+    private final CatMenuBar catMenuBar = new CatMenuBar();
 
     /**
      * 主分界panel
@@ -44,10 +48,10 @@ public class AnotherCatLauncher {
         intComponent();
 
 
-
         mainSplitPane.setLeftComponent(leftTreeBox);
         mainSplitPane.setRightComponent(tabbedPane);
 
+        jf.setJMenuBar(catMenuBar.getJMenuBar());
 
         jf.add(mainSplitPane);
 
@@ -64,7 +68,7 @@ public class AnotherCatLauncher {
 
         jf.setPreferredSize(new Dimension(1600,1000));
 
-        leftTreeBox.setPreferredSize(new Dimension(300,1000));
+        leftTreeBox.setPreferredSize(new Dimension(200,1000));
 
         //左右分割栏设置一键收起
         mainSplitPane.setOneTouchExpandable(true);
