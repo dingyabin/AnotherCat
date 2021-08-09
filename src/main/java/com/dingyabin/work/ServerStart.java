@@ -10,16 +10,18 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * @author 丁亚宾
  */
 @SpringBootApplication
-public class AnotherCatApplication {
+public class ServerStart {
+
+
+    static {
+        //需要先加载主题
+        WebLookAndFeel.install();
+    }
 
 
     public static void main(String[] args) {
-
-        //需要先加载主题
-        WebLookAndFeel.install();
-
-        //再启动Spring容器
-        new SpringApplicationBuilder(AnotherCatApplication.class).headless(false).web(WebApplicationType.NONE).run(args);
+        //启动Spring容器
+        new SpringApplicationBuilder(ServerStart.class).headless(false).web(WebApplicationType.NONE).run(args);
     }
 
 }

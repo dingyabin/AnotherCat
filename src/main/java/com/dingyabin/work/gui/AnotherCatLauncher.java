@@ -1,7 +1,7 @@
 package com.dingyabin.work.gui;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
+import com.dingyabin.work.gui.utils.GuiUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -51,10 +51,9 @@ public class AnotherCatLauncher {
 
         jf.add(mainSplitPane);
 
-        jf.pack();
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jf.setVisible(true);
+        GuiUtils.jFrameCommonAction(jf);
     }
+
 
 
 
@@ -75,11 +74,5 @@ public class AnotherCatLauncher {
     }
 
 
-
-
-    public static void main(String[] args) {
-        WebLookAndFeel.install();
-        new AnotherCatLauncher().assembleComponent();
-    }
 
 }
