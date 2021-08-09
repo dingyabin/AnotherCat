@@ -1,6 +1,5 @@
 package com.dingyabin.work.boot;
 
-import com.alee.laf.WebLookAndFeel;
 import com.dingyabin.work.ctrl.model.ConnectConfigManager;
 import com.dingyabin.work.gui.AnotherCatLauncher;
 import org.springframework.boot.CommandLineRunner;
@@ -31,8 +30,6 @@ public class BootLauncher implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //加载配置文件
         ConnectConfigManager.loadConnectConfigs();
-        //加载主题
-        WebLookAndFeel.install();
         //启动窗口
         anotherCatLauncher.assembleComponent();
     }

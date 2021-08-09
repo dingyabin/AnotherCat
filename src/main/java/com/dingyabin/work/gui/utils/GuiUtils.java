@@ -1,4 +1,4 @@
-package com.dingyabin.work.gui;
+package com.dingyabin.work.gui.utils;
 
 import com.alee.managers.style.StyleId;
 

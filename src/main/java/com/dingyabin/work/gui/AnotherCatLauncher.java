@@ -1,6 +1,8 @@
 package com.dingyabin.work.gui;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -11,6 +13,7 @@ import java.awt.*;
  * Date: 2021/8/9.
  * Time:21:22
  */
+@Lazy
 @Component
 public class AnotherCatLauncher {
 
@@ -74,6 +77,9 @@ public class AnotherCatLauncher {
 
 
 
-
+    public static void main(String[] args) {
+        WebLookAndFeel.install();
+        new AnotherCatLauncher().assembleComponent();
+    }
 
 }
