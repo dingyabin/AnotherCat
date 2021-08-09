@@ -2,7 +2,7 @@ package com.dingyabin.work.boot;
 
 import com.alee.laf.WebLookAndFeel;
 import com.dingyabin.work.ctrl.model.ConnectConfigManager;
-import com.dingyabin.work.gui.AnotherCatSwingLauncher;
+import com.dingyabin.work.gui.AnotherCatLauncher;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,9 @@ public class BootLauncher implements CommandLineRunner {
 
 
     @Resource
-    private AnotherCatSwingLauncher anotherCatSwingLauncher;
+    private AnotherCatLauncher anotherCatLauncher;
+
+
 
 
     @Override
@@ -32,7 +34,7 @@ public class BootLauncher implements CommandLineRunner {
         //加载主题
         WebLookAndFeel.install();
         //启动窗口
-        anotherCatSwingLauncher.assembleComponent();
+        anotherCatLauncher.assembleComponent();
     }
 
 

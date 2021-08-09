@@ -4,6 +4,7 @@ import com.alee.managers.style.StyleId;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author 丁亚宾
@@ -11,7 +12,7 @@ import javax.swing.*;
  * Time:21:22
  */
 @Component
-public class AnotherCatSwingLauncher {
+public class AnotherCatLauncher {
 
     /**
      * 主窗口
@@ -41,7 +42,6 @@ public class AnotherCatSwingLauncher {
 
 
 
-
         mainSplitPane.setLeftComponent(leftTreeBox);
         mainSplitPane.setRightComponent(tabbedPane);
 
@@ -59,8 +59,13 @@ public class AnotherCatSwingLauncher {
      * 对组件、容器等，做一些初始化操作
      */
     private void intComponent(){
+
+        jf.setPreferredSize(new Dimension(1600,1000));
+
+        leftTreeBox.setPreferredSize(new Dimension(300,1000));
+
         //左右分割栏设置一键收起
-        mainSplitPane.setOneTouchExpandable(true);
+       mainSplitPane.setOneTouchExpandable(true);
 
         //tab页面设置界面主题
         tabbedPane.putClientProperty (StyleId.STYLE_PROPERTY, StyleId.tabbedpane);
