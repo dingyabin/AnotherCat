@@ -65,7 +65,7 @@ public class AnotherCatLauncher {
         leftTreeBox.setPreferredSize(new Dimension(300,1000));
 
         //左右分割栏设置一键收起
-       mainSplitPane.setOneTouchExpandable(true);
+        mainSplitPane.setOneTouchExpandable(true);
 
         //tab页面设置界面主题
         tabbedPane.putClientProperty (StyleId.STYLE_PROPERTY, StyleId.tabbedpane);
