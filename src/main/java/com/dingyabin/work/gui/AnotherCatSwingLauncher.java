@@ -1,137 +1,73 @@
 package com.dingyabin.work.gui;
 
 import com.alee.managers.style.StyleId;
-import com.dingyabin.work.adapter.Adapter;
-import com.dingyabin.work.ctrl.model.*;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
 /**
  * @author 丁亚宾
- * Date: 2021/8/1.
- * Time:23:47
+ * Date: 2021/8/9.
+ * Time:21:22
  */
-
 @Component
 public class AnotherCatSwingLauncher {
 
-
-    @Resource
-    private Adapter adapter;
-
-
+    /**
+     * 主窗口
+     */
     private final JFrame jf = new JFrame("AnotherCat");
 
-
-    private JList<ConnectConfig> connectSchema = new JList<>();
-
-    private JList<DataBaseSchema> dataBaseSchema = new JList<>();
-
-    private JList<TableSchema> tableSchema = new JList<>();
-
-    private JList<String> tableContentSchema = new JList<>();
-
-
-    public void init() {
-
-        jf.setPreferredSize(new Dimension(1600,1000));
-
-
-        tableSchema.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    /**
+     * 主分界panel
+     */
+    private final JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+    /**
+     * 右侧的tab页面
+     */
+    private final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    /**
+     * 左侧的tree页
+     */
+    private final Box leftTreeBox = Box.createVerticalBox();
 
 
-        Vector<ConnectConfig> connectConfigs = new Vector<>(ConnectConfigManager.getConnectConfigs());
-        connectSchema.setListData(connectConfigs);
-
-
-        connectSchema.addListSelectionListener(e -> {
-            ConnectConfig connectConfig = connectSchema.getSelectedValue();
-            //如果之前注册过了，内部不会重复注册的
-            adapter.addDataSource(connectConfig);
-
-            dataBaseSchema.setListData(new Vector<>(adapter.getDbsOnConnectChange(connectConfig)));
-        });
-
-
-
-        dataBaseSchema.addListSelectionListener(e -> {
-            ConnectConfig connectConfig = connectSchema.getSelectedValue();
-            DataBaseSchema dataBaseSchema = this.dataBaseSchema.getSelectedValue();
-
-            //如果之前注册过了，内部不会重复注册的
-            adapter.addDataSource(connectConfig.typeEnum(),connectConfig.getHost(),connectConfig.getPort(),connectConfig.getUserName(),connectConfig.getPwd(),dataBaseSchema.getSchemaName());
-
-            tableSchema.setListData(new Vector<>(adapter.getTablesOnDbSchemaChange(connectConfig,dataBaseSchema)));
-        });
-
-
-
-        tableSchema.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    TableSchema table = tableSchema.getSelectedValue();
-                    ConnectConfig con = connectSchema.getSelectedValue();
-                    DataBaseSchema db = dataBaseSchema.getSelectedValue();
-                    List<Map<String, Object>> maps = adapter.queryTable(new DataSourceKey(con.getHost(), con.getPort(), db.getSchemaName()), table.getTableName());
-                    DefaultListModel<String> listModel = new DefaultListModel<>();
-                    maps.forEach(stringObjectMap -> listModel.addElement(stringObjectMap.toString()));
-                    tableContentSchema.setModel(listModel);
-                }
-            }
-        });
-
-
-
-        JScrollPane tableContentScrollPane = new JScrollPane(tableContentSchema);
-        tableContentScrollPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.scrollpaneTransparentButtonless );
-
-        JScrollPane tableSchemaScrollPane = new JScrollPane(tableSchema);
-        tableSchemaScrollPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.scrollpaneTransparentButtonless );
-
-        JSplitPane tableSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tableSchemaScrollPane, tableContentScrollPane);
-        tableSplit.setOneTouchExpandable(true);
-        tableSplit.setContinuousLayout(true);
-
-
-
-        JScrollPane connectSchemaScrollPane = new JScrollPane(connectSchema);
-        connectSchemaScrollPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.scrollpaneTransparentButtonless );
-
-        JScrollPane dataBaseSchemaScrollPane = new JScrollPane(dataBaseSchema);
-        dataBaseSchemaScrollPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.scrollpaneTransparentButtonless );
-
-
-        JSplitPane dbSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, connectSchemaScrollPane, dataBaseSchemaScrollPane);
-        dbSplit.setOneTouchExpandable(true);
-        dbSplit.setContinuousLayout(true);
-
-
-
-        JSplitPane total = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, dbSplit, tableSplit);
-        total.setOneTouchExpandable(true);
-        total.setContinuousLayout(true);
+    /**
+     * 组装组件
+     *
+     */
+    public void assembleComponent() {
+        intComponent();
 
 
 
 
-        jf.add(total);
+        mainSplitPane.setLeftComponent(leftTreeBox);
+        mainSplitPane.setRightComponent(tabbedPane);
+
+
+        jf.add(mainSplitPane);
 
         jf.pack();
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setVisible(true);
-
-
-
     }
+
+
+
+    /**
+     * 对组件、容器等，做一些初始化操作
+     */
+    private void intComponent(){
+        //左右分割栏设置一键收起
+        mainSplitPane.setOneTouchExpandable(true);
+
+        //tab页面设置界面主题
+        tabbedPane.putClientProperty (StyleId.STYLE_PROPERTY, StyleId.tabbedpane);
+    }
+
+
+
 
 
 

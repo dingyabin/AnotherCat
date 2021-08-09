@@ -25,13 +25,14 @@ public class BootLauncher implements CommandLineRunner {
     private AnotherCatSwingLauncher anotherCatSwingLauncher;
 
 
-
     @Override
     public void run(String... args) throws Exception {
         //加载配置文件
         ConnectConfigManager.loadConnectConfigs();
+        //加载主题
         WebLookAndFeel.install();
-        anotherCatSwingLauncher.init();
+        //启动窗口
+        anotherCatSwingLauncher.assembleComponent();
     }
 
 
