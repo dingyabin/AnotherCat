@@ -65,7 +65,6 @@ public class AnotherCatLauncher {
      * 对组件、容器等，做一些初始化操作
      */
     private void intComponent(){
-
         jf.setPreferredSize(new Dimension(1600,1000));
 
         leftTreeBox.setPreferredSize(new Dimension(200,1000));

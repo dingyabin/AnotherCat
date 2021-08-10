@@ -20,6 +20,14 @@ public class CatIcons {
 
     public static final ImageIcon help = new ImageIcon(CatIcons.class.getResource("/icons/help.png"));
 
+    public static final ImageIcon github = new ImageIcon(CatIcons.class.getResource("/icons/github.png"));
+
+    public static final ImageIcon cry = new ImageIcon(CatIcons.class.getResource("/icons/cry.png"));
+
+    public static final ImageIcon about = new ImageIcon(CatIcons.class.getResource("/icons/about.png"));
+
+    public static final ImageIcon about64 = new ImageIcon(CatIcons.class.getResource("/icons/about64.png"));
+
 
 
 

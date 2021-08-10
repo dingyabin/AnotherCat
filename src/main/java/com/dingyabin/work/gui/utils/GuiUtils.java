@@ -1,10 +1,15 @@
 package com.dingyabin.work.gui.utils;
 
 import com.alee.managers.icon.Icons;
+import com.alee.managers.language.UILanguageManager;
+import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.notification.NotificationOption;
 import com.alee.managers.style.StyleId;
+import com.dingyabin.work.gui.component.CatIcons;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
 
 /**
  * @author 丁亚宾
@@ -15,6 +20,24 @@ public class GuiUtils {
 
 
     /**
+     * 使用默认浏览器打开链接
+     * @param url url
+     */
+    public static void openBrowser(String url) {
+        try {
+            if (!Desktop.isDesktopSupported()) {
+                NotificationManager.showNotification("设备暂不支持自动打开!", CatIcons.cry);
+                return;
+            }
+            Desktop desktop = Desktop.getDesktop();
+            desktop.browse(URI.create(url));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    /**
      * JFrame的通用操作
      *
      * @param jf JFrame
@@ -22,13 +45,16 @@ public class GuiUtils {
     public static void jFrameCommonAction(JFrame jf) {
         jf.pack();
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //居中显示
+        jf.setLocationRelativeTo(null);
         jf.setVisible(true);
-    }
 
+    }
 
 
     /**
      * 带样式的滚动条
+     *
      * @param component 需要加滚动条的组件
      * @return 滚动条
      */
@@ -39,7 +65,13 @@ public class GuiUtils {
     }
 
 
-
+    /**
+     * @param title
+     * @param icon
+     * @param tabbedPane
+     * @param content
+     * @return
+     */
     public static Component createTabBarComponent(String title, Icon icon, JTabbedPane tabbedPane, Component content) {
         Box tabBox = Box.createHorizontalBox();
         JLabel jLabel = new JLabel(title, icon, SwingConstants.CENTER);
