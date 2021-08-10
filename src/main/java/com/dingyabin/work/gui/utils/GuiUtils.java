@@ -5,6 +5,7 @@ import com.alee.managers.icon.Icons;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.style.StyleId;
 import com.dingyabin.work.gui.component.CatIcons;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,7 @@ import java.net.URI;
  * Date: 2021/8/9.
  * Time:22:22
  */
+@Slf4j
 public class GuiUtils {
 
 
@@ -31,7 +33,7 @@ public class GuiUtils {
             Desktop desktop = Desktop.getDesktop();
             desktop.browse(URI.create(url));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("使用默认浏览器打开链接异常,url={}", url, ex);
         }
     }
 

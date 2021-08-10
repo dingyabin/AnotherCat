@@ -19,4 +19,12 @@ public class Const {
 
     public static  final String ABOUT = "<html>&nbsp;&nbsp;&nbsp;AnotherCat是一个基于Java Swing的开源数据库连接工具客户端。体积轻盈，没有繁杂的功能，欢迎下载使用，并提出宝贵意见！<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; —— 作者：Mr.丁<br/><br/></html>";
 
+    public static  final int MAX_LOG_ROWS = 500;
+
+    public static  final String MAX_LOG_ROWS_TIPS = "日志已经超过"+MAX_LOG_ROWS+"行，不再显示";
+
+    public static  final String INFO_LOGS = "-----------------------以下是INFO日志----------------------\n";
+
+    public static  final String ERROR_LOGS = "-----------------------以下是ERROR日志-----------------------\n";
+
 }

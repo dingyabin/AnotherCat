@@ -12,10 +12,9 @@ import javax.swing.*;
  * Date: 2021/8/9.
  * Time:23:30
  */
-public class CatMenuBar {
+public class CatMenuBar extends JMenuBar {
 
-
-    private final JMenuBar jMenuBar = new JMenuBar();
+    private JTabbedPane tabbedPane;
 
     private final JMenu fileMenu = new JMenu("文件");
 
@@ -31,37 +30,39 @@ public class CatMenuBar {
 
 
     public CatMenuBar() {
+        super();
         init();
     }
 
 
-    public JMenuBar getJMenuBar() {
-        return jMenuBar;
+
+    public CatMenuBar(JTabbedPane tabbedPane) {
+        this();
+        this.tabbedPane = tabbedPane;
     }
+
+
 
 
     private void init() {
         //设置JMenu间距
-        MenuBarLayout layout = (MenuBarLayout) jMenuBar.getLayout();
+        MenuBarLayout layout = (MenuBarLayout)getLayout();
         layout.setSpacing(20);
 
         //设置图标
         fileMenu.setIcon(Icons.dir);
         watchMenu.setIcon(Icons.magnifier);
         favMenu.setIcon(CatIcons.fav);
-        toolsMenu.setIcon(CatIcons.tool);
         windowsMenu.setIcon(CatIcons.windows);
 
 
-
-
         //添加菜单
-        jMenuBar.add(fileMenu);
-        jMenuBar.add(watchMenu);
-        jMenuBar.add(favMenu);
-        jMenuBar.add(toolsMenu);
-        jMenuBar.add(windowsMenu);
-        jMenuBar.add(generateHelpMenu());
+        add(fileMenu);
+        add(watchMenu);
+        add(favMenu);
+        add(generateToolMenu());
+        add(windowsMenu);
+        add(generateHelpMenu());
     }
 
 
@@ -86,5 +87,25 @@ public class CatMenuBar {
     }
 
 
+
+    /**
+     * '工具'菜单按钮
+     * @return 菜单
+     */
+    private JMenu generateToolMenu() {
+        //设置icon
+        toolsMenu.setIcon(CatIcons.tool);
+        //日志调试
+        JMenuItem log = new JMenuItem("历史日志", CatIcons.log);
+        log.addActionListener(e -> {
+            if (tabbedPane != null) {
+                LogTabTextArea logTabTextArea = new LogTabTextArea();
+                tabbedPane.addTab("历史日志" ,CatIcons.log, logTabTextArea);
+                logTabTextArea.showLog();
+            }
+        });
+        toolsMenu.add(log);
+        return toolsMenu;
+    }
 
 }

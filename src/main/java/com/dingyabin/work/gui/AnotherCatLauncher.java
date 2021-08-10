@@ -23,9 +23,6 @@ public class AnotherCatLauncher {
      */
     private final JFrame jf = new JFrame("AnotherCat");
 
-
-    private final CatMenuBar catMenuBar = new CatMenuBar();
-
     /**
      * 主分界panel
      */
@@ -34,6 +31,12 @@ public class AnotherCatLauncher {
      * 右侧的tab页面
      */
     private final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+
+    /**
+     * 菜单栏
+     */
+    private final CatMenuBar catMenuBar = new CatMenuBar(tabbedPane);
+
     /**
      * 左侧的tree页
      */
@@ -51,7 +54,7 @@ public class AnotherCatLauncher {
         mainSplitPane.setLeftComponent(leftTreeBox);
         mainSplitPane.setRightComponent(tabbedPane);
 
-        jf.setJMenuBar(catMenuBar.getJMenuBar());
+        jf.setJMenuBar(catMenuBar);
 
         jf.add(mainSplitPane);
 

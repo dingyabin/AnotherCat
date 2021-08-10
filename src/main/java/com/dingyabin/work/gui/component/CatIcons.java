@@ -28,6 +28,8 @@ public class CatIcons {
 
     public static final ImageIcon about64 = new ImageIcon(CatIcons.class.getResource("/icons/about64.png"));
 
+    public static final ImageIcon log = new ImageIcon(CatIcons.class.getResource("/icons/log.png"));
+
 
 
 
