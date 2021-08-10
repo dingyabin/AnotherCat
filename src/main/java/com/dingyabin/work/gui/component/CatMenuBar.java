@@ -99,8 +99,8 @@ public class CatMenuBar extends JMenuBar {
         JMenuItem log = new JMenuItem("历史日志", CatIcons.log);
         log.addActionListener(e -> {
             if (tabbedPane != null) {
-                LogTabTextArea logTabTextArea = new LogTabTextArea();
-                tabbedPane.addTab("历史日志" ,CatIcons.log, logTabTextArea);
+                LogTabTextArea logTabTextArea = new LogTabTextArea(10, 10).lineWrap(true).fontSize(15);
+                tabbedPane.addTab("历史日志", CatIcons.log, GuiUtils.createJScrollPane(logTabTextArea));
                 logTabTextArea.showLog();
             }
         });

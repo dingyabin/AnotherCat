@@ -1,5 +1,6 @@
 package com.dingyabin.work.gui.component;
 
+import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -48,6 +49,22 @@ public class LogTabTextArea extends JTextArea {
         super(doc, text, rows, columns);
     }
 
+
+    public LogTabTextArea lineWrap(boolean wrap) {
+        super.setLineWrap(wrap);
+        return this;
+    }
+
+
+    public LogTabTextArea fontSize(int fontSize) {
+        FontMethodsImpl.setFontSize(this, fontSize);
+        return this;
+    }
+
+    public LogTabTextArea fontName(String fontName) {
+        FontMethodsImpl.setFontName(this, fontName);
+        return this;
+    }
 
 
     public void showLog(){
