@@ -9,7 +9,11 @@ import java.io.File;
  */
 public class Const {
 
-    public static final String CONNECT_CONFIG_FILE = System.getProperty("user.home") + File.separator + "anotherCat" + File.separator + "db.dat";
+    public static final String BASE_PATH = System.getProperty("user.home") + File.separator + "anotherCat" + File.separator;
+
+    public static final String CONNECT_CONFIG_FILE = BASE_PATH + "db.dat";
+
+    public static final String CAT_LOG_PATH = BASE_PATH + "log";
 
     public static  final String GIT_ADDRESS = "https://github.com/dingyabin/AnotherCat";
 

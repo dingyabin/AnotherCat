@@ -2,7 +2,7 @@ package com.dingyabin.work.ctrl.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.*;
@@ -16,6 +16,7 @@ import java.io.IOException;
  * Time:0:03
  */
 @Configuration
+@MapperScan(basePackages = "com.dingyabin.work.ctrl.dao", sqlSessionFactoryRef="sqlSessionFactory")
 public class DataSourceConf {
 
 
@@ -35,6 +36,7 @@ public class DataSourceConf {
     }
 
 
+
     @Lazy
     @Bean("sqlSessionFactory")
     public SqlSessionFactoryBean sqlSessionFactoryBean(@Qualifier("dynamicDataSource") DynamicDataSource dataSource) throws IOException {
@@ -42,16 +44,6 @@ public class DataSourceConf {
         factoryBean.setDataSource(dataSource);
         factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mappers/*.xml"));
         return factoryBean;
-    }
-
-
-    @Lazy
-    @Bean("mapperScannerConfigurer")
-    public MapperScannerConfigurer mapperScannerConfigurer() {
-        MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setBasePackage("com.dingyabin.work.ctrl.dao");
-        configurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        return configurer;
     }
 
 

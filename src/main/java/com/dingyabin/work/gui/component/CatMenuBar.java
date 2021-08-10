@@ -51,7 +51,6 @@ public class CatMenuBar {
         favMenu.setIcon(CatIcons.fav);
         toolsMenu.setIcon(CatIcons.tool);
         windowsMenu.setIcon(CatIcons.windows);
-        ;
 
 
 
@@ -66,7 +65,10 @@ public class CatMenuBar {
     }
 
 
-
+    /**
+     * '帮助'菜单按钮
+     * @return 菜单
+     */
     private JMenu generateHelpMenu() {
         //设置icon
         helpMenu.setIcon(CatIcons.help);
