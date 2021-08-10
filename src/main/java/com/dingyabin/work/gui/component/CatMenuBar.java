@@ -35,18 +35,15 @@ public class CatMenuBar extends JMenuBar {
     }
 
 
-
     public CatMenuBar(JTabbedPane tabbedPane) {
         this();
         this.tabbedPane = tabbedPane;
     }
 
 
-
-
     private void init() {
         //设置JMenu间距
-        MenuBarLayout layout = (MenuBarLayout)getLayout();
+        MenuBarLayout layout = (MenuBarLayout) getLayout();
         layout.setSpacing(20);
 
         //设置图标
@@ -68,6 +65,7 @@ public class CatMenuBar extends JMenuBar {
 
     /**
      * '帮助'菜单按钮
+     *
      * @return 菜单
      */
     private JMenu generateHelpMenu() {
@@ -81,26 +79,29 @@ public class CatMenuBar extends JMenuBar {
         helpMenu.addSeparator();
         //关于
         JMenuItem about = new JMenuItem("关于AnotherCat", CatIcons.about);
-        about.addActionListener(e -> GuiUtils.createDialog(CatIcons.about.getImage(),400,150, Const.ABOUT));
+        about.addActionListener(e -> GuiUtils.createDialog(CatIcons.about.getImage(), 400, 150, Const.ABOUT));
         helpMenu.add(about);
         return helpMenu;
     }
 
 
-
     /**
      * '工具'菜单按钮
+     *
      * @return 菜单
      */
     private JMenu generateToolMenu() {
+        String title = "历史日志";
         //设置icon
         toolsMenu.setIcon(CatIcons.tool);
         //日志调试
-        JMenuItem log = new JMenuItem("历史日志", CatIcons.log);
+        JMenuItem log = new JMenuItem(title, CatIcons.log);
         log.addActionListener(e -> {
             if (tabbedPane != null) {
                 LogTabTextArea logTabTextArea = new LogTabTextArea(10, 10).lineWrap(true).fontSize(15);
-                tabbedPane.addTab("历史日志", CatIcons.log, GuiUtils.createJScrollPane(logTabTextArea));
+                JComponent jScrollPane = GuiUtils.createJScrollPane(logTabTextArea);
+                tabbedPane.addTab(title, jScrollPane);
+                tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(jScrollPane), GuiUtils.createTabBarComponent(title, CatIcons.log, tabbedPane, jScrollPane));
                 logTabTextArea.showLog();
             }
         });

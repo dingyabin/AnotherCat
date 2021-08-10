@@ -68,12 +68,13 @@ public class GuiUtils {
     }
 
 
+
     /**
-     * @param title
-     * @param icon
-     * @param tabbedPane
-     * @param content
-     * @return
+     * @param title 标题
+     * @param icon 图标
+     * @param tabbedPane tabbedPane
+     * @param content 当前tab页面放置的组件
+     * @return tab面板
      */
     public static Component createTabBarComponent(String title, Icon icon, JTabbedPane tabbedPane, Component content) {
         Box tabBox = Box.createHorizontalBox();
