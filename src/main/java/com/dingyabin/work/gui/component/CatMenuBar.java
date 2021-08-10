@@ -1,16 +1,11 @@
 package com.dingyabin.work.gui.component;
 
-import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.MenuBarLayout;
 import com.alee.managers.icon.Icons;
-import com.alee.managers.style.StyleId;
-import com.alee.utils.CoreSwingUtils;
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.*;
 
 /**
  * @author 丁亚宾
@@ -81,24 +76,13 @@ public class CatMenuBar {
         helpMenu.add(gitHub);
         //分割
         helpMenu.addSeparator();
-
         //关于
         JMenuItem about = new JMenuItem("关于AnotherCat", CatIcons.about);
-        about.addActionListener(e -> {
-            JDialog dialog = new JDialog();
-            dialog.getRootPane().putClientProperty(StyleId.STYLE_PROPERTY, StyleId.dialog);
-            dialog.setIconImage(CatIcons.about.getImage());
-            dialog.add(new WebLabel(StyleId.label, Const.ABOUT, WebLabel.CENTER).setFontSize(14));
-            dialog.setSize(400, 150);
-            //居中显示
-            dialog.setLocationRelativeTo(null);
-            dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            dialog.setResizable(false);
-            dialog.setVisible(true);
-        });
+        about.addActionListener(e -> GuiUtils.createDialog(CatIcons.about.getImage(),400,150, Const.ABOUT));
         helpMenu.add(about);
         return helpMenu;
     }
+
 
 
 }
