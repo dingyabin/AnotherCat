@@ -67,6 +67,18 @@ public class LogTabTextArea extends JTextArea {
     }
 
 
+    public LogTabTextArea edit(){
+        setEditable(true);
+        return this;
+    }
+
+
+    public LogTabTextArea noEdit(){
+        setEditable(false);
+        return this;
+    }
+
+
     public void showLog(){
         File[] files = new File(Const.CAT_LOG_PATH).listFiles();
         if (files == null) {
