@@ -2,10 +2,13 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
+import com.dingyabin.work.common.utils.ComUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.text.Document;
@@ -16,6 +19,7 @@ import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 丁亚宾
@@ -32,16 +36,16 @@ public class LogTabTextArea extends JTextArea {
     private final ActionListener selectActionListener = e -> selectAll();
 
     private final ActionListener clearActionListener = e -> {
-
+        if (clearLogFile()) {
+            setText(StringUtils.EMPTY);
+        }
     };
 
     public LogTabTextArea() {
         super();
     }
 
-    public LogTabTextArea(String text) {
-        super(text);
-    }
+
 
     public LogTabTextArea(int rows, int columns) {
         super(rows, columns);
@@ -78,32 +82,17 @@ public class LogTabTextArea extends JTextArea {
      * 展示日志
      */
     public void showLog(){
-        File[] files = new File(Const.CAT_LOG_PATH).listFiles();
-        if (files == null) {
-            return;
-        }
-        List<File> infoLogs = new ArrayList<>();
-        List<File> errorLogs = new ArrayList<>();
-        for (File logFile : files) {
-            if (logFile.isDirectory()) {
-                continue;
-            }
-            String name = FilenameUtils.getName(logFile.getAbsolutePath());
-            if (name.contains(".info.log")) {
-                infoLogs.add(logFile);
-            }
-            if (name.contains(".error.log")) {
-                errorLogs.add(logFile);
-            }
-        }
+        Map<String, List<File>> logFileMap = ComUtils.getLogFileMap(Const.CAT_LOG_PATH);
+        List<File> infoLogs = logFileMap.get(Const.INFO_LOG_KEY);
+        List<File> errorLogs = logFileMap.get(Const.ERROR_LOG_KEY);
         append(Const.INFO_LOGS);
         //读取info日志
-        if (!infoLogs.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(infoLogs)) {
             infoLogs.forEach(this::readLogs);
         }
         append(Const.ERROR_LOGS);
         //读取error日志
-        if (!errorLogs.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(errorLogs)) {
             errorLogs.forEach(this::readLogs);
         }
     }
@@ -126,6 +115,26 @@ public class LogTabTextArea extends JTextArea {
         } catch (Exception e) {
             log.error("读取日志异常, path={}", file.getPath(), e);
         }
+    }
+
+
+    /**
+     * 清空日志
+     * @return 结果
+     */
+    private boolean clearLogFile() {
+        Map<String, List<File>> logFileMap = ComUtils.getLogFileMap(Const.CAT_LOG_PATH);
+        List<File> infoLogs = logFileMap.get(Const.INFO_LOG_KEY);
+        List<File> errorLogs = logFileMap.get(Const.ERROR_LOG_KEY);
+        //清空info日志
+        if (CollectionUtils.isNotEmpty(infoLogs)) {
+            infoLogs.forEach(ComUtils::clearFile);
+        }
+        //清空error日志
+        if (CollectionUtils.isNotEmpty(errorLogs)) {
+            errorLogs.forEach(ComUtils::clearFile);
+        }
+        return true;
     }
 
 

@@ -27,4 +27,9 @@ public class Const {
 
     public static  final String ERROR_LOGS = "-----------------------以下是ERROR日志-----------------------\n";
 
+    public static  final String INFO_LOG_KEY = "INFO";
+
+    public static  final String ERROR_LOG_KEY = "ERROR";
+
+
 }
