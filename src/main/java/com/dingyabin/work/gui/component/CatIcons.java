@@ -30,6 +30,10 @@ public class CatIcons {
 
     public static final ImageIcon log = new ImageIcon(CatIcons.class.getResource("/icons/log.png"));
 
+    public static final ImageIcon copy = new ImageIcon(CatIcons.class.getResource("/icons/copy.png"));
+
+    public static final ImageIcon clear = new ImageIcon(CatIcons.class.getResource("/icons/clear.png"));
+
 
 
 

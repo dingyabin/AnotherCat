@@ -67,15 +67,6 @@ public class LogTabTextArea extends JTextArea {
     }
 
     /**
-     * 开启编辑
-     * @return self
-     */
-    public LogTabTextArea edit(){
-        setEditable(true);
-        return this;
-    }
-
-    /**
      * 禁止编辑
      * @return self
      */
@@ -85,6 +76,9 @@ public class LogTabTextArea extends JTextArea {
     }
 
 
+    /**
+     * 展示日志
+     */
     public void showLog(){
         File[] files = new File(Const.CAT_LOG_PATH).listFiles();
         if (files == null) {
@@ -135,4 +129,25 @@ public class LogTabTextArea extends JTextArea {
             log.error("读取日志异常, path={}", file.getPath(), e);
         }
     }
+
+
+
+    /**
+     * 添加右键菜单
+     */
+    public LogTabTextArea addPopupMenu() {
+        JPopupMenu jPopupMenu = new JPopupMenu();
+
+        JMenuItem copyItem = new JMenuItem("复制", CatIcons.copy);
+        JMenuItem clearItem = new JMenuItem("清空日志", CatIcons.clear);
+
+        jPopupMenu.add(copyItem);
+        jPopupMenu.addSeparator();
+        jPopupMenu.add(clearItem);
+        //设置弹出框
+        setComponentPopupMenu(jPopupMenu);
+        return this;
+    }
+
+
 }
