@@ -1,6 +1,7 @@
 package com.dingyabin.work.gui;
 
 import com.alee.managers.style.StyleId;
+import com.dingyabin.work.gui.component.CatIcons;
 import com.dingyabin.work.gui.component.CatMenuBar;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.springframework.context.annotation.Lazy;
@@ -68,6 +69,8 @@ public class AnotherCatLauncher {
      * 对组件、容器等，做一些初始化操作
      */
     private void intComponent(){
+        //窗口logo
+        jf.setIconImage(CatIcons.cat.getImage());
         //大小
         jf.setPreferredSize(new Dimension(1600,1000));
 

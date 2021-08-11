@@ -10,6 +10,11 @@ import javax.swing.*;
 public class CatIcons {
 
     /**
+     * logo
+     */
+    public static final ImageIcon cat = new ImageIcon(CatIcons.class.getResource("/icons/cat.png"));
+
+    /**
      * 以下是菜单栏图标 16*16
      */
     public static final ImageIcon fav = new ImageIcon(CatIcons.class.getResource("/icons/fav.png"));
