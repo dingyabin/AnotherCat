@@ -42,6 +42,7 @@ public class LogTabTextArea extends JTextArea {
         }
     };
 
+
     public LogTabTextArea() {
         super();
     }
