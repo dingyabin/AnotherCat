@@ -98,6 +98,8 @@ public class LogTabTextArea extends JTextArea {
                 if (CollectionUtils.isNotEmpty(errorLogs)) {
                     errorLogs.forEach(LogTabTextArea.this::readLogs);
                 }
+                //回到顶部
+                LogTabTextArea.this.setCaretPosition(0);
             });
         });
     }

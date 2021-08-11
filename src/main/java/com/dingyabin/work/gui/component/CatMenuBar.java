@@ -107,8 +107,6 @@ public class CatMenuBar extends JMenuBar {
                 tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(jScrollPane), GuiUtils.createTabBarComponent(title, CatIcons.log, tabbedPane, jScrollPane));
                 //读取日志
                 logTabTextArea.showLog();
-                //回到顶部
-                logTabTextArea.setCaretPosition(0);
             }
         });
         toolsMenu.add(log);
