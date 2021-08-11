@@ -47,7 +47,7 @@ public class CatMenuBar extends JMenuBar {
     private void init() {
         //设置JMenu间距
         MenuBarLayout layout = (MenuBarLayout) getLayout();
-        layout.setSpacing(20);
+        layout.setSpacing(16);
 
         //设置图标
         fileMenu.setIcon(Icons.dir);

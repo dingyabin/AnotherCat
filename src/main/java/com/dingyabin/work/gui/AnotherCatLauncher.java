@@ -24,7 +24,7 @@ public class AnotherCatLauncher {
     private final JFrame jf = new JFrame("AnotherCat");
 
     /**
-     * 主分界panel
+     * 主分界SplitPane
      */
     private final JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
     /**
