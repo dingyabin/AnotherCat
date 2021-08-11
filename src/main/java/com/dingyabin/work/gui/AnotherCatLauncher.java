@@ -35,7 +35,7 @@ public class AnotherCatLauncher {
     /**
      * 菜单栏
      */
-    private final CatMenuBar catMenuBar = new CatMenuBar(tabbedPane);
+    private final CatMenuBar catMenuBar = new CatMenuBar(tabbedPane, jf);
 
     /**
      * 左侧的tree页

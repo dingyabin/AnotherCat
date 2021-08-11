@@ -16,6 +16,8 @@ public class CatMenuBar extends JMenuBar {
 
     private JTabbedPane tabbedPane;
 
+    private JFrame jframe;
+
     private final JMenu fileMenu = new JMenu("文件");
 
     private final JMenu watchMenu = new JMenu("查看");
@@ -35,9 +37,10 @@ public class CatMenuBar extends JMenuBar {
     }
 
 
-    public CatMenuBar(JTabbedPane tabbedPane) {
+    public CatMenuBar(JTabbedPane tabbedPane, JFrame jframe) {
         this();
         this.tabbedPane = tabbedPane;
+        this.jframe = jframe;
     }
 
 
@@ -79,7 +82,7 @@ public class CatMenuBar extends JMenuBar {
         helpMenu.addSeparator();
         //关于
         JMenuItem about = new JMenuItem("关于AnotherCat", CatIcons.about);
-        about.addActionListener(e -> GuiUtils.createDialog(CatIcons.about.getImage(), 400, 150, Const.ABOUT));
+        about.addActionListener(e -> GuiUtils.createDialog(CatIcons.about.getImage(), 400, 150, Const.ABOUT, jframe));
         helpMenu.add(about);
         return helpMenu;
     }

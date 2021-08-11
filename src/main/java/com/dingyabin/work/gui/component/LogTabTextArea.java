@@ -66,13 +66,19 @@ public class LogTabTextArea extends JTextArea {
         return this;
     }
 
-
+    /**
+     * 开启编辑
+     * @return self
+     */
     public LogTabTextArea edit(){
         setEditable(true);
         return this;
     }
 
-
+    /**
+     * 禁止编辑
+     * @return self
+     */
     public LogTabTextArea noEdit(){
         setEditable(false);
         return this;
