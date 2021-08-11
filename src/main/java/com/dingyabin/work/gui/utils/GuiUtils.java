@@ -61,7 +61,7 @@ public class GuiUtils {
      * @param component 需要加滚动条的组件
      * @return 滚动条
      */
-    public static JComponent createJscrollPane(Component component) {
+    public static JScrollPane createJscrollPane(Component component) {
         JScrollPane scrollPane = new JScrollPane(component);
         scrollPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.scrollpaneTransparentButtonless);
         return scrollPane;
