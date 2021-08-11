@@ -112,9 +112,9 @@ public class GuiUtils {
 
     /**
      * 展示
-     * @param container
-     * @param message
-     * @return
+     * @param container 父容器
+     * @param message 提示信息
+     * @return 是否选中yes
      */
     public static boolean createJoptionPane(Component container, String message) {
         int opt = JOptionPane.showConfirmDialog(container, message, "确认信息", JOptionPane.YES_NO_OPTION);
