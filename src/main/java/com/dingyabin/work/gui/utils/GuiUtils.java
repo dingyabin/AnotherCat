@@ -59,7 +59,7 @@ public class GuiUtils {
      * @param component 需要加滚动条的组件
      * @return 滚动条
      */
-    public static JComponent createJScrollPane(Component component) {
+    public static JComponent createJscrollPane(Component component) {
         JScrollPane scrollPane = new JScrollPane(component);
         scrollPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.scrollpaneTransparentButtonless);
         return scrollPane;
@@ -110,6 +110,18 @@ public class GuiUtils {
         //不可调大小
         dialog.setResizable(false);
         dialog.setVisible(true);
+    }
+
+
+    /**
+     * 展示
+     * @param container
+     * @param message
+     * @return
+     */
+    public static boolean createJoptionPane(Component container, String message) {
+        int opt = JOptionPane.showConfirmDialog(container, message, "确认信息", JOptionPane.YES_NO_OPTION);
+        return opt == JOptionPane.YES_OPTION;
     }
 
 

@@ -102,7 +102,7 @@ public class CatMenuBar extends JMenuBar {
         log.addActionListener(e -> {
             if (tabbedPane != null) {
                 LogTabTextArea logTabTextArea = new LogTabTextArea(10, 10).lineWrap(true).fontSize(15).noEdit().addPopupMenu();
-                JComponent jScrollPane = GuiUtils.createJScrollPane(logTabTextArea);
+                JComponent jScrollPane = GuiUtils.createJscrollPane(logTabTextArea);
                 tabbedPane.addTab(title, jScrollPane);
                 tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(jScrollPane), GuiUtils.createTabBarComponent(title, CatIcons.log, tabbedPane, jScrollPane));
                 logTabTextArea.showLog();

@@ -3,6 +3,7 @@ package com.dingyabin.work.gui.component;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.utils.ComUtils;
+import com.dingyabin.work.gui.utils.GuiUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -36,7 +37,7 @@ public class LogTabTextArea extends JTextArea {
     private final ActionListener selectActionListener = e -> selectAll();
 
     private final ActionListener clearActionListener = e -> {
-        if (clearLogFile()) {
+        if (GuiUtils.createJoptionPane(this, Const.CONFIRM_TO_CLEAR_LOG) && clearLogFile()) {
             setText(StringUtils.EMPTY);
         }
     };
@@ -81,7 +82,7 @@ public class LogTabTextArea extends JTextArea {
     /**
      * 展示日志
      */
-    public void showLog(){
+    public void showLog() {
         Map<String, List<File>> logFileMap = ComUtils.getLogFileMap(Const.CAT_LOG_PATH);
         List<File> infoLogs = logFileMap.get(Const.INFO_LOG_KEY);
         List<File> errorLogs = logFileMap.get(Const.ERROR_LOG_KEY);

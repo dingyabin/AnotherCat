@@ -31,5 +31,7 @@ public class Const {
 
     public static  final String ERROR_LOG_KEY = "ERROR";
 
+    public static  final String CONFIRM_TO_CLEAR_LOG = "确认要清空日志么?";
+
 
 }
