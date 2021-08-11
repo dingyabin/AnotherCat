@@ -34,6 +34,8 @@ public class CatIcons {
 
     public static final ImageIcon clear = new ImageIcon(CatIcons.class.getResource("/icons/clear.png"));
 
+    public static final ImageIcon selectAll = new ImageIcon(CatIcons.class.getResource("/icons/select_all.png"));
+
 
 
 

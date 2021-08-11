@@ -9,6 +9,8 @@ import org.apache.commons.io.LineIterator;
 
 import javax.swing.*;
 import javax.swing.text.Document;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -25,6 +27,14 @@ public class LogTabTextArea extends JTextArea {
 
     private int rows = 0;
 
+    private final ActionListener copyActionListener = e -> copy();
+
+    private final ActionListener selectActionListener = e -> selectAll();
+
+    private final ActionListener clearActionListener = e -> {
+
+    };
+
     public LogTabTextArea() {
         super();
     }
@@ -35,18 +45,6 @@ public class LogTabTextArea extends JTextArea {
 
     public LogTabTextArea(int rows, int columns) {
         super(rows, columns);
-    }
-
-    public LogTabTextArea(String text, int rows, int columns) {
-        super(text, rows, columns);
-    }
-
-    public LogTabTextArea(Document doc) {
-        super(doc);
-    }
-
-    public LogTabTextArea(Document doc, String text, int rows, int columns) {
-        super(doc, text, rows, columns);
     }
 
 
@@ -138,12 +136,20 @@ public class LogTabTextArea extends JTextArea {
     public LogTabTextArea addPopupMenu() {
         JPopupMenu jPopupMenu = new JPopupMenu();
 
-        JMenuItem copyItem = new JMenuItem("复制", CatIcons.copy);
-        JMenuItem clearItem = new JMenuItem("清空日志", CatIcons.clear);
+        JMenuItem selectItem = new JMenuItem("全选", CatIcons.selectAll);
+        selectItem.addActionListener(selectActionListener);
 
+        JMenuItem copyItem = new JMenuItem("复制", CatIcons.copy);
+        copyItem.addActionListener(copyActionListener);
+
+        JMenuItem clearItem = new JMenuItem("清空日志", CatIcons.clear);
+        clearItem.addActionListener(clearActionListener);
+
+        jPopupMenu.add(selectItem);
         jPopupMenu.add(copyItem);
         jPopupMenu.addSeparator();
         jPopupMenu.add(clearItem);
+
         //设置弹出框
         setComponentPopupMenu(jPopupMenu);
         return this;
