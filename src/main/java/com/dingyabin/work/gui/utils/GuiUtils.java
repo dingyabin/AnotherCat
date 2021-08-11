@@ -45,6 +45,8 @@ public class GuiUtils {
      */
     public static void jFrameCommonAction(JFrame jf) {
         jf.pack();
+        //居中显示
+        jf.setLocationRelativeTo(null);
         //关闭
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //显示

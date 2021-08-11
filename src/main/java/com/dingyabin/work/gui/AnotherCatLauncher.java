@@ -68,8 +68,6 @@ public class AnotherCatLauncher {
      * 对组件、容器等，做一些初始化操作
      */
     private void intComponent(){
-        //居中显示
-        jf.setLocationRelativeTo(null);
         //大小
         jf.setPreferredSize(new Dimension(1600,1000));
 
