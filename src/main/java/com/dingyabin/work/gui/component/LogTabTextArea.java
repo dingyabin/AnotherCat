@@ -3,6 +3,7 @@ package com.dingyabin.work.gui.component;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.utils.ComUtils;
+import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -80,19 +81,25 @@ public class LogTabTextArea extends JTextArea {
      * 展示日志
      */
     public void showLog() {
-        Map<String, List<File>> logFileMap = ComUtils.getLogFileMap(Const.CAT_LOG_PATH);
-        List<File> infoLogs = logFileMap.get(Const.INFO_LOG_KEY);
-        List<File> errorLogs = logFileMap.get(Const.ERROR_LOG_KEY);
-        append(Const.INFO_LOGS);
-        //读取info日志
-        if (CollectionUtils.isNotEmpty(infoLogs)) {
-            infoLogs.forEach(this::readLogs);
-        }
-        append(Const.ERROR_LOGS);
-        //读取error日志
-        if (CollectionUtils.isNotEmpty(errorLogs)) {
-            errorLogs.forEach(this::readLogs);
-        }
+        //读取文件是耗时操作，异步进行
+        ExecutorUtils.execute(() -> {
+            Map<String, List<File>> logFileMap = ComUtils.getLogFileMap(Const.CAT_LOG_PATH);
+            List<File> infoLogs = logFileMap.get(Const.INFO_LOG_KEY);
+            List<File> errorLogs = logFileMap.get(Const.ERROR_LOG_KEY);
+            //修改组件UI需要在事件线程里执行
+            SwingUtilities.invokeLater(() -> {
+                append(Const.INFO_LOGS);
+                //读取info日志
+                if (CollectionUtils.isNotEmpty(infoLogs)) {
+                    infoLogs.forEach(LogTabTextArea.this::readLogs);
+                }
+                append(Const.ERROR_LOGS);
+                //读取error日志
+                if (CollectionUtils.isNotEmpty(errorLogs)) {
+                    errorLogs.forEach(LogTabTextArea.this::readLogs);
+                }
+            });
+        });
     }
 
 
