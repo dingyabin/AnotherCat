@@ -36,6 +36,8 @@ public class CatIcons {
 
     public static final ImageIcon selectAll = new ImageIcon(CatIcons.class.getResource("/icons/select_all.png"));
 
+    public static final ImageIcon cross = new ImageIcon(CatIcons.class.getResource("/icons/cross.png"));
+
 
 
 
