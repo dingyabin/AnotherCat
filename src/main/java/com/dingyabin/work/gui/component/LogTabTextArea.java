@@ -34,6 +34,7 @@ public class LogTabTextArea extends JTextArea {
     private final ActionListener clearActionListener = e -> {
         if (GuiUtils.createJoptionPane(this, Const.CONFIRM_TO_CLEAR_LOG) && clearLogFile()) {
             setText(StringUtils.EMPTY);
+            rows = 0;
         }
     };
 
