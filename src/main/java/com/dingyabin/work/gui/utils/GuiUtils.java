@@ -47,8 +47,6 @@ public class GuiUtils {
         jf.pack();
         //关闭
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //居中显示
-        jf.setLocationRelativeTo(null);
         //显示
         jf.setVisible(true);
 
