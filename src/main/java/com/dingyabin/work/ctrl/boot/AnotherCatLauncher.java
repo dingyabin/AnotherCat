@@ -1,4 +1,4 @@
-package com.dingyabin.work.gui;
+package com.dingyabin.work.ctrl.boot;
 
 import com.alee.managers.style.StyleId;
 import com.dingyabin.work.gui.component.CatIcons;

@@ -1,6 +1,5 @@
 package com.dingyabin.work.ctrl.boot;
 
-import com.dingyabin.work.gui.AnotherCatLauncher;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
