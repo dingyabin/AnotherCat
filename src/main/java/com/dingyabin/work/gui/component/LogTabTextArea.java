@@ -2,7 +2,7 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
-import com.dingyabin.work.common.utils.ComUtils;
+import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -83,7 +83,7 @@ public class LogTabTextArea extends JTextArea {
     public void showLog() {
         //读取文件是耗时操作，异步进行
         ExecutorUtils.execute(() -> {
-            Map<String, List<File>> logFileMap = ComUtils.getLogFileMap(Const.CAT_LOG_PATH);
+            Map<String, List<File>> logFileMap = CatUtils.getLogFileMap(Const.CAT_LOG_PATH);
             List<File> infoLogs = logFileMap.get(Const.INFO_LOG_KEY);
             List<File> errorLogs = logFileMap.get(Const.ERROR_LOG_KEY);
             //修改组件UI需要在事件线程里执行
@@ -130,16 +130,16 @@ public class LogTabTextArea extends JTextArea {
      * @return 结果
      */
     private boolean clearLogFile() {
-        Map<String, List<File>> logFileMap = ComUtils.getLogFileMap(Const.CAT_LOG_PATH);
+        Map<String, List<File>> logFileMap = CatUtils.getLogFileMap(Const.CAT_LOG_PATH);
         List<File> infoLogs = logFileMap.get(Const.INFO_LOG_KEY);
         List<File> errorLogs = logFileMap.get(Const.ERROR_LOG_KEY);
         //清空info日志
         if (CollectionUtils.isNotEmpty(infoLogs)) {
-            infoLogs.forEach(ComUtils::clearFile);
+            infoLogs.forEach(CatUtils::clearFile);
         }
         //清空error日志
         if (CollectionUtils.isNotEmpty(errorLogs)) {
-            errorLogs.forEach(ComUtils::clearFile);
+            errorLogs.forEach(CatUtils::clearFile);
         }
         return true;
     }

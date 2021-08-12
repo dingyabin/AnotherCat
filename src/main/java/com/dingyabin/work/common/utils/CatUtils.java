@@ -21,7 +21,7 @@ import java.util.*;
  * Time:10:28
  */
 @Slf4j
-public class ComUtils {
+public class CatUtils {
 
 
     /**

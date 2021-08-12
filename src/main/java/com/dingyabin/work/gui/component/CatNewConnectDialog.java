@@ -2,7 +2,7 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
-import com.dingyabin.work.common.utils.ComUtils;
+import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -98,7 +98,7 @@ public class CatNewConnectDialog extends JDialog {
                 return;
             }
             //测试是否可以连接成功
-            boolean ok = ComUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password));
+            boolean ok = CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password));
             GuiUtils.createJoptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
         });
         btPanel.add(testBtn);
