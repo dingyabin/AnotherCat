@@ -27,6 +27,8 @@ public class CatNewConnectDialog extends JDialog {
         setAlwaysOnTop(true);
         //大小设置
         setSize(new Dimension(400,400));
+        //不可调大小
+        setResizable(false);
         //位置居中设置
         setLocationRelativeTo(null);
         //默认关闭动作
@@ -37,9 +39,13 @@ public class CatNewConnectDialog extends JDialog {
 
 
     private void generateComponent() {
-        JPanel inputPanel = new JPanel(new GridLayout(4,2));
+        JPanel inputPanel = new JPanel(new GridLayout(0,2));
         inputPanel.add(new JLabel("11"));
+        inputPanel.add(new JTextField("xxxxxxxxxxxxxxxxxxxxxx"));
         inputPanel.add(new JLabel("22"));
+        inputPanel.add(new JTextField("xxxxxxxxxxxxxxxxxxxxxx"));
+        inputPanel.add(new JLabel("22"));
+        inputPanel.add(new JTextField("xxxxxxxxxxxxxxxxxxxxxx"));
 
         add(inputPanel);
     }
