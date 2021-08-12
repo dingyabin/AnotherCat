@@ -72,7 +72,7 @@ public class AnotherCatLauncher {
         //窗口logo
         jf.setIconImage(CatIcons.cat.getImage());
         //大小
-        jf.setPreferredSize(new Dimension(1600,1000));
+        jf.setPreferredSize(new Dimension(1300,800));
 
         leftTreeBox.setPreferredSize(new Dimension(200,1000));
 
