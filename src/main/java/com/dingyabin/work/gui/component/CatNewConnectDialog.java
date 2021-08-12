@@ -2,6 +2,7 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.utils.ComUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
@@ -60,19 +61,23 @@ public class CatNewConnectDialog extends JDialog {
         inputPanel.add(new JTextField());
 
         inputPanel.add(GuiUtils.createLabel("主机名或IP地址：", SwingConstants.RIGHT, 14));
-        inputPanel.add(new JTextField());
+        JTextField hostField = new JTextField();
+        inputPanel.add(hostField);
 
-        Box portInputBox = Box.createHorizontalBox();
-        portInputBox.add(new JTextField(9));
-        portInputBox.add(Box.createHorizontalStrut(50));
         inputPanel.add(GuiUtils.createLabel("端口：", SwingConstants.RIGHT, 14));
+        Box portInputBox = Box.createHorizontalBox();
+        JTextField portField = new JTextField();
+        portInputBox.add(portField);
+        portInputBox.add(Box.createHorizontalStrut(50));
         inputPanel.add(portInputBox);
 
         inputPanel.add(GuiUtils.createLabel("用户名：", SwingConstants.RIGHT, 14));
-        inputPanel.add(new JTextField());
+        JTextField userNameField = new JTextField();
+        inputPanel.add(userNameField);
 
         inputPanel.add(GuiUtils.createLabel("密码：", SwingConstants.RIGHT, 14));
-        inputPanel.add(new JPasswordField());
+        JPasswordField pwdField = new JPasswordField();
+        inputPanel.add(pwdField);
 
         add(inputPanel);
 
@@ -80,7 +85,10 @@ public class CatNewConnectDialog extends JDialog {
         JPanel btPanel = new JPanel();
 
         JButton testBtn = FontMethodsImpl.setFontSize(new JButton("测试", CatIcons.test), 15);
-        testBtn.addActionListener(okListener);
+        testBtn.addActionListener(e -> {
+            boolean ok = ComUtils.checkNewConnect(dataBaseType, hostField.getText(), portField.getText(), userNameField.getText(), new String(pwdField.getPassword()));
+            GuiUtils.createJoptionPane(inputPanel, ok ? "连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
+        });
         btPanel.add(testBtn);
 
         btPanel.add(Box.createHorizontalStrut(30));

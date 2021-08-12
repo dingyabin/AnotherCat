@@ -124,6 +124,17 @@ public class GuiUtils {
         return opt == JOptionPane.YES_OPTION;
     }
 
+    /**
+     * 展示
+     * @param container 父容器
+     * @param message 提示信息
+     * @param optionType optionType
+     * @return 选中
+     */
+    public static int createJoptionPane(Component container, String message, int optionType) {
+        return JOptionPane.showConfirmDialog(container, message, "确认信息", optionType);
+    }
+
 
     /**
      * 创建一个Label

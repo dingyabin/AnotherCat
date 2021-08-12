@@ -3,6 +3,7 @@ package com.dingyabin.work.ctrl.meta.typeschema;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.ctrl.meta.SchemaMeta;
 import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -49,7 +50,11 @@ public class MySqlSchemaMeta implements SchemaMeta {
 
     @Override
     public String connectUrl(String host, String port, String dbName) {
-        return String.format("jdbc:mysql://%s:%s/%s?characterEncoding=UTF-8&useSSL=false", host, port, dbName);
+        if (StringUtils.isNotBlank(dbName)) {
+            return String.format("jdbc:mysql://%s:%s/%s?characterEncoding=UTF-8&useSSL=false", host, port, dbName);
+        } else {
+            return String.format("jdbc:mysql://%s:%s?characterEncoding=UTF-8&useSSL=false", host, port);
+        }
     }
 
 
