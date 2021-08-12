@@ -3,11 +3,10 @@ package com.dingyabin.work.gui.component;
 import com.alee.laf.menu.MenuBarLayout;
 import com.alee.managers.icon.Icons;
 import com.dingyabin.work.common.cons.Const;
-import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author 丁亚宾

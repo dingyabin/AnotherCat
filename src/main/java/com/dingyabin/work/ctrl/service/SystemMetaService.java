@@ -2,10 +2,10 @@ package com.dingyabin.work.ctrl.service;
 
 import com.dingyabin.work.ctrl.config.DataSourceKeyHolder;
 import com.dingyabin.work.ctrl.dao.SystemMetaMapper;
-import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.ctrl.meta.SchemaMeta;
 import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
-import com.dingyabin.work.ctrl.model.*;
+import com.dingyabin.work.common.model.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

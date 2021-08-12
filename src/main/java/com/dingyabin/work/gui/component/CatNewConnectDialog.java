@@ -1,6 +1,6 @@
 package com.dingyabin.work.gui.component;
 
-import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 
 import javax.swing.*;
 import java.awt.*;

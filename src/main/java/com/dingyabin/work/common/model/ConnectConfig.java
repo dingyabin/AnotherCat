@@ -1,6 +1,6 @@
-package com.dingyabin.work.ctrl.model;
+package com.dingyabin.work.common.model;
 
-import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.ctrl.meta.SchemaMeta;
 import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
 import lombok.Getter;

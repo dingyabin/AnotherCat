@@ -1,7 +1,7 @@
 package com.dingyabin.work.swingtest;
 
 import com.alee.laf.WebLookAndFeel;
-import com.dingyabin.work.ctrl.model.ConnectConfigManager;
+import com.dingyabin.work.common.model.ConnectConfigManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

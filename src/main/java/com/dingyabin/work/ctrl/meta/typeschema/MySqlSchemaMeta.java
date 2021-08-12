@@ -1,6 +1,6 @@
 package com.dingyabin.work.ctrl.meta.typeschema;
 
-import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.ctrl.meta.SchemaMeta;
 import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
 import org.springframework.stereotype.Component;

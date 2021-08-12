@@ -1,11 +1,11 @@
 package com.dingyabin.work.ctrl.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.ctrl.meta.SchemaMeta;
 import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
-import com.dingyabin.work.ctrl.model.ConnectConfig;
-import com.dingyabin.work.ctrl.model.DataSourceKey;
+import com.dingyabin.work.common.model.ConnectConfig;
+import com.dingyabin.work.common.model.DataSourceKey;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

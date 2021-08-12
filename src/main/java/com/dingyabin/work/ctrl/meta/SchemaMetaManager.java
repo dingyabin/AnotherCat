@@ -1,6 +1,6 @@
 package com.dingyabin.work.ctrl.meta;
 
-import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 
 import java.util.HashMap;
 import java.util.Map;

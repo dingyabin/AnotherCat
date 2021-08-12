@@ -1,9 +1,8 @@
-package com.dingyabin.work.adapter;
+package com.dingyabin.work.ctrl.adapter;
 
-import com.dingyabin.work.ctrl.config.DataSourceKeyHolder;
 import com.dingyabin.work.ctrl.config.DynamicDataSource;
-import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
-import com.dingyabin.work.ctrl.model.*;
+import com.dingyabin.work.common.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.model.*;
 import com.dingyabin.work.ctrl.service.SystemMetaService;
 import com.dingyabin.work.ctrl.service.TableContentDataService;
 import org.springframework.stereotype.Component;

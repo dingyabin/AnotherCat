@@ -1,8 +1,8 @@
 package com.dingyabin.work.swingtest;
 
 import com.alee.managers.style.StyleId;
-import com.dingyabin.work.adapter.Adapter;
-import com.dingyabin.work.ctrl.model.*;
+import com.dingyabin.work.ctrl.adapter.Adapter;
+import com.dingyabin.work.common.model.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

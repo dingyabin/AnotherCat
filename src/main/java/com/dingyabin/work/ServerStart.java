@@ -3,13 +3,14 @@ package com.dingyabin.work;
 import com.alee.laf.WebLookAndFeel;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 
 /**
  * @author 丁亚宾
  */
-@SpringBootApplication
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class, scanBasePackages = "com.dingyabin.work")
 public class ServerStart {
 
 

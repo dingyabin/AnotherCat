@@ -2,7 +2,7 @@ package com.dingyabin.work.ctrl.service;
 
 import com.dingyabin.work.ctrl.config.DataSourceKeyHolder;
 import com.dingyabin.work.ctrl.dao.TableContentDataMapper;
-import com.dingyabin.work.ctrl.model.DataSourceKey;
+import com.dingyabin.work.common.model.DataSourceKey;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

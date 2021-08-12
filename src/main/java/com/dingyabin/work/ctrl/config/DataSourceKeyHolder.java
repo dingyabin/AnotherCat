@@ -1,6 +1,6 @@
 package com.dingyabin.work.ctrl.config;
 
-import com.dingyabin.work.ctrl.model.DataSourceKey;
+import com.dingyabin.work.common.model.DataSourceKey;
 
 /**
  * @author 丁亚宾

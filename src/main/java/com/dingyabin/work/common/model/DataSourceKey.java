@@ -1,4 +1,4 @@
-package com.dingyabin.work.ctrl.model;
+package com.dingyabin.work.common.model;
 
 import lombok.Getter;
 import lombok.Setter;

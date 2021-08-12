@@ -1,4 +1,4 @@
-package com.dingyabin.work.ctrl.enums;
+package com.dingyabin.work.common.enums;
 
 import com.dingyabin.work.gui.component.CatIcons;
 

@@ -1,13 +1,12 @@
 package com.dingyabin.work.ctrl.dao;
 
-import com.dingyabin.work.ctrl.model.ColumnSchema;
-import com.dingyabin.work.ctrl.model.DataBaseSchema;
-import com.dingyabin.work.ctrl.model.IndexSchema;
-import com.dingyabin.work.ctrl.model.TableSchema;
+import com.dingyabin.work.common.model.ColumnSchema;
+import com.dingyabin.work.common.model.DataBaseSchema;
+import com.dingyabin.work.common.model.IndexSchema;
+import com.dingyabin.work.common.model.TableSchema;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 丁亚宾

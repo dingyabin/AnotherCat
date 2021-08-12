@@ -1,4 +1,4 @@
-package com.dingyabin.work.ctrl.model;
+package com.dingyabin.work.common.model;
 
 import com.dingyabin.work.common.cons.Const;
 import com.google.common.collect.Sets;
