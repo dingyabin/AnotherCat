@@ -49,6 +49,12 @@ public class CatIcons {
 
     public static final ImageIcon unknown = new ImageIcon(CatIcons.class.getResource("/icons/unknown.png"));
 
+    public static final ImageIcon ok = new ImageIcon(CatIcons.class.getResource("/icons/ok.png"));
+
+    public static final ImageIcon cancel = new ImageIcon(CatIcons.class.getResource("/icons/cancel.png"));
+
+    public static final ImageIcon test = new ImageIcon(CatIcons.class.getResource("/icons/test.png"));
+
 
 
 

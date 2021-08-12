@@ -1,5 +1,6 @@
 package com.dingyabin.work.gui.component;
 
+import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.gui.utils.GuiUtils;
 
@@ -7,6 +8,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  * @author dingyabin
@@ -15,6 +17,12 @@ import java.awt.*;
 public class CatNewConnectDialog extends JDialog {
 
     private DataBaseTypeEnum dataBaseType;
+
+    private ActionListener cancelListener = e -> dispose();
+
+    private ActionListener okListener = e -> {
+        dispose();
+    };
 
 
     public CatNewConnectDialog(Frame owner, DataBaseTypeEnum dataBaseType, String title, boolean modal) {
@@ -42,35 +50,48 @@ public class CatNewConnectDialog extends JDialog {
 
 
     private void generateComponent() {
-        JPanel jPanel = new JPanel(new GridLayout(5, 2, 25, 20));
+        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 25, 20));
 
         //设置border
         LineBorder lineBorder = new LineBorder(CatColors.CONNECT_WINDOW_BORDER, 5, true);
-        jPanel.setBorder(new TitledBorder(lineBorder, dataBaseType.getType(), TitledBorder.CENTER, TitledBorder.TOP, CatFonts.CONNECT_WINDOW_BORDER));
+        inputPanel.setBorder(new TitledBorder(lineBorder, dataBaseType.getType(), TitledBorder.CENTER, TitledBorder.TOP, CatFonts.CONNECT_WINDOW_BORDER));
 
-        jPanel.add(GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14));
-        jPanel.add(new JTextField());
+        inputPanel.add(GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14));
+        inputPanel.add(new JTextField());
 
-        jPanel.add(GuiUtils.createLabel("主机名或IP地址：", SwingConstants.RIGHT, 14));
-        jPanel.add(new JTextField());
+        inputPanel.add(GuiUtils.createLabel("主机名或IP地址：", SwingConstants.RIGHT, 14));
+        inputPanel.add(new JTextField());
 
         Box portInputBox = Box.createHorizontalBox();
         portInputBox.add(new JTextField(9));
         portInputBox.add(Box.createHorizontalStrut(50));
-        jPanel.add(GuiUtils.createLabel("端口：", SwingConstants.RIGHT, 14));
-        jPanel.add(portInputBox);
+        inputPanel.add(GuiUtils.createLabel("端口：", SwingConstants.RIGHT, 14));
+        inputPanel.add(portInputBox);
 
-        jPanel.add(GuiUtils.createLabel("用户名：", SwingConstants.RIGHT, 14));
-        jPanel.add(new JTextField());
+        inputPanel.add(GuiUtils.createLabel("用户名：", SwingConstants.RIGHT, 14));
+        inputPanel.add(new JTextField());
 
-        jPanel.add(GuiUtils.createLabel("密码：", SwingConstants.RIGHT, 14));
-        jPanel.add(new JPasswordField());
+        inputPanel.add(GuiUtils.createLabel("密码：", SwingConstants.RIGHT, 14));
+        inputPanel.add(new JPasswordField());
 
-        add(jPanel);
+        add(inputPanel);
 
+///////////////////////////////////////////按钮区域/////////////////////////////////////////////////////////////////
         JPanel btPanel = new JPanel();
-        btPanel.add(new JButton("确定"));
-        btPanel.add(new JButton("取消"));
+
+        JButton testBtn = FontMethodsImpl.setFontSize(new JButton("测试", CatIcons.test), 15);
+        testBtn.addActionListener(okListener);
+        btPanel.add(testBtn);
+
+        btPanel.add(Box.createHorizontalStrut(30));
+
+        JButton okBtn = FontMethodsImpl.setFontSize(new JButton("确定", CatIcons.ok), 15);
+        okBtn.addActionListener(okListener);
+        btPanel.add(okBtn);
+
+        JButton cancelBtn = FontMethodsImpl.setFontSize(new JButton("取消", CatIcons.cancel), 15);
+        cancelBtn.addActionListener(cancelListener);
+        btPanel.add(cancelBtn);
 
         add(btPanel, BorderLayout.SOUTH);
     }
