@@ -4,6 +4,8 @@ import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.common.utils.ComUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -86,8 +88,18 @@ public class CatNewConnectDialog extends JDialog {
 
         JButton testBtn = FontMethodsImpl.setFontSize(new JButton("测试", CatIcons.test), 15);
         testBtn.addActionListener(e -> {
-            boolean ok = ComUtils.checkNewConnect(dataBaseType, hostField.getText(), portField.getText(), userNameField.getText(), new String(pwdField.getPassword()));
-            GuiUtils.createJoptionPane(inputPanel, ok ? "连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
+            String host = hostField.getText();
+            String port = portField.getText();
+            String userName = userNameField.getText();
+            char[] password = pwdField.getPassword();
+            //校验参数信息
+            if (StringUtils.isAnyBlank(host, port, userName) || ArrayUtils.getLength(password) == 0) {
+                GuiUtils.createJoptionPane(inputPanel,  "请填写完整的数据源信息", JOptionPane.DEFAULT_OPTION);
+                return;
+            }
+            //测试是否可以连接成功
+            boolean ok = ComUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password));
+            GuiUtils.createJoptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
         });
         btPanel.add(testBtn);
 
