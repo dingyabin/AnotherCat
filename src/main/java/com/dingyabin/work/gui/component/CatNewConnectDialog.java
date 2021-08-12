@@ -1,6 +1,7 @@
 package com.dingyabin.work.gui.component;
 
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
+import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -28,7 +29,7 @@ public class CatNewConnectDialog extends JDialog {
         //始终在最上面
         setAlwaysOnTop(true);
         //大小设置
-        setSize(new Dimension(350, 320));
+        setSize(new Dimension(350, 330));
         //不可调大小
         setResizable(false);
         //位置居中设置
@@ -47,40 +48,31 @@ public class CatNewConnectDialog extends JDialog {
         LineBorder lineBorder = new LineBorder(CatColors.CONNECT_WINDOW_BORDER, 5, true);
         jPanel.setBorder(new TitledBorder(lineBorder, dataBaseType.getType(), TitledBorder.CENTER, TitledBorder.TOP, CatFonts.CONNECT_WINDOW_BORDER));
 
-        jPanel.add(new JLabel("连接名：", SwingConstants.RIGHT));
+        jPanel.add(GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14));
         jPanel.add(new JTextField());
 
-
-        jPanel.add(new JLabel("主机名或IP地址：", SwingConstants.RIGHT));
+        jPanel.add(GuiUtils.createLabel("主机名或IP地址：", SwingConstants.RIGHT, 14));
         jPanel.add(new JTextField());
 
-
-        JLabel portLabel = new JLabel("端口：", SwingConstants.RIGHT);
         Box portInputBox = Box.createHorizontalBox();
         portInputBox.add(new JTextField(9));
         portInputBox.add(Box.createHorizontalStrut(50));
-        jPanel.add(portLabel);
+        jPanel.add(GuiUtils.createLabel("端口：", SwingConstants.RIGHT, 14));
         jPanel.add(portInputBox);
 
-
-        jPanel.add(new JLabel("用户名：", SwingConstants.RIGHT));
+        jPanel.add(GuiUtils.createLabel("用户名：", SwingConstants.RIGHT, 14));
         jPanel.add(new JTextField());
 
-
-        jPanel.add(new JLabel("密码：", SwingConstants.RIGHT));
+        jPanel.add(GuiUtils.createLabel("密码：", SwingConstants.RIGHT, 14));
         jPanel.add(new JPasswordField());
 
         add(jPanel);
-
 
         JPanel btPanel = new JPanel();
         btPanel.add(new JButton("确定"));
         btPanel.add(new JButton("取消"));
 
         add(btPanel, BorderLayout.SOUTH);
-
-//        add(new JLabel(dataBaseType.getType(),dataBaseType.getIcon(),SwingConstants.CENTER), BorderLayout.NORTH);
-
     }
 
 

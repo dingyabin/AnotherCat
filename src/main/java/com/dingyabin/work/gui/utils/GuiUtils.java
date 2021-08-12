@@ -4,6 +4,7 @@ import com.alee.laf.label.WebLabel;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.gui.component.CatIcons;
 import lombok.extern.slf4j.Slf4j;
 
@@ -121,6 +122,33 @@ public class GuiUtils {
     public static boolean createJoptionPane(Component container, String message) {
         int opt = JOptionPane.showConfirmDialog(container, message, "确认信息", JOptionPane.YES_NO_OPTION);
         return opt == JOptionPane.YES_OPTION;
+    }
+
+
+    /**
+     * 创建一个Label
+     * @param text 文字
+     * @param horizontalAlignment 对齐方式
+     * @param fontSize 字体大小
+     * @return label
+     */
+    public static JLabel createLabel(String text, int horizontalAlignment, int fontSize) {
+        JLabel jLabel = new JLabel(text, horizontalAlignment);
+        return FontMethodsImpl.setFontSize(jLabel, fontSize);
+    }
+
+
+
+    /**
+     * 创建一个Label
+     * @param text 文字
+     * @param horizontalAlignment 对齐方式
+     * @param fontName 字体名字
+     * @return label
+     */
+    public static JLabel createLabel(String text, int horizontalAlignment, String fontName) {
+        JLabel jLabel = new JLabel(text, horizontalAlignment);
+        return FontMethodsImpl.setFontName(jLabel, fontName);
     }
 
 
