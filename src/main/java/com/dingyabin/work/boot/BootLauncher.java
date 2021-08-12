@@ -28,7 +28,7 @@ public class BootLauncher implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         //加载配置文件
-        ConnectConfigManager.loadConnectConfigs();
+        //ConnectConfigManager.loadConnectConfigs();
         //启动窗口
         anotherCatLauncher.assembleComponent();
     }

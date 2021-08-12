@@ -3,9 +3,11 @@ package com.dingyabin.work.gui.component;
 import com.alee.laf.menu.MenuBarLayout;
 import com.alee.managers.icon.Icons;
 import com.dingyabin.work.common.cons.Const;
+import com.dingyabin.work.ctrl.enums.DataBaseTypeEnum;
 import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author 丁亚宾
@@ -50,20 +52,21 @@ public class CatMenuBar extends JMenuBar {
         layout.setSpacing(16);
 
         //设置图标
-        fileMenu.setIcon(Icons.dir);
         watchMenu.setIcon(Icons.magnifier);
         favMenu.setIcon(CatIcons.fav);
         windowsMenu.setIcon(CatIcons.windows);
 
 
         //添加菜单
-        add(fileMenu);
+        add(generateFileMenu());
         add(watchMenu);
         add(favMenu);
         add(generateToolMenu());
         add(windowsMenu);
         add(generateHelpMenu());
     }
+
+
 
 
     /**
@@ -88,6 +91,8 @@ public class CatMenuBar extends JMenuBar {
     }
 
 
+
+
     /**
      * '工具'菜单按钮
      *
@@ -100,17 +105,43 @@ public class CatMenuBar extends JMenuBar {
         //日志调试
         JMenuItem log = new JMenuItem(title, CatIcons.log);
         log.addActionListener(e -> {
-            if (tabbedPane != null) {
-                LogTabTextArea logTabTextArea = new LogTabTextArea(10, 10).lineWrap(true).fontSize(15).noEdit().addPopupMenu();
-                JScrollPane jScrollPane = GuiUtils.createJscrollPane(logTabTextArea);
-                tabbedPane.addTab(title, jScrollPane);
-                tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(jScrollPane), GuiUtils.createTabBarComponent(title, CatIcons.log, tabbedPane, jScrollPane));
-                //读取日志
-                logTabTextArea.showLog();
+            if (tabbedPane == null) {
+                return;
             }
+            LogTabTextArea logTabTextArea = new LogTabTextArea(10, 10).lineWrap(true).fontSize(15).noEdit().addPopupMenu();
+            JScrollPane jScrollPane = GuiUtils.createJscrollPane(logTabTextArea);
+            tabbedPane.addTab(title, jScrollPane);
+            tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(jScrollPane), GuiUtils.createTabBarComponent(title, CatIcons.log, tabbedPane, jScrollPane));
+            //读取日志
+            logTabTextArea.showLog();
         });
         toolsMenu.add(log);
         return toolsMenu;
     }
+
+
+
+
+    /**
+     * '文件'菜单按钮
+     *
+     * @return 菜单
+     */
+    private JMenu generateFileMenu() {
+        //设置icon
+        fileMenu.setIcon(Icons.dir);
+        //新建数据源
+        JMenu connectMenu = new JMenu("新建数据源");
+        connectMenu.setIcon(CatIcons.connect);
+        JMenuItem mysqlItem = new JMenuItem(DataBaseTypeEnum.MYSQL.getType(), CatIcons.mysql);
+        connectMenu.add(mysqlItem);
+        connectMenu.addSeparator();
+        connectMenu.add(new JMenuItem("更多类型，敬请期待", CatIcons.unknown));
+        //
+        fileMenu.add(connectMenu);
+        return fileMenu;
+    }
+
+
 
 }

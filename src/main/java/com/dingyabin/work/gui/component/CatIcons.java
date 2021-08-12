@@ -43,6 +43,12 @@ public class CatIcons {
 
     public static final ImageIcon cross = new ImageIcon(CatIcons.class.getResource("/icons/cross.png"));
 
+    public static final ImageIcon connect = new ImageIcon(CatIcons.class.getResource("/icons/connect.png"));
+
+    public static final ImageIcon mysql = new ImageIcon(CatIcons.class.getResource("/icons/mysql.png"));
+
+    public static final ImageIcon unknown = new ImageIcon(CatIcons.class.getResource("/icons/unknown.png"));
+
 
 
 
