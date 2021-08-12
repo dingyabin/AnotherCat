@@ -119,7 +119,7 @@ public class GuiUtils {
      * @param message 提示信息
      * @return 是否选中yes
      */
-    public static boolean createJoptionPane(Component container, String message) {
+    public static boolean createYesNoOptionPane(Component container, String message) {
         int opt = JOptionPane.showConfirmDialog(container, message, "确认信息", JOptionPane.YES_NO_OPTION);
         return opt == JOptionPane.YES_OPTION;
     }
@@ -131,7 +131,7 @@ public class GuiUtils {
      * @param optionType optionType
      * @return 选中
      */
-    public static int createJoptionPane(Component container, String message, int optionType) {
+    public static int createOptionPane(Component container, String message, int optionType) {
         return JOptionPane.showConfirmDialog(container, message, "确认信息", optionType);
     }
 

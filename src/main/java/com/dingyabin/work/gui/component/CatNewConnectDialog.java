@@ -94,12 +94,12 @@ public class CatNewConnectDialog extends JDialog {
             char[] password = pwdField.getPassword();
             //校验参数信息
             if (StringUtils.isAnyBlank(host, port, userName) || ArrayUtils.getLength(password) == 0) {
-                GuiUtils.createJoptionPane(inputPanel,  "请填写完整的数据源信息", JOptionPane.DEFAULT_OPTION);
+                GuiUtils.createOptionPane(inputPanel,  "请填写完整的数据源信息", JOptionPane.DEFAULT_OPTION);
                 return;
             }
             //测试是否可以连接成功
             boolean ok = CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password));
-            GuiUtils.createJoptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
+            GuiUtils.createOptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
         });
         btPanel.add(testBtn);
 
