@@ -128,16 +128,17 @@ public class CatMenuBar extends JMenuBar {
      * @return 菜单
      */
     private JMenu generateFileMenu() {
+        String title = "添加数据源";
         //设置icon
         fileMenu.setIcon(Icons.dir);
         //新建数据源
-        JMenu connectMenu = new JMenu("新建数据源");
+        JMenu connectMenu = new JMenu(title);
         connectMenu.setIcon(CatIcons.connect);
 
         //具体数据源类型
         for (DataBaseTypeEnum typeEnum : DataBaseTypeEnum.values()) {
             JMenuItem mysqlItem = new JMenuItem(typeEnum.getType(), typeEnum.getIcon());
-            mysqlItem.addActionListener(e -> new CatNewConnectDialog(jframe, typeEnum, true));
+            mysqlItem.addActionListener(e -> new CatNewConnectDialog(jframe, typeEnum, title,true));
             connectMenu.add(mysqlItem);
         }
         //未知数据源
