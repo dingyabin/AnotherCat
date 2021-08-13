@@ -81,16 +81,36 @@ public class CatUtils {
         if (schemaMeta == null) {
             return false;
         }
+        Connection connection = null;
         try {
             Class.forName(schemaMeta.driverClassName());
-            DriverManager.getConnection(schemaMeta.connectUrl(host, port, null), userName, pwd);
+            connection = DriverManager.getConnection(schemaMeta.connectUrl(host, port, null), userName, pwd);
             return true;
         } catch (Exception e) {
             log.error("checkNewConnect error,host={},port={},user={}, error={}", host, port, userName, e.getMessage());
+        } finally {
+            close(connection);
         }
         return false;
     }
 
+
+
+
+    /**
+     * 关闭连接
+     *
+     * @param connection 连接
+     */
+    private static void close(Connection connection) {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (Exception e) {
+            //ignore
+        }
+    }
 
 
 }
