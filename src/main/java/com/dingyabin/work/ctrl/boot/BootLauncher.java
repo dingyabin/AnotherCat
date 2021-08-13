@@ -1,5 +1,7 @@
 package com.dingyabin.work.ctrl.boot;
 
+import com.dingyabin.work.common.model.ConnectConfig;
+import com.dingyabin.work.common.model.ConnectConfigManager;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +10,7 @@ import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.util.Enumeration;
+import java.util.Set;
 
 /**
  * @author 丁亚宾
@@ -26,7 +29,7 @@ public class BootLauncher implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         //加载配置文件
-        //ConnectConfigManager.loadConnectConfigs();
+        ConnectConfigManager.loadConnectConfigs();
         //启动窗口
         anotherCatLauncher.assembleComponent();
     }
