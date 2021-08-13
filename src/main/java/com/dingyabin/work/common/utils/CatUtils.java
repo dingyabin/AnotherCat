@@ -84,6 +84,7 @@ public class CatUtils {
         Connection connection = null;
         try {
             Class.forName(schemaMeta.driverClassName());
+            DriverManager.setLoginTimeout(5);
             connection = DriverManager.getConnection(schemaMeta.connectUrl(host, port, null), userName, pwd);
             return true;
         } catch (Exception e) {
