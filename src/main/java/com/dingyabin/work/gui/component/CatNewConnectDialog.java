@@ -118,10 +118,8 @@ public class CatNewConnectDialog extends JDialog {
                 GuiUtils.createOptionPane(inputPanel,  "请填写完整的数据源信息!", JOptionPane.DEFAULT_OPTION);
                 return;
             }
-            //保存失败
-            if (!ConnectConfigManager.addConnectConfig(conName, dataBaseType.getType(), host, port, userName, new String(password))) {
-                GuiUtils.createOptionPane(inputPanel,  "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
-            }
+            boolean saveRet = ConnectConfigManager.addConnectConfig(conName, dataBaseType.getType(), host, port, userName, new String(password));
+            GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
         });
         btPanel.add(okBtn);
 
