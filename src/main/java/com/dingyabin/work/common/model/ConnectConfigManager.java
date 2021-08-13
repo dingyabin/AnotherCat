@@ -2,6 +2,7 @@ package com.dingyabin.work.common.model;
 
 import com.dingyabin.work.common.cons.Const;
 import com.google.common.collect.Sets;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import java.util.Set;
  * Date: 2021/8/7.
  * Time:10:42
  */
+@Slf4j
 public class ConnectConfigManager {
 
     private static Set<ConnectConfig> connectMetas = Sets.newLinkedHashSet();
@@ -38,7 +40,7 @@ public class ConnectConfigManager {
             outputStream.close();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("saveConnectConfigs error",e);
         }
         return false;
     }

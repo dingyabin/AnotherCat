@@ -2,6 +2,7 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.model.ConnectConfigManager;
 import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -14,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
+ * 新建连接对话框
  * @author dingyabin
  * @date 2021-08-12 15:16
  */
@@ -22,10 +24,6 @@ public class CatNewConnectDialog extends JDialog {
     private DataBaseTypeEnum dataBaseType;
 
     private ActionListener cancelListener = e -> dispose();
-
-    private ActionListener okListener = e -> {
-        dispose();
-    };
 
 
     public CatNewConnectDialog(Frame owner, DataBaseTypeEnum dataBaseType, String title, boolean modal) {
@@ -60,7 +58,8 @@ public class CatNewConnectDialog extends JDialog {
         inputPanel.setBorder(new TitledBorder(lineBorder, dataBaseType.getType(), TitledBorder.CENTER, TitledBorder.TOP, CatFonts.CONNECT_WINDOW_BORDER));
 
         inputPanel.add(GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14));
-        inputPanel.add(new JTextField());
+        JTextField conNameField = new JTextField();
+        inputPanel.add(conNameField);
 
         inputPanel.add(GuiUtils.createLabel("主机名或IP地址：", SwingConstants.RIGHT, 14));
         JTextField hostField = new JTextField();
@@ -86,6 +85,7 @@ public class CatNewConnectDialog extends JDialog {
 ///////////////////////////////////////////按钮区域/////////////////////////////////////////////////////////////////
         JPanel btPanel = new JPanel();
 
+        //测试按钮，测试连接是否可用
         JButton testBtn = FontMethodsImpl.setFontSize(new JButton("测试", CatIcons.test), 15);
         testBtn.addActionListener(e -> {
             String host = hostField.getText();
@@ -105,16 +105,32 @@ public class CatNewConnectDialog extends JDialog {
 
         btPanel.add(Box.createHorizontalStrut(30));
 
+        //确定按钮，保存连接
         JButton okBtn = FontMethodsImpl.setFontSize(new JButton("确定", CatIcons.ok), 15);
-        okBtn.addActionListener(okListener);
+        okBtn.addActionListener(e -> {
+            String conName = conNameField.getText();
+            String host = hostField.getText();
+            String port = portField.getText();
+            String userName = userNameField.getText();
+            char[] password = pwdField.getPassword();
+            //校验参数信息
+            if (StringUtils.isAnyBlank(conName, host, port, userName) || ArrayUtils.getLength(password) == 0) {
+                GuiUtils.createOptionPane(inputPanel,  "请填写完整的数据源信息!", JOptionPane.DEFAULT_OPTION);
+                return;
+            }
+            //保存失败
+            if (!ConnectConfigManager.addConnectConfig(conName, dataBaseType.getType(), host, port, userName, new String(password))) {
+                GuiUtils.createOptionPane(inputPanel,  "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
+            }
+        });
         btPanel.add(okBtn);
 
+        //取消按钮，关闭窗口
         JButton cancelBtn = FontMethodsImpl.setFontSize(new JButton("取消", CatIcons.cancel), 15);
         cancelBtn.addActionListener(cancelListener);
         btPanel.add(cancelBtn);
 
         add(btPanel, BorderLayout.SOUTH);
     }
-
 
 }
