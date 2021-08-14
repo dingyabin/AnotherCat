@@ -1,5 +1,6 @@
 package com.dingyabin.work.gui.component;
 
+import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.common.model.ConnectConfigManager;
@@ -24,6 +25,11 @@ public class CatNewConnectDialog extends JDialog {
     private DataBaseTypeEnum dataBaseType;
 
     private ActionListener cancelListener = e -> dispose();
+
+
+
+
+
 
 
     public CatNewConnectDialog(Frame owner, DataBaseTypeEnum dataBaseType, String title, boolean modal) {
@@ -85,6 +91,9 @@ public class CatNewConnectDialog extends JDialog {
 ///////////////////////////////////////////按钮区域/////////////////////////////////////////////////////////////////
         JPanel btPanel = new JPanel();
 
+        //进度条
+        JProgressBar progressBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
+
         //测试按钮，测试连接是否可用
         JButton testBtn = FontMethodsImpl.setFontSize(new JButton("测试", CatIcons.test), 15);
         testBtn.addActionListener(e -> {
@@ -94,16 +103,23 @@ public class CatNewConnectDialog extends JDialog {
             char[] password = pwdField.getPassword();
             //校验参数信息
             if (StringUtils.isAnyBlank(host, port, userName) || ArrayUtils.getLength(password) == 0) {
-                GuiUtils.createOptionPane(inputPanel,  "请填写完整的数据源信息", JOptionPane.DEFAULT_OPTION);
+                GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息", JOptionPane.DEFAULT_OPTION);
                 return;
             }
+            progressBar.setValue(0);
             //测试是否可以连接成功
-            boolean ok = CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password));
+            boolean ok = CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password) , progressBar);
             GuiUtils.createOptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
         });
+        //组装测试按钮
         btPanel.add(testBtn);
 
-        btPanel.add(Box.createHorizontalStrut(30));
+        //进度条设置
+        progressBar.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.progressbar);
+        progressBar.setStringPainted(true);
+
+        //组装进度条
+        btPanel.add(progressBar);
 
         //确定按钮，保存连接
         JButton okBtn = FontMethodsImpl.setFontSize(new JButton("确定", CatIcons.ok), 15);

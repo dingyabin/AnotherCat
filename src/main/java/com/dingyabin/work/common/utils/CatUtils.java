@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.*;
+import javax.swing.Timer;
 import java.io.File;
 import java.io.FileWriter;
 import java.sql.Connection;
@@ -75,11 +77,21 @@ public class CatUtils {
     }
 
 
-
-    public static boolean checkNewConnect(DataBaseTypeEnum dataBaseType, String host, String port, String userName, String pwd) {
+    public static boolean checkNewConnect(DataBaseTypeEnum dataBaseType, String host, String port, String userName, String pwd, JProgressBar progressBar) {
         SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(dataBaseType);
         if (schemaMeta == null) {
             return false;
+        }
+        Timer timer = null;
+        if (progressBar != null) {
+            timer = new Timer(500, e -> {
+                int current = progressBar.getValue();
+                System.out.println(current);
+                if (current < progressBar.getMaximum()) {
+                    progressBar.setValue(current + 10);
+                }
+            });
+            timer.start();
         }
         Connection connection = null;
         try {
@@ -90,6 +102,15 @@ public class CatUtils {
         } catch (Exception e) {
             log.error("checkNewConnect error,host={},port={},user={}, error={}", host, port, userName, e.getMessage());
         } finally {
+            //结束
+            if (progressBar != null) {
+                progressBar.setValue(progressBar.getMaximum());
+            }
+            //关闭定时器
+            if (timer != null) {
+                timer.stop();
+            }
+            //关闭连接
             close(connection);
         }
         return false;
