@@ -123,6 +123,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         progressBar.setIndeterminate(true);
         progressBar.setStringPainted(true);
         progressBar.setString(StringUtils.EMPTY);
+        FontMethodsImpl.setFontSize(progressBar,15);
         progressBar.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.progressbar);
 
         //组装进度条
@@ -173,8 +174,8 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         progressBar.setString("连接中...");
         //测试是否可以连接成功
         boolean ok = CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password));
-        progressBar.setString(ok ? "连接成功" : "连接失败");
-        GuiUtils.createOptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
+        progressBar.setString(ok ? "连接成功" : "连接失败...");
+        GuiUtils.createOptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败...", JOptionPane.DEFAULT_OPTION);
     }
 
 
