@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -21,11 +22,9 @@ import java.awt.event.ActionListener;
  * @author dingyabin
  * @date 2021-08-12 15:16
  */
-public class CatNewConnectDialog extends JDialog {
+public class CatNewConnectDialog extends JDialog implements ActionListener {
 
     private DataBaseTypeEnum dataBaseType;
-
-    private ActionListener cancelListener = e -> dispose();
 
 
     private JLabel conNameLabel = GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14);
@@ -57,6 +56,12 @@ public class CatNewConnectDialog extends JDialog {
     //取消按钮，关闭窗口
     private JButton cancelBtn = FontMethodsImpl.setFontSize(new JButton("取消", CatIcons.cancel), 15);
 
+    private JPanel inputPanel = new JPanel(new GridLayout(5, 2, 25, 20));
+
+    //进度条
+    private JProgressBar progressBar = new JProgressBar(JProgressBar.HORIZONTAL);
+
+
     public CatNewConnectDialog(Frame owner, DataBaseTypeEnum dataBaseType, String title, boolean modal) {
         super(owner, title, modal);
         this.dataBaseType = dataBaseType;
@@ -82,7 +87,6 @@ public class CatNewConnectDialog extends JDialog {
 
 
     private void generateComponent() {
-        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 25, 20));
 
         //设置border
         LineBorder lineBorder = new LineBorder(CatColors.CONNECT_WINDOW_BORDER, 5, true);
@@ -111,53 +115,86 @@ public class CatNewConnectDialog extends JDialog {
 ///////////////////////////////////////////按钮区域/////////////////////////////////////////////////////////////////
         JPanel btPanel = new JPanel();
 
-        testBtn.addActionListener(e -> {
-            String host = hostField.getText();
-            String port = portField.getText();
-            String userName = userNameField.getText();
-            char[] password = pwdField.getPassword();
-            //校验参数信息
-            if (StringUtils.isAnyBlank(host, port, userName) || ArrayUtils.getLength(password) == 0) {
-                GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息", JOptionPane.DEFAULT_OPTION);
-                return;
-            }
-            //测试是否可以连接成功
-            boolean ok = CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password));
-            GuiUtils.createOptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
-        });
         //组装测试按钮
+        testBtn.addActionListener(this);
         btPanel.add(testBtn);
 
-        //进度条
-        JProgressBar progressBar = new JProgressBar(JProgressBar.HORIZONTAL);
         //进度条设置
         progressBar.setIndeterminate(true);
+        progressBar.setStringPainted(true);
+        progressBar.setString(StringUtils.EMPTY);
         progressBar.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.progressbar);
-        progressBar.setStringPainted(false);
 
         //组装进度条
         btPanel.add(progressBar);
 
-        okBtn.addActionListener(e -> {
-            String conName = conNameField.getText();
-            String host = hostField.getText();
-            String port = portField.getText();
-            String userName = userNameField.getText();
-            char[] password = pwdField.getPassword();
-            //校验参数信息
-            if (StringUtils.isAnyBlank(conName, host, port, userName) || ArrayUtils.getLength(password) == 0) {
-                GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息!", JOptionPane.DEFAULT_OPTION);
-                return;
-            }
-            boolean saveRet = ConnectConfigManager.addConnectConfig(conName, dataBaseType.getType(), host, port, userName, new String(password));
-            GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
-        });
+        okBtn.addActionListener(this);
         btPanel.add(okBtn);
 
-        cancelBtn.addActionListener(cancelListener);
+        cancelBtn.addActionListener(this);
         btPanel.add(cancelBtn);
 
         add(btPanel, BorderLayout.SOUTH);
     }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source == testBtn) {
+            checkConnect();
+            return;
+        }
+        if (source == okBtn) {
+            saveConnect();
+            return;
+        }
+        if (source == cancelBtn) {
+            dispose();
+        }
+    }
+
+
+
+
+    /**
+     * 测试连接
+     */
+    private void checkConnect() {
+        String host = hostField.getText();
+        String port = portField.getText();
+        String userName = userNameField.getText();
+        char[] password = pwdField.getPassword();
+        //校验参数信息
+        if (StringUtils.isAnyBlank(host, port, userName) || ArrayUtils.getLength(password) == 0) {
+            GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息", JOptionPane.DEFAULT_OPTION);
+            return;
+        }
+        progressBar.setString("连接中...");
+        //测试是否可以连接成功
+        boolean ok = CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password));
+        progressBar.setString(ok ? "连接成功" : "连接失败");
+        GuiUtils.createOptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
+    }
+
+
+    /**
+     * 保存连接
+     */
+    private void saveConnect() {
+        String conName = conNameField.getText();
+        String host = hostField.getText();
+        String port = portField.getText();
+        String userName = userNameField.getText();
+        char[] password = pwdField.getPassword();
+        //校验参数信息
+        if (StringUtils.isAnyBlank(conName, host, port, userName) || ArrayUtils.getLength(password) == 0) {
+            GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息!", JOptionPane.DEFAULT_OPTION);
+            return;
+        }
+        boolean saveRet = ConnectConfigManager.addConnectConfig(conName, dataBaseType.getType(), host, port, userName, new String(password));
+        GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
+    }
+
 
 }
