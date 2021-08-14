@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 
 /**
  * 新建连接对话框
+ *
  * @author dingyabin
  * @date 2021-08-12 15:16
  */
@@ -27,10 +28,34 @@ public class CatNewConnectDialog extends JDialog {
     private ActionListener cancelListener = e -> dispose();
 
 
+    private JLabel conNameLabel = GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14);
 
+    private JTextField conNameField = new JTextField();
 
+    private JLabel hosLabel = GuiUtils.createLabel("主机名或IP地址：", SwingConstants.RIGHT, 14);
 
+    private JTextField hostField = new JTextField();
 
+    private JLabel portLabel = GuiUtils.createLabel("端口：", SwingConstants.RIGHT, 14);
+
+    private JTextField portField = new JTextField();
+
+    private JLabel userNameLabel = GuiUtils.createLabel("用户名：", SwingConstants.RIGHT, 14);
+
+    private JTextField userNameField = new JTextField();
+
+    private JLabel pwdLabel = GuiUtils.createLabel("密码：", SwingConstants.RIGHT, 14);
+
+    private JPasswordField pwdField = new JPasswordField();
+
+    //测试按钮，测试连接是否可用
+    private JButton testBtn = FontMethodsImpl.setFontSize(new JButton("测试", CatIcons.test), 15);
+
+    //确定按钮，保存连接
+    private JButton okBtn = FontMethodsImpl.setFontSize(new JButton("确定", CatIcons.ok), 15);
+
+    //取消按钮，关闭窗口
+    private JButton cancelBtn = FontMethodsImpl.setFontSize(new JButton("取消", CatIcons.cancel), 15);
 
     public CatNewConnectDialog(Frame owner, DataBaseTypeEnum dataBaseType, String title, boolean modal) {
         super(owner, title, modal);
@@ -63,27 +88,22 @@ public class CatNewConnectDialog extends JDialog {
         LineBorder lineBorder = new LineBorder(CatColors.CONNECT_WINDOW_BORDER, 5, true);
         inputPanel.setBorder(new TitledBorder(lineBorder, dataBaseType.getType(), TitledBorder.CENTER, TitledBorder.TOP, CatFonts.CONNECT_WINDOW_BORDER));
 
-        inputPanel.add(GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14));
-        JTextField conNameField = new JTextField();
+        inputPanel.add(conNameLabel);
         inputPanel.add(conNameField);
 
-        inputPanel.add(GuiUtils.createLabel("主机名或IP地址：", SwingConstants.RIGHT, 14));
-        JTextField hostField = new JTextField();
+        inputPanel.add(hosLabel);
         inputPanel.add(hostField);
 
-        inputPanel.add(GuiUtils.createLabel("端口：", SwingConstants.RIGHT, 14));
+        inputPanel.add(portLabel);
         Box portInputBox = Box.createHorizontalBox();
-        JTextField portField = new JTextField();
         portInputBox.add(portField);
         portInputBox.add(Box.createHorizontalStrut(50));
         inputPanel.add(portInputBox);
 
-        inputPanel.add(GuiUtils.createLabel("用户名：", SwingConstants.RIGHT, 14));
-        JTextField userNameField = new JTextField();
+        inputPanel.add(userNameLabel);
         inputPanel.add(userNameField);
 
-        inputPanel.add(GuiUtils.createLabel("密码：", SwingConstants.RIGHT, 14));
-        JPasswordField pwdField = new JPasswordField();
+        inputPanel.add(pwdLabel);
         inputPanel.add(pwdField);
 
         add(inputPanel);
@@ -91,11 +111,6 @@ public class CatNewConnectDialog extends JDialog {
 ///////////////////////////////////////////按钮区域/////////////////////////////////////////////////////////////////
         JPanel btPanel = new JPanel();
 
-        //进度条
-        JProgressBar progressBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
-
-        //测试按钮，测试连接是否可用
-        JButton testBtn = FontMethodsImpl.setFontSize(new JButton("测试", CatIcons.test), 15);
         testBtn.addActionListener(e -> {
             String host = hostField.getText();
             String port = portField.getText();
@@ -106,23 +121,23 @@ public class CatNewConnectDialog extends JDialog {
                 GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息", JOptionPane.DEFAULT_OPTION);
                 return;
             }
-            progressBar.setValue(0);
             //测试是否可以连接成功
-            boolean ok = CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password) , progressBar);
+            boolean ok = CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password));
             GuiUtils.createOptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败", JOptionPane.DEFAULT_OPTION);
         });
         //组装测试按钮
         btPanel.add(testBtn);
 
+        //进度条
+        JProgressBar progressBar = new JProgressBar(JProgressBar.HORIZONTAL);
         //进度条设置
+        progressBar.setIndeterminate(true);
         progressBar.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.progressbar);
-        progressBar.setStringPainted(true);
+        progressBar.setStringPainted(false);
 
         //组装进度条
         btPanel.add(progressBar);
 
-        //确定按钮，保存连接
-        JButton okBtn = FontMethodsImpl.setFontSize(new JButton("确定", CatIcons.ok), 15);
         okBtn.addActionListener(e -> {
             String conName = conNameField.getText();
             String host = hostField.getText();
@@ -131,7 +146,7 @@ public class CatNewConnectDialog extends JDialog {
             char[] password = pwdField.getPassword();
             //校验参数信息
             if (StringUtils.isAnyBlank(conName, host, port, userName) || ArrayUtils.getLength(password) == 0) {
-                GuiUtils.createOptionPane(inputPanel,  "请填写完整的数据源信息!", JOptionPane.DEFAULT_OPTION);
+                GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息!", JOptionPane.DEFAULT_OPTION);
                 return;
             }
             boolean saveRet = ConnectConfigManager.addConnectConfig(conName, dataBaseType.getType(), host, port, userName, new String(password));
@@ -139,8 +154,6 @@ public class CatNewConnectDialog extends JDialog {
         });
         btPanel.add(okBtn);
 
-        //取消按钮，关闭窗口
-        JButton cancelBtn = FontMethodsImpl.setFontSize(new JButton("取消", CatIcons.cancel), 15);
         cancelBtn.addActionListener(cancelListener);
         btPanel.add(cancelBtn);
 
