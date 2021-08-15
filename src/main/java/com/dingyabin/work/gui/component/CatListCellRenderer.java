@@ -12,20 +12,21 @@ import java.awt.*;
  */
 public class CatListCellRenderer extends DefaultListCellRenderer {
 
-    private Icon icon;
+    private Icon itemIcon;
+
 
     public CatListCellRenderer() {
     }
 
     public CatListCellRenderer(Icon icon) {
-        this.icon = icon;
+        this.itemIcon = icon;
     }
 
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        if (icon != null) {
-            setIcon(icon);
+        if (itemIcon != null) {
+            setIcon(itemIcon);
         }
         if (value instanceof IconAble) {
             IconAble iconAble = (IconAble) value;
@@ -34,5 +35,13 @@ public class CatListCellRenderer extends DefaultListCellRenderer {
         return component;
     }
 
+
+    public Icon getItemIcon() {
+        return itemIcon;
+    }
+
+    public void setItemIcon(Icon itemIcon) {
+        this.itemIcon = itemIcon;
+    }
 
 }

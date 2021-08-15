@@ -20,8 +20,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Set;
 
@@ -37,6 +35,8 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
     private JFrame jFrame;
 
+    private JTabbedPane tabbedPane;
+
     private JMenuItem see = new JMenuItem("查看连接", CatIcons.watch);
 
     private JMenuItem edit = new JMenuItem("编辑连接", CatIcons.edit);
@@ -49,9 +49,10 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
 
 
-    public ConnectDisplayAccording(JFrame jFrame) {
+    public ConnectDisplayAccording(JFrame jFrame,JTabbedPane tabbedPane) {
         super(StyleId.accordion, BoxOrientation.top, 0, 1);
         this.jFrame = jFrame;
+        this.tabbedPane = tabbedPane;
         initPopupMenu();
     }
 
@@ -104,9 +105,9 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
                 GuiUtils.createOptionPane(jFrame, "该连接下暂无数据库!", JOptionPane.DEFAULT_OPTION);
                 return;
             }
-            JList<DataBaseSchema> objectJList = getDataBaseList(catRet, connectConfig);
+            JList<DataBaseSchema> dataBaseList = getDataBaseList(catRet, connectConfig);
             SwingUtilities.invokeLater(() -> {
-                pane.setContent(GuiUtils.createJscrollPane(objectJList));
+                pane.setContent(GuiUtils.createJscrollPane(dataBaseList));
                 //标记已经加载过了
                 pane.putClientProperty(Const.ACCORDING_LOAD, Boolean.TRUE);
             });
@@ -116,28 +117,19 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
 
     private JList<DataBaseSchema> getDataBaseList(CatRet<List<DataBaseSchema>> catRet, ConnectConfig connectConfig) {
-        DefaultListModel<DataBaseSchema> listModel = new DefaultListModel<>();
-        catRet.getData().forEach(listModel::addElement);
-
-        JList<DataBaseSchema> dataBaseSchemaJList = new JList<>();
-        dataBaseSchemaJList.setModel(listModel);
-        //设置字体
-        FontMethodsImpl.setFontSize(dataBaseSchemaJList, 14);
-        FontMethodsImpl.setFontName(dataBaseSchemaJList, "Consolas");
-        //设置渲染器
-        dataBaseSchemaJList.setCellRenderer(new CatListCellRenderer(CatIcons.db));
+        //数据库列表
+        CatList<DataBaseSchema> schemaCatList = new CatList<>(CatIcons.db, catRet.getData()).fontSize(14).fontName("Consolas");
         //双击打开
-        dataBaseSchemaJList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    DataBaseSchema dataBaseSchema = dataBaseSchemaJList.getSelectedValue();
-                    List<TableSchema> tables = catAdapterService.getTablesWithDb(connectConfig, dataBaseSchema);
-                    System.out.println(tables);
-                }
+        schemaCatList.addDoubleClickListener(mouseEvent -> {
+            DataBaseSchema dataBaseSchema = schemaCatList.getSelectedValue();
+            List<TableSchema> tables = catAdapterService.getTablesWithDb(connectConfig, dataBaseSchema);
+            int tabCount = tabbedPane.getTabCount();
+            if (tabCount == 0) {
+                tabbedPane.addTab("表", null);
             }
+            //tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(jScrollPane), GuiUtils.createTabBarComponent(title, CatIcons.log, tabbedPane, jScrollPane));
         });
-        return dataBaseSchemaJList;
+        return schemaCatList;
     }
 
 
