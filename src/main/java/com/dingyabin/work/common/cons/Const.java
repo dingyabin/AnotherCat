@@ -21,7 +21,7 @@ public class Const {
 
     public static  final int MAX_LOG_ROWS = 500;
 
-    public static  final String MAX_LOG_ROWS_TIPS = "日志已经超过"+MAX_LOG_ROWS+"行，不再显示";
+    public static  final String MAX_LOG_ROWS_TIPS = "日志已经超过"+MAX_LOG_ROWS+"行，不再显示\n";
 
     public static  final String INFO_LOGS = "-----------------------以下是INFO日志----------------------\n";
 

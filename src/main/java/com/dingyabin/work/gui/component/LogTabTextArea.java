@@ -110,8 +110,12 @@ public class LogTabTextArea extends JTextArea {
         try (FileInputStream inputStream = new FileInputStream(file)) {
             LineIterator lineIterator = IOUtils.lineIterator(inputStream, StandardCharsets.UTF_8);
             while (lineIterator.hasNext()) {
-                if (rows > Const.MAX_LOG_ROWS) {
+                if (rows == Const.MAX_LOG_ROWS) {
                     append(Const.MAX_LOG_ROWS_TIPS);
+                    rows++;
+                    return;
+                }
+                if (rows > Const.MAX_LOG_ROWS) {
                     return;
                 }
                 String next = lineIterator.next();

@@ -48,7 +48,7 @@ public class AnotherCatLauncher {
     /**
      * 左侧的tree页
      */
-    private  ConnectDisplayAccording connectDisplay = new ConnectDisplayAccording();
+    private  ConnectDisplayAccording connectDisplay = new ConnectDisplayAccording(jf);
 
 
     /**

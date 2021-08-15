@@ -31,6 +31,8 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
     private Set<ConnectConfig> connectConfigs;
 
+    private JFrame jFrame;
+
     private JMenuItem see = new JMenuItem("查看连接", CatIcons.watch);
 
     private JMenuItem edit = new JMenuItem("编辑连接", CatIcons.edit);
@@ -43,8 +45,9 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
 
 
-    public ConnectDisplayAccording() {
+    public ConnectDisplayAccording(JFrame jFrame) {
         super(StyleId.accordion, BoxOrientation.top, 0, 1);
+        this.jFrame = jFrame;
         initPopupMenu();
     }
 
@@ -87,7 +90,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         //查询对应的数据库
         CatRet<List<DataBaseSchema>> catRet = catAdapterService.getDbsWithConnect(connectConfig);
         if (!catRet.isSuccess()) {
-            GuiUtils.createOptionPane(this, catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
+            GuiUtils.createOptionPane(jFrame, catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
             return;
         }
         pane.setContent(new JList<>(catRet.getData().toArray()));
