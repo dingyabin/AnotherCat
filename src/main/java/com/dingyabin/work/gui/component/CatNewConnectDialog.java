@@ -269,6 +269,10 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     }
 
 
+    /**
+     * 开启编辑模式
+     * @param oldConfig 编辑之前，老的ConnectConfig
+     */
     public void editMode(@NotNull ConnectConfig oldConfig) {
         this.mode = EDIT_MODE;
         conNameField.setText(oldConfig.getName());
