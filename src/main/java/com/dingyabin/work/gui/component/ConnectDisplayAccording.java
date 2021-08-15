@@ -25,6 +25,8 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Set;
 
+import static com.dingyabin.work.common.model.ConnectConfigManager.removeConnectConfig;
+
 /**
  * @author 丁亚宾
  * Date: 2021/8/15.
@@ -189,19 +191,26 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             return;
         }
         ConnectConfig connectConfig = (ConnectConfig) conMeta;
-        CatNewConnectDialog dialog = new CatNewConnectDialog(jFrame, connectConfig.typeEnum(), e.getActionCommand(), true);
+        CatNewConnectDialog dialog = new CatNewConnectDialog(jFrame, connectConfig.typeEnum(), e.getActionCommand(), false);
+        dialog.setConnectMeta(connectConfig);
         if (source == see) {
-            dialog.setConnectMeta(connectConfig);
             dialog.enAbleInput(false);
+            dialog.showSelf();
         }
         if (source == edit) {
-            dialog.setConnectMeta(connectConfig);
+            dialog.showSelf();
         }
         if (source == delete) {
+            dialog.enAbleInput(false);
+            dialog.showSelf();
 
+            //删除连接
+            boolean deleteRet = GuiUtils.createYesNoOptionPane(dialog, "确定要删除么") && removeConnectConfig(connectConfig);
+            GuiUtils.createOptionPane(dialog, deleteRet?"删除成功!":"删除失败，请稍后再试!", JOptionPane.DEFAULT_OPTION);
+
+            //关闭弹窗
+            dialog.dispose();
         }
-        dialog.showSelf();
-
     }
 
 

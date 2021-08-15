@@ -75,6 +75,12 @@ public class ConnectConfigManager {
     }
 
 
+    public static boolean removeConnectConfig(ConnectConfig connectConfig) {
+        connectMetas.remove(connectConfig);
+        return saveConnectConfigs(connectMetas);
+    }
+
+
 
     public static Set<ConnectConfig> getConnectConfigs() {
         return Collections.unmodifiableSet(connectMetas);
