@@ -16,6 +16,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * 新建连接对话框
@@ -26,6 +28,9 @@ import java.awt.event.ActionListener;
 public class CatNewConnectDialog extends JDialog implements ActionListener {
 
     private DataBaseTypeEnum dataBaseType;
+
+
+    private BiConsumer<Boolean, ConnectConfig> okBtnCallBack;
 
 
     private JLabel conNameLabel = GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14);
@@ -183,6 +188,15 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     }
 
 
+    public BiConsumer<Boolean, ConnectConfig> getOkBtnCallBack() {
+        return okBtnCallBack;
+    }
+
+
+    public void setOkBtnCallBack(BiConsumer<Boolean, ConnectConfig> okBtnCallBack) {
+        this.okBtnCallBack = okBtnCallBack;
+    }
+
     /**
      * 保存连接
      */
@@ -197,8 +211,14 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
             GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息!", JOptionPane.DEFAULT_OPTION);
             return;
         }
-        boolean saveRet = ConnectConfigManager.addConnectConfig(conName, dataBaseType.getType(), host, port, userName, new String(password));
+        String pwd = new String(password);
+        boolean saveRet = ConnectConfigManager.addConnectConfig(conName, dataBaseType.getType(), host, port, userName, pwd);
         GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
+
+        //如果有回调的话,执行回调
+        if (okBtnCallBack != null) {
+            okBtnCallBack.accept(saveRet, new ConnectConfig(conName, dataBaseType.getType(), host, port, userName, pwd));
+        }
     }
 
 
