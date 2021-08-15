@@ -1,12 +1,16 @@
 package com.dingyabin.work.ctrl.boot;
 
 import com.alee.managers.style.StyleId;
+import com.dingyabin.work.common.model.ConnectConfigManager;
+import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import com.dingyabin.work.gui.component.CatIcons;
 import com.dingyabin.work.gui.component.CatMenuBar;
+import com.dingyabin.work.gui.component.ConnectDisplayAccording;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.swing.*;
 import java.awt.*;
 
@@ -18,6 +22,9 @@ import java.awt.*;
 @Lazy
 @Component
 public class AnotherCatLauncher {
+
+    @Resource
+    private CatAdapterService catAdapterService;
 
     /**
      * 主窗口
@@ -41,7 +48,7 @@ public class AnotherCatLauncher {
     /**
      * 左侧的tree页
      */
-    private final Box leftTreeBox = Box.createVerticalBox();
+    private  ConnectDisplayAccording connectDisplay = new ConnectDisplayAccording();
 
 
     /**
@@ -51,8 +58,7 @@ public class AnotherCatLauncher {
     public void assembleComponent() {
         intComponent();
 
-
-        mainSplitPane.setLeftComponent(leftTreeBox);
+        mainSplitPane.setLeftComponent(connectDisplay);
         mainSplitPane.setRightComponent(tabbedPane);
 
         jf.setJMenuBar(catMenuBar);
@@ -74,7 +80,9 @@ public class AnotherCatLauncher {
         //大小
         jf.setPreferredSize(new Dimension(1300,800));
 
-        leftTreeBox.setPreferredSize(new Dimension(200,1000));
+        connectDisplay.setCatAdapterService(catAdapterService);
+        connectDisplay.setPreferredSize(new Dimension(170,1000));
+        connectDisplay.setConnectConfigs(ConnectConfigManager.getConnectConfigs());
 
         //左右分割栏设置一键收起
         mainSplitPane.setOneTouchExpandable(true);

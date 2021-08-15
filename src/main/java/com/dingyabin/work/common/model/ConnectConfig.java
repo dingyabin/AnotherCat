@@ -77,7 +77,7 @@ public class ConnectConfig implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s-%s-%s-%s", name, host, port, userName);
+        return String.format("name=%s:host=%s:port=%s:userName=%s", name, host, port, userName);
     }
 
 }

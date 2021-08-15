@@ -33,5 +33,11 @@ public class Const {
 
     public static  final String CONFIRM_TO_CLEAR_LOG = "确认要清空日志么?";
 
+    public static  final String ACCORDING_META = "accordionPane.connect.meta";
+
+    public static  final String ACCORDING_LOAD = "accordionPane.connect.load";
+
+
+
 
 }

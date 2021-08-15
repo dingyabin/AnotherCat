@@ -55,6 +55,17 @@ public class CatIcons {
 
     public static final ImageIcon test = new ImageIcon(CatIcons.class.getResource("/icons/test.png"));
 
+    public static final ImageIcon dbcon = new ImageIcon(CatIcons.class.getResource("/icons/dbcon.png"));
+
+    public static final ImageIcon db = new ImageIcon(CatIcons.class.getResource("/icons/db.png"));
+
+    public static final ImageIcon watch = new ImageIcon(CatIcons.class.getResource("/icons/watch.png"));
+
+    public static final ImageIcon edit = new ImageIcon(CatIcons.class.getResource("/icons/edit.png"));
+
+    public static final ImageIcon delete = new ImageIcon(CatIcons.class.getResource("/icons/delete.png"));
+
+
 
 
 
