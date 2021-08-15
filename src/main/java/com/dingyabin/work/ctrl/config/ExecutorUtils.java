@@ -2,10 +2,9 @@ package com.dingyabin.work.ctrl.config;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 丁亚宾
@@ -16,14 +15,7 @@ public class ExecutorUtils {
 
     private static ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("another-cat-worker-%d").build();
 
-
-    private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-            10, 15,
-            1, TimeUnit.MINUTES,
-            new LinkedBlockingQueue<Runnable>(100),
-            threadFactory,
-            new ThreadPoolExecutor.CallerRunsPolicy()
-    );
+    private static ExecutorService threadPoolExecutor = Executors.newCachedThreadPool(threadFactory);
 
 
     /**
@@ -32,6 +24,7 @@ public class ExecutorUtils {
      */
     public static void execute(Runnable runnable) {
         threadPoolExecutor.execute(runnable);
+
     }
 
 

@@ -2,6 +2,7 @@ package com.dingyabin.work.common.utils;
 
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
+import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.ctrl.meta.SchemaMeta;
 import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * @author 丁亚宾
@@ -77,25 +79,25 @@ public class CatUtils {
     }
 
 
-
-    public static boolean checkNewConnect(DataBaseTypeEnum dataBaseType, String host, String port, String userName, String pwd) {
-        SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(dataBaseType);
-        if (schemaMeta == null) {
-            return false;
-        }
-        Connection connection = null;
-        try {
-            Class.forName(schemaMeta.driverClassName());
-            DriverManager.setLoginTimeout(2);
-            connection = DriverManager.getConnection(schemaMeta.connectUrl(host, port, null), userName, pwd);
-            return true;
-        } catch (Exception e) {
-            log.error("checkNewConnect error,host={},port={},user={}, error={}", host, port, userName, e.getMessage());
-        } finally {
-            //关闭连接
-            close(connection);
-        }
-        return false;
+    public static void checkNewConnect(DataBaseTypeEnum dataBaseType, String host, String port, String userName, String pwd, Consumer<Boolean> consumer) {
+        ExecutorUtils.execute(() -> {
+            SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(dataBaseType);
+            Connection connection = null;
+            try {
+                Class.forName(schemaMeta.driverClassName());
+                DriverManager.setLoginTimeout(2);
+                connection = DriverManager.getConnection(schemaMeta.connectUrl(host, port, null), userName, pwd);
+            } catch (Exception e) {
+                log.error("checkNewConnect error,host={},port={},user={}, error={}", host, port, userName, e.getMessage());
+            } finally {
+                //关闭连接
+                close(connection);
+                if (consumer != null) {
+                    boolean success = (connection != null);
+                    SwingUtilities.invokeLater(() -> consumer.accept(success));
+                }
+            }
+        });
     }
 
 

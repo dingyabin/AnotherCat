@@ -48,7 +48,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     private JPasswordField pwdField = new JPasswordField();
 
     //测试按钮，测试连接是否可用
-    private JButton testBtn = FontMethodsImpl.setFontSize(new JButton("测试", CatIcons.test), 15);
+    private JButton checkBtn = FontMethodsImpl.setFontSize(new JButton("测试", CatIcons.test), 15);
 
     //确定按钮，保存连接
     private JButton okBtn = FontMethodsImpl.setFontSize(new JButton("确定", CatIcons.ok), 15);
@@ -116,8 +116,8 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         JPanel btPanel = new JPanel();
 
         //组装测试按钮
-        testBtn.addActionListener(this);
-        btPanel.add(testBtn);
+        checkBtn.addActionListener(this);
+        btPanel.add(checkBtn);
 
         //进度条设置
         progressBar.setIndeterminate(true);
@@ -142,7 +142,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        if (source == testBtn) {
+        if (source == checkBtn) {
             checkConnect();
             return;
         }
@@ -171,11 +171,15 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
             GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息", JOptionPane.DEFAULT_OPTION);
             return;
         }
+        //测试按钮置灰
+        checkBtn.setEnabled(false);
         progressBar.setString("连接中...");
         //测试是否可以连接成功
-        boolean ok = CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password));
-        progressBar.setString(ok ? "连接成功" : "连接失败...");
-        GuiUtils.createOptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败...", JOptionPane.DEFAULT_OPTION);
+        CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password), ok -> {
+            checkBtn.setEnabled(true);
+            progressBar.setString(ok ? "连接成功" : "连接失败...");
+            GuiUtils.createOptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败...", JOptionPane.DEFAULT_OPTION);
+        });
     }
 
 
