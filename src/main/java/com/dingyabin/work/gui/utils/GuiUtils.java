@@ -78,9 +78,22 @@ public class GuiUtils {
      * @return tab面板
      */
     public static Component createTabBarComponent(String title, Icon icon, JTabbedPane tabbedPane, Component content) {
+        int indexOfComponent = tabbedPane.indexOfComponent(content);
+        return createTabBarComponent(title, icon, tabbedPane, indexOfComponent);
+    }
+
+
+
+    /**
+     * @param title 标题
+     * @param icon 图标
+     * @param index index
+     * @return tab面板
+     */
+    public static Component createTabBarComponent(String title, Icon icon, JTabbedPane tabbedPane, int index) {
         Box tabBox = Box.createHorizontalBox();
         JButton closeBtn = new JButton(CatIcons.cross);
-        closeBtn.addActionListener(e -> tabbedPane.removeTabAt(tabbedPane.indexOfComponent(content)));
+        closeBtn.addActionListener(e -> tabbedPane.removeTabAt(index));
         closeBtn.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.buttonIconHover);
         closeBtn.setPreferredSize(new Dimension(20, 20));
         tabBox.add(new JLabel(title, icon, SwingConstants.CENTER));

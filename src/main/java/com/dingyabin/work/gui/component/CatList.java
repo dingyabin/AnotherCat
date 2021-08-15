@@ -51,6 +51,23 @@ public class CatList<T> extends JList<T> {
     }
 
 
+    public CatList<T> layoutVW(){
+        super.setLayoutOrientation(JList.VERTICAL_WRAP);
+        return this;
+    }
+
+
+    public CatList<T> visCount(int count){
+        setVisibleRowCount(count);
+        return this;
+    }
+
+
+    public CatList<T> layoutOri(int layoutOrientation){
+        super.setLayoutOrientation(layoutOrientation);
+        return this;
+    }
+
 
     public void addDoubleClickListener(Consumer<MouseEvent> eventConsumer) {
         addMouseListener(new MouseAdapter() {

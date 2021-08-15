@@ -123,11 +123,16 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         schemaCatList.addDoubleClickListener(mouseEvent -> {
             DataBaseSchema dataBaseSchema = schemaCatList.getSelectedValue();
             List<TableSchema> tables = catAdapterService.getTablesWithDb(connectConfig, dataBaseSchema);
+            CatList<TableSchema> tableCatList = new CatList<>(CatIcons.table, tables).fontSize(14).fontName("Consolas").layoutVW().visCount(0);
+
+            JScrollPane jscrollPane = GuiUtils.createJscrollPane(tableCatList);
             int tabCount = tabbedPane.getTabCount();
             if (tabCount == 0) {
-                tabbedPane.addTab("表", null);
+                tabbedPane.addTab("表", jscrollPane);
+                tabbedPane.setTabComponentAt(0, GuiUtils.createTabBarComponent("表", CatIcons.table, tabbedPane, 0));
+            } else {
+                tabbedPane.setComponentAt(0, jscrollPane);
             }
-            //tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(jScrollPane), GuiUtils.createTabBarComponent(title, CatIcons.log, tabbedPane, jScrollPane));
         });
         return schemaCatList;
     }

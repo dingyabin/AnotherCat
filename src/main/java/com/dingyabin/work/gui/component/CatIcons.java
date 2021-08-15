@@ -65,6 +65,8 @@ public class CatIcons {
 
     public static final ImageIcon delete = new ImageIcon(CatIcons.class.getResource("/icons/delete.png"));
 
+    public static final ImageIcon table = new ImageIcon(CatIcons.class.getResource("/icons/table.png"));
+
 
 
 
