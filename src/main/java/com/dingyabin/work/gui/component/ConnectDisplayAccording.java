@@ -20,6 +20,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Set;
 
@@ -60,14 +62,19 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     @Override
     public AccordionPane addPane(Icon icon, String title, Component content) {
         AccordionPane accordionPane = super.addPane(icon, title, content);
+        //监听,展开的时候做一些操作
         accordionPane.addAccordionPaneListener(this);
+        //设置字体
         JComponent header = accordionPane.getHeader();
         FontMethodsImpl.setFontSize(header.getComponent(0), 13);
         FontMethodsImpl.setFontName(header.getComponent(0), "微软雅黑");
-        header.setComponentPopupMenu(jPopupMenu);
+        //添加右键菜单
+        addPopupMenu(accordionPane, header);
+        //默认收起
         collapsePane(accordionPane.getId());
         return accordionPane;
     }
+
 
 
 
@@ -95,7 +102,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         ConnectConfig connectConfig = (ConnectConfig) conMeta;
 
         ExecutorUtils.execute(()-> {
-        //查询对应的数据库
+            //查询对应的数据库
             CatRet<List<DataBaseSchema>> catRet = catAdapterService.getDbsWithConnect(connectConfig);
             if (!catRet.isSuccess()) {
                 GuiUtils.createOptionPane(jFrame, catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
@@ -121,13 +128,16 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         CatList<DataBaseSchema> schemaCatList = new CatList<>(CatIcons.db, catRet.getData()).fontSize(14).fontName("Consolas");
         //双击打开
         schemaCatList.addDoubleClickListener(mouseEvent -> {
+            //当前选中的数据库
             DataBaseSchema dataBaseSchema = schemaCatList.getSelectedValue();
+            //查询这个库下面的表
             List<TableSchema> tables = catAdapterService.getTablesWithDb(connectConfig, dataBaseSchema);
+            //组装List
             CatList<TableSchema> tableCatList = new CatList<>(CatIcons.table, tables).fontSize(14).fontName("Consolas").layoutVW().visCount(0);
-
+            //用JScrollPane包装一下
             JScrollPane jscrollPane = GuiUtils.createJscrollPane(tableCatList);
-            int tabCount = tabbedPane.getTabCount();
-            if (tabCount == 0) {
+            //总是放在第一个位置
+            if (tabbedPane.getTabCount() == 0) {
                 tabbedPane.addTab("表", jscrollPane);
                 tabbedPane.setTabComponentAt(0, GuiUtils.createTabBarComponent("表", CatIcons.table, tabbedPane, 0));
             } else {
@@ -192,6 +202,29 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         jPopupMenu.add(edit);
         jPopupMenu.addSeparator();
         jPopupMenu.add(delete);
+    }
+
+
+
+    /**
+     * 添加右键菜单
+     * @param accordionPane accordionPane
+     * @param component 需要添加菜单的组件
+     */
+    private void addPopupMenu(AccordionPane accordionPane, JComponent component) {
+        //右键菜单
+        component.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    Object connectMeta = accordionPane.getClientProperty(Const.ACCORDING_META);
+                    see.putClientProperty(Const.ACCORDING_META, connectMeta);
+                    edit.putClientProperty(Const.ACCORDING_META, connectMeta);
+                    delete.putClientProperty(Const.ACCORDING_META, connectMeta);
+                    jPopupMenu.show(component, e.getX(), e.getY());
+                }
+            }
+        });
     }
 
 }
