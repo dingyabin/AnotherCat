@@ -11,6 +11,7 @@ import com.dingyabin.work.common.model.CatRet;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.DataBaseSchema;
 import com.dingyabin.work.ctrl.adapter.CatAdapterService;
+import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -57,7 +58,8 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         AccordionPane accordionPane = super.addPane(icon, title, content);
         accordionPane.addAccordionPaneListener(this);
         JComponent header = accordionPane.getHeader();
-        FontMethodsImpl.setFontSize(header.getComponent(0),14);
+        FontMethodsImpl.setFontSize(header.getComponent(0), 13);
+        FontMethodsImpl.setFontName(header.getComponent(0), "微软雅黑");
         header.setComponentPopupMenu(jPopupMenu);
         collapsePane(accordionPane.getId());
         return accordionPane;
@@ -87,14 +89,19 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         }
         Object conMeta = pane.getClientProperty(Const.ACCORDING_META);
         ConnectConfig connectConfig = (ConnectConfig) conMeta;
+
+        ExecutorUtils.execute(()-> {
         //查询对应的数据库
-        CatRet<List<DataBaseSchema>> catRet = catAdapterService.getDbsWithConnect(connectConfig);
-        if (!catRet.isSuccess()) {
-            GuiUtils.createOptionPane(jFrame, catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
-            return;
-        }
-        pane.setContent(new JList<>(catRet.getData().toArray()));
-        pane.putClientProperty(Const.ACCORDING_LOAD, Boolean.TRUE);
+            CatRet<List<DataBaseSchema>> catRet = catAdapterService.getDbsWithConnect(connectConfig);
+            if (!catRet.isSuccess()) {
+                GuiUtils.createOptionPane(jFrame, catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
+                return;
+            }
+            SwingUtilities.invokeLater(() -> {
+                pane.setContent(new JList<>(catRet.getData().toArray()));
+                pane.putClientProperty(Const.ACCORDING_LOAD, Boolean.TRUE);
+            });
+        });
     }
 
     @Override
