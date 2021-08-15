@@ -30,7 +30,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     private DataBaseTypeEnum dataBaseType;
 
 
-    private BiConsumer<Boolean, ConnectConfig> okBtnCallBack;
+    private Consumer<ConnectConfig> okBtnCallBack;
 
 
     private JLabel conNameLabel = GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14);
@@ -188,14 +188,17 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     }
 
 
-    public BiConsumer<Boolean, ConnectConfig> getOkBtnCallBack() {
+    public Consumer<ConnectConfig> getOkBtnCallBack() {
         return okBtnCallBack;
     }
 
 
-    public void setOkBtnCallBack(BiConsumer<Boolean, ConnectConfig> okBtnCallBack) {
+
+    public void setOkBtnCallBack(Consumer<ConnectConfig> okBtnCallBack) {
         this.okBtnCallBack = okBtnCallBack;
     }
+
+
 
     /**
      * 保存连接
@@ -216,8 +219,8 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
 
         //如果有回调的话,执行回调
-        if (okBtnCallBack != null) {
-            okBtnCallBack.accept(saveRet, new ConnectConfig(conName, dataBaseType.getType(), host, port, userName, pwd));
+        if (saveRet && this.okBtnCallBack != null) {
+            okBtnCallBack.accept(new ConnectConfig(conName, dataBaseType.getType(), host, port, userName, pwd));
         }
     }
 

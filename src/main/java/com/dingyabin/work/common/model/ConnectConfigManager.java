@@ -68,10 +68,11 @@ public class ConnectConfigManager {
     }
 
 
-
     public static boolean addConnectConfig(String name, String type, String host, String port, String userName, String pwd) {
-        connectMetas.add(new ConnectConfig(name, type, host, port, userName, pwd));
-        return saveConnectConfigs(connectMetas);
+        if (connectMetas.add(new ConnectConfig(name, type, host, port, userName, pwd))) {
+            return saveConnectConfigs(connectMetas);
+        }
+        return true;
     }
 
 

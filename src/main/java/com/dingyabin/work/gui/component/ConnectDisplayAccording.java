@@ -198,6 +198,10 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             dialog.showSelf();
         }
         if (source == edit) {
+            dialog.setOkBtnCallBack(connectMeta -> {
+
+
+            });
             dialog.showSelf();
         }
         if (source == delete) {
