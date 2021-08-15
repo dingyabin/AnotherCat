@@ -7,6 +7,7 @@ import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.ConnectConfigManager;
 import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,8 +28,20 @@ import java.util.function.Consumer;
  */
 public class CatNewConnectDialog extends JDialog implements ActionListener {
 
+    /**
+     * 新建-保存模式
+     */
+    public static final int SAVE_MODE = 0;
+
+    /**
+     * 编辑模式
+     */
+    public static final int EDIT_MODE = 1;
+
+
     private DataBaseTypeEnum dataBaseType;
 
+    private int mode;
 
     private Consumer<ConnectConfig> okBtnCallBack;
 
@@ -205,9 +218,6 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     }
 
 
-    public void setOldConnectConfig(ConnectConfig oldConnectConfig) {
-        this.oldConnectConfig = oldConnectConfig;
-    }
 
     /**
      * 保存连接
@@ -228,8 +238,8 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         ConnectConfig curConnect = new ConnectConfig(conName, dataBaseType.getType(), host, port, userName, pwd);
 
         boolean saveRet;
-        //oldConnectConfig不为空说明是进行修改操作, 否则才是新增操作
-        if (oldConnectConfig != null) {
+        //编辑模式，进行修改操作, 否则才是新增操作
+        if (mode == EDIT_MODE) {
             saveRet = oldConnectConfig.equals(curConnect) || ConnectConfigManager.updateConnectConfig(oldConnectConfig, curConnect);
         } else {
             saveRet = ConnectConfigManager.addConnectConfig(curConnect);
@@ -239,6 +249,10 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         //如果有回调的话,执行回调
         if (saveRet && this.okBtnCallBack != null) {
             okBtnCallBack.accept(curConnect);
+        }
+        //如果是编辑模式的话，就关闭
+        if (mode == EDIT_MODE) {
+            dispose();
         }
     }
 
@@ -252,13 +266,14 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     }
 
 
-
-    public void setConnectMetaFields(ConnectConfig config) {
-        conNameField.setText(config.getName());
-        hostField.setText(config.getHost());
-        portField.setText(config.getPort());
-        userNameField.setText(config.getUserName());
-        pwdField.setText(config.getPwd());
+    public void editMode(@NotNull ConnectConfig oldConfig) {
+        this.mode = EDIT_MODE;
+        conNameField.setText(oldConfig.getName());
+        hostField.setText(oldConfig.getHost());
+        portField.setText(oldConfig.getPort());
+        userNameField.setText(oldConfig.getUserName());
+        pwdField.setText(oldConfig.getPwd());
+        this.oldConnectConfig = oldConfig;
     }
 
 

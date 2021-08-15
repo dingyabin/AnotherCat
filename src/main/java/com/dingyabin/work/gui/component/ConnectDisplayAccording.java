@@ -203,7 +203,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         }
         ConnectConfig connectConfig = (ConnectConfig) conMeta;
         CatNewConnectDialog dialog = new CatNewConnectDialog(jFrame, connectConfig.typeEnum(), e.getActionCommand(), false);
-        dialog.setConnectMetaFields(connectConfig);
+        dialog.editMode(connectConfig);
         //查看操作
         if (source == see) {
             dialog.enAbleInput(false);
