@@ -3,6 +3,7 @@ package com.dingyabin.work.gui.component;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.ConnectConfigManager;
 import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
@@ -81,8 +82,6 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         setLocationRelativeTo(null);
         //默认关闭动作
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        //弹出
-        setVisible(true);
     }
 
 
@@ -200,6 +199,36 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         }
         boolean saveRet = ConnectConfigManager.addConnectConfig(conName, dataBaseType.getType(), host, port, userName, new String(password));
         GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
+    }
+
+
+    public CatNewConnectDialog showSelf(){
+        //弹出
+        setVisible(true);
+
+        return this;
+    }
+
+
+
+    public void setConnectMeta(ConnectConfig config) {
+        conNameField.setText(config.getName());
+        hostField.setText(config.getHost());
+        portField.setText(config.getPort());
+        userNameField.setText(config.getUserName());
+        pwdField.setText(config.getPwd());
+    }
+
+
+
+    public void enAbleInput( boolean enable){
+        conNameField.setEditable(enable);
+        hostField.setEditable(enable);
+        portField.setEditable(enable);
+        userNameField.setEditable(enable);
+        pwdField.setEditable(enable);
+        checkBtn.setEnabled(false);
+        okBtn.setEnabled(false);
     }
 
 

@@ -137,7 +137,7 @@ public class CatMenuBar extends JMenuBar {
         //具体数据源类型
         for (DataBaseTypeEnum typeEnum : DataBaseTypeEnum.values()) {
             JMenuItem mysqlItem = new JMenuItem(typeEnum.getType(), typeEnum.getIcon());
-            mysqlItem.addActionListener(e -> new CatNewConnectDialog(jframe, typeEnum, title,true));
+            mysqlItem.addActionListener(e -> new CatNewConnectDialog(jframe, typeEnum, title,true).showSelf());
             connectMenu.add(mysqlItem);
         }
         //未知数据源

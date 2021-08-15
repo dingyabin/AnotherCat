@@ -180,15 +180,28 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == see) {
+        Object source = e.getSource();
+        if (!(source instanceof JMenuItem)) {
+            return;
+        }
+        Object conMeta = ((JMenuItem) source).getClientProperty(Const.ACCORDING_META);
+        if (!(conMeta instanceof ConnectConfig)) {
+            return;
+        }
+        ConnectConfig connectConfig = (ConnectConfig) conMeta;
+        CatNewConnectDialog dialog = new CatNewConnectDialog(jFrame, connectConfig.typeEnum(), e.getActionCommand(), true);
+        if (source == see) {
+            dialog.setConnectMeta(connectConfig);
+            dialog.enAbleInput(false);
+        }
+        if (source == edit) {
+            dialog.setConnectMeta(connectConfig);
+        }
+        if (source == delete) {
 
         }
-        if (e.getSource() == edit) {
+        dialog.showSelf();
 
-        }
-        if (e.getSource() == delete) {
-
-        }
     }
 
 
