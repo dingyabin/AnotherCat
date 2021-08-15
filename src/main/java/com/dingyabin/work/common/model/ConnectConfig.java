@@ -45,6 +45,11 @@ public class ConnectConfig implements Serializable {
     }
 
 
+    public ConnectConfig copy() {
+        return new ConnectConfig(name, type, host, port, userName, pwd);
+    }
+
+
     public DataBaseTypeEnum typeEnum() {
         return DataBaseTypeEnum.getByType(type);
     }

@@ -244,8 +244,11 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         } else {
             saveRet = ConnectConfigManager.addConnectConfig(curConnect);
         }
-        //弹框
-        GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
+        //编辑模式不弹框
+        if (mode == SAVE_MODE) {
+            //弹框
+            GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
+        }
         //如果有回调的话,执行回调
         if (saveRet && this.okBtnCallBack != null) {
             okBtnCallBack.accept(curConnect);
