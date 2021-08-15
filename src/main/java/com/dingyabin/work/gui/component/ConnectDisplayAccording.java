@@ -171,23 +171,10 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         ConnectConfig connectConfig = ((ConnectConfig) conMeta).copy();
         CatNewConnectDialog dialog = new CatNewConnectDialog(jFrame, connectConfig.typeEnum(), e.getActionCommand(), false);
         dialog.editMode(connectConfig);
+
         //查看操作
         if (source == see) {
             dialog.enAbleInput(false);
-            dialog.showSelf();
-        }
-
-        //编辑操作
-        if (source == edit) {
-            dialog.setOkBtnCallBack(editConnectMeta -> {
-                //没有变化
-                if (editConnectMeta.equals(connectConfig)) {
-                    return;
-                }
-                AccordionPane newAccordionPane = createAccordionPane(CatIcons.dbcon, editConnectMeta.getName(), null);
-                newAccordionPane.putClientProperty(Const.ACCORDING_META, editConnectMeta);
-                replaceAccordionPane(accordionPane, newAccordionPane);
-            });
             dialog.showSelf();
         }
 
@@ -202,6 +189,21 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             }
             //关闭弹窗
             dialog.dispose();
+        }
+
+
+        //编辑操作
+        if (source == edit) {
+            dialog.setOkBtnCallBack(editConnectMeta -> {
+                //没有变化
+                if (editConnectMeta.equals(connectConfig)) {
+                    return;
+                }
+                AccordionPane newAccordionPane = createAccordionPane(CatIcons.dbcon, editConnectMeta.getName(), null);
+                newAccordionPane.putClientProperty(Const.ACCORDING_META, editConnectMeta);
+                replaceAccordionPane(accordionPane, newAccordionPane);
+            });
+            dialog.showSelf();
         }
     }
 
@@ -256,6 +258,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         addPopupMenu(accordionPane, header);
         return accordionPane;
     }
+
 
 
     public AccordionPane replaceAccordionPane(AccordionPane oldAccordionPane, AccordionPane newAccordionPane) {
