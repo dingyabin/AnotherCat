@@ -32,6 +32,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
     private Consumer<ConnectConfig> okBtnCallBack;
 
+    private ConnectConfig oldConnectConfig;
 
     private JLabel conNameLabel = GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14);
 
@@ -199,6 +200,14 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     }
 
 
+    public ConnectConfig getOldConnectConfig() {
+        return oldConnectConfig;
+    }
+
+
+    public void setOldConnectConfig(ConnectConfig oldConnectConfig) {
+        this.oldConnectConfig = oldConnectConfig;
+    }
 
     /**
      * 保存连接
@@ -215,14 +224,24 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
             return;
         }
         String pwd = new String(password);
-        boolean saveRet = ConnectConfigManager.addConnectConfig(conName, dataBaseType.getType(), host, port, userName, pwd);
-        GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
 
+        ConnectConfig curConnect = new ConnectConfig(conName, dataBaseType.getType(), host, port, userName, pwd);
+
+        boolean saveRet;
+        //oldConnectConfig不为空说明是进行修改操作, 否则才是新增操作
+        if (oldConnectConfig != null) {
+            saveRet = oldConnectConfig.equals(curConnect) || ConnectConfigManager.updateConnectConfig(oldConnectConfig, curConnect);
+        } else {
+            saveRet = ConnectConfigManager.addConnectConfig(curConnect);
+        }
+        //弹框
+        GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
         //如果有回调的话,执行回调
         if (saveRet && this.okBtnCallBack != null) {
-            okBtnCallBack.accept(new ConnectConfig(conName, dataBaseType.getType(), host, port, userName, pwd));
+            okBtnCallBack.accept(curConnect);
         }
     }
+
 
 
     public CatNewConnectDialog showSelf(){
@@ -234,7 +253,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
 
 
-    public void setConnectMeta(ConnectConfig config) {
+    public void setConnectMetaFields(ConnectConfig config) {
         conNameField.setText(config.getName());
         hostField.setText(config.getHost());
         portField.setText(config.getPort());

@@ -37,6 +37,8 @@ public class Const {
 
     public static  final String ACCORDING_LOAD = "accordionPane.connect.load";
 
+    public static  final String ACCORDING_PANE_ID = "accordionPane.connect.paneId";
+
 
 
 

@@ -186,32 +186,50 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         if (!(source instanceof JMenuItem)) {
             return;
         }
-        Object conMeta = ((JMenuItem) source).getClientProperty(Const.ACCORDING_META);
+        //AccordionPane 的id
+        Object accordionPaneId = ((JMenuItem) source).getClientProperty(Const.ACCORDING_PANE_ID);
+        if (accordionPaneId == null) {
+            return;
+        }
+        //获取AccordionPane
+        AccordionPane accordionPane = getPane(accordionPaneId.toString());
+        if (accordionPane == null) {
+            return;
+        }
+        //获取连接信息
+        Object conMeta = accordionPane.getClientProperty(Const.ACCORDING_META);
         if (!(conMeta instanceof ConnectConfig)) {
             return;
         }
         ConnectConfig connectConfig = (ConnectConfig) conMeta;
         CatNewConnectDialog dialog = new CatNewConnectDialog(jFrame, connectConfig.typeEnum(), e.getActionCommand(), false);
-        dialog.setConnectMeta(connectConfig);
+        dialog.setConnectMetaFields(connectConfig);
+        //查看操作
         if (source == see) {
             dialog.enAbleInput(false);
             dialog.showSelf();
         }
+        //编辑操作
         if (source == edit) {
-            dialog.setOkBtnCallBack(connectMeta -> {
-
-
+            dialog.setOkBtnCallBack(editConnectMeta -> {
+                //没有变化
+                if (editConnectMeta.equals(connectConfig)) {
+                    return;
+                }
+                accordionPane.putClientProperty(Const.ACCORDING_META, editConnectMeta);
+                accordionPane.putClientProperty(Const.ACCORDING_LOAD, Boolean.FALSE);
             });
             dialog.showSelf();
         }
+        //删除操作
         if (source == delete) {
             dialog.enAbleInput(false);
             dialog.showSelf();
-
             //删除连接
             boolean deleteRet = GuiUtils.createYesNoOptionPane(dialog, "确定要删除么") && removeConnectConfig(connectConfig);
-            GuiUtils.createOptionPane(dialog, deleteRet?"删除成功!":"删除失败，请稍后再试!", JOptionPane.DEFAULT_OPTION);
-
+            if (deleteRet) {
+                GuiUtils.createOptionPane(dialog, "删除成功!", JOptionPane.DEFAULT_OPTION);
+            }
             //关闭弹窗
             dialog.dispose();
         }
@@ -243,10 +261,9 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.isPopupTrigger()) {
-                    Object connectMeta = accordionPane.getClientProperty(Const.ACCORDING_META);
-                    see.putClientProperty(Const.ACCORDING_META, connectMeta);
-                    edit.putClientProperty(Const.ACCORDING_META, connectMeta);
-                    delete.putClientProperty(Const.ACCORDING_META, connectMeta);
+                    see.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
+                    edit.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
+                    delete.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
                     jPopupMenu.show(component, e.getX(), e.getY());
                 }
             }

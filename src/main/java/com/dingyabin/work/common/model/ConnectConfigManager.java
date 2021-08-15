@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -69,7 +70,12 @@ public class ConnectConfigManager {
 
 
     public static boolean addConnectConfig(String name, String type, String host, String port, String userName, String pwd) {
-        if (connectMetas.add(new ConnectConfig(name, type, host, port, userName, pwd))) {
+        return addConnectConfig(new ConnectConfig(name, type, host, port, userName, pwd));
+    }
+
+
+    public static boolean addConnectConfig(ConnectConfig connectConfig) {
+        if (connectMetas.add(connectConfig)) {
             return saveConnectConfigs(connectMetas);
         }
         return true;
@@ -80,6 +86,24 @@ public class ConnectConfigManager {
         connectMetas.remove(connectConfig);
         return saveConnectConfigs(connectMetas);
     }
+
+
+
+    public static boolean updateConnectConfig(ConnectConfig oldConnectConfig, ConnectConfig newConnectConfig){
+        Optional<ConnectConfig> first = connectMetas.stream().filter(oldConnectConfig::equals).findFirst();
+        if (first.isPresent()) {
+            ConnectConfig connectConfig = first.get();
+            connectConfig.setName(newConnectConfig.getName());
+            connectConfig.setType(newConnectConfig.getType());
+            connectConfig.setHost(newConnectConfig.getHost());
+            connectConfig.setPort(newConnectConfig.getPort());
+            connectConfig.setUserName(newConnectConfig.getUserName());
+            connectConfig.setPwd(newConnectConfig.getPwd());
+            return saveConnectConfigs(connectMetas);
+        }
+        return true;
+    }
+
 
 
 
