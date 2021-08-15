@@ -98,7 +98,13 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
                 return;
             }
             SwingUtilities.invokeLater(() -> {
-                pane.setContent(new JList<>(catRet.getData().toArray()));
+                JList<Object> objectJList = new JList<>(catRet.getData().toArray());
+                FontMethodsImpl.setFontSize(objectJList, 14);
+                FontMethodsImpl.setFontName(objectJList,  "Consolas");
+
+                objectJList.setCellRenderer(new CatListCellRenderer(CatIcons.db));
+                pane.setContent(objectJList);
+                //标记已经加载过了
                 pane.putClientProperty(Const.ACCORDING_LOAD, Boolean.TRUE);
             });
         });
