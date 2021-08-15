@@ -11,5 +11,11 @@ public class CatColors {
 
     public static final Color CONNECT_WINDOW_BORDER = new Color(32, 178, 170);
 
+    public static final Color CONNECT_OK = new Color(0, 128, 128);
+
+    public static final Color CONNECT_ERR = Color.RED;
+
+
+
 
 }

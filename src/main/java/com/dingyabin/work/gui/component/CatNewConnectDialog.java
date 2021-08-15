@@ -177,6 +177,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         //测试是否可以连接成功
         CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password), ok -> {
             checkBtn.setEnabled(true);
+            progressBar.setForeground(ok ? CatColors.CONNECT_OK : CatColors.CONNECT_ERR);
             progressBar.setString(ok ? "连接成功" : "连接失败...");
             GuiUtils.createOptionPane(inputPanel, ok ? "恭喜，连接成功" : "连接失败...", JOptionPane.DEFAULT_OPTION);
         });
