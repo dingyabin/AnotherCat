@@ -10,6 +10,7 @@ import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.model.CatRet;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.DataBaseSchema;
+import com.dingyabin.work.common.model.TableSchema;
 import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
@@ -19,6 +20,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Set;
 
@@ -97,18 +100,48 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
                 GuiUtils.createOptionPane(jFrame, catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
                 return;
             }
+            if (CollectionUtils.isEmpty(catRet.getData())) {
+                GuiUtils.createOptionPane(jFrame, "该连接下暂无数据库!", JOptionPane.DEFAULT_OPTION);
+                return;
+            }
+            JList<DataBaseSchema> objectJList = getDataBaseList(catRet, connectConfig);
             SwingUtilities.invokeLater(() -> {
-                JList<Object> objectJList = new JList<>(catRet.getData().toArray());
-                FontMethodsImpl.setFontSize(objectJList, 14);
-                FontMethodsImpl.setFontName(objectJList,  "Consolas");
-
-                objectJList.setCellRenderer(new CatListCellRenderer(CatIcons.db));
-                pane.setContent(objectJList);
+                pane.setContent(GuiUtils.createJscrollPane(objectJList));
                 //标记已经加载过了
                 pane.putClientProperty(Const.ACCORDING_LOAD, Boolean.TRUE);
             });
         });
     }
+
+
+
+    private JList<DataBaseSchema> getDataBaseList(CatRet<List<DataBaseSchema>> catRet, ConnectConfig connectConfig) {
+        DefaultListModel<DataBaseSchema> listModel = new DefaultListModel<>();
+        catRet.getData().forEach(listModel::addElement);
+
+        JList<DataBaseSchema> dataBaseSchemaJList = new JList<>();
+        dataBaseSchemaJList.setModel(listModel);
+        //设置字体
+        FontMethodsImpl.setFontSize(dataBaseSchemaJList, 14);
+        FontMethodsImpl.setFontName(dataBaseSchemaJList, "Consolas");
+        //设置渲染器
+        dataBaseSchemaJList.setCellRenderer(new CatListCellRenderer(CatIcons.db));
+        //双击打开
+        dataBaseSchemaJList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    DataBaseSchema dataBaseSchema = dataBaseSchemaJList.getSelectedValue();
+                    List<TableSchema> tables = catAdapterService.getTablesWithDb(connectConfig, dataBaseSchema);
+                    System.out.println(tables);
+                }
+            }
+        });
+        return dataBaseSchemaJList;
+    }
+
+
+
 
     @Override
     public void expanded(WebAccordion accordion, AccordionPane pane) {
