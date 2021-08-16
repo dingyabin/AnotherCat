@@ -9,10 +9,7 @@ import com.alee.extended.accordion.WebAccordion;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
-import com.dingyabin.work.common.model.CatRet;
-import com.dingyabin.work.common.model.ConnectConfig;
-import com.dingyabin.work.common.model.DataBaseSchema;
-import com.dingyabin.work.common.model.TableSchema;
+import com.dingyabin.work.common.model.*;
 import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
@@ -140,13 +137,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     }
 
 
-    public Set<ConnectConfig> getConnectConfigs() {
-        return connectConfigs;
-    }
-
-
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -195,13 +185,20 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
         //编辑操作
         if (source == edit) {
-            dialog.setOkBtnCallBack(editConnectMeta -> {
-                //没有变化
-                if (editConnectMeta.equals(connectConfig)) {
+            dialog.addSaveConnectListener(saveConnectEvent -> {
+                CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
+                //保存-新建模式下，不处理
+                if (catNewConModel.isSaveMode()) {
                     return;
                 }
-                AccordionPane newAccordionPane = createAccordionPane(CatIcons.dbcon, editConnectMeta.getName(), null);
-                newAccordionPane.putClientProperty(Const.ACCORDING_META, editConnectMeta);
+                //只处理编辑模式
+                ConnectConfig savedConfig = saveConnectEvent.getSavedConnectConfig();
+                //如果没有变化，不处理
+                if (savedConfig.equals(catNewConModel.getOldConnectConfig())) {
+                    return;
+                }
+                AccordionPane newAccordionPane = createAccordionPane(CatIcons.dbcon, savedConfig.getName(), null);
+                newAccordionPane.putClientProperty(Const.ACCORDING_META, savedConfig);
                 replaceAccordionPane(accordionPane, newAccordionPane);
             });
             dialog.showSelf();

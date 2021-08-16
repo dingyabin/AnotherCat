@@ -3,9 +3,11 @@ package com.dingyabin.work.gui.component;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.listeners.SaveConnectListener;
 import com.dingyabin.work.common.model.CatNewConModel;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.ConnectConfigManager;
+import com.dingyabin.work.common.model.SaveConnectEvent;
 import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import com.sun.istack.internal.NotNull;
@@ -18,6 +20,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -32,7 +36,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
     private DataBaseTypeEnum dataBaseType;
 
-    private Consumer<ConnectConfig> okBtnCallBack;
+    private List<SaveConnectListener> saveConnectListeners;
 
     private JLabel conNameLabel = GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14);
 
@@ -192,11 +196,16 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     }
 
 
-
-    public void setOkBtnCallBack(Consumer<ConnectConfig> okBtnCallBack) {
-        this.okBtnCallBack = okBtnCallBack;
+    /**
+     * 添加监听
+     * @param saveConnectListener 监听器
+     */
+    public void addSaveConnectListener(SaveConnectListener saveConnectListener) {
+        if (this.saveConnectListeners == null) {
+            this.saveConnectListeners = new ArrayList<>();
+        }
+        this.saveConnectListeners.add(saveConnectListener);
     }
-
 
 
     /**
@@ -231,8 +240,8 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
             GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
         }
         //如果有回调的话,执行回调
-        if (saveRet && this.okBtnCallBack != null) {
-            okBtnCallBack.accept(curConnect);
+        if (this.saveConnectListeners != null) {
+            saveConnectListeners.forEach(listener -> listener.onSaveFinish(new SaveConnectEvent(catNewConModel, curConnect)));
         }
         //如果是编辑模式的话，就关闭
         if (catNewConModel.isEditMode()) {
@@ -242,11 +251,9 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
 
 
-    public CatNewConnectDialog showSelf(){
+    public void showSelf(){
         //弹出
         setVisible(true);
-
-        return this;
     }
 
 
