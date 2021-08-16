@@ -78,38 +78,25 @@ public class GuiUtils {
      * @return tab面板
      */
     public static Component createTabBarComponent(String title, Icon icon, JTabbedPane tabbedPane, Component content) {
-        int indexOfComponent = tabbedPane.indexOfComponent(content);
-        return createTabBarComponent(title, icon, tabbedPane, indexOfComponent);
-    }
-
-
-
-    /**
-     * @param title 标题
-     * @param icon 图标
-     * @param index index
-     * @return tab面板
-     */
-    public static Component createTabBarComponent(String title, Icon icon, JTabbedPane tabbedPane, int index) {
         Box tabHorizontalBox = Box.createHorizontalBox();
         //关闭 按钮
         JButton closeBtn = new JButton(CatIcons.cross);
-        closeBtn.addActionListener(e -> tabbedPane.removeTabAt(index));
+        closeBtn.addActionListener(e -> tabbedPane.removeTabAt(tabbedPane.indexOfComponent(content)));
         closeBtn.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.buttonIconHover);
         closeBtn.setPreferredSize(new Dimension(20, 20));
         //添加标签
         tabHorizontalBox.add(new JLabel(title, icon, SwingConstants.CENTER));
         //添加关闭按钮
         tabHorizontalBox.add(closeBtn);
-        //创建右键菜单
-        JPopupMenu jPopupMenu = new JPopupMenu();
-        JMenuItem closeAll = new JMenuItem("关闭所有", Icons.crossHover);
-        //监听，关闭所有
-        closeAll.addActionListener(e -> tabbedPane.removeAll());
-        //添加 关闭所有按钮
-        jPopupMenu.add(closeAll);
-        //添加右键菜单
-        tabHorizontalBox.setComponentPopupMenu(jPopupMenu);
+//        //创建右键菜单
+//        JPopupMenu jPopupMenu = new JPopupMenu();
+//        JMenuItem closeAll = new JMenuItem("关闭所有", Icons.crossHover);
+//        //监听，关闭所有
+//        closeAll.addActionListener(e -> tabbedPane.removeAll());
+//        //添加 关闭所有按钮
+//        jPopupMenu.add(closeAll);
+//        //添加右键菜单
+//        tabHorizontalBox.setComponentPopupMenu(jPopupMenu);
         return tabHorizontalBox;
     }
 
