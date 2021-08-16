@@ -3,6 +3,7 @@ package com.dingyabin.work.gui.component;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.model.CatNewConModel;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.ConnectConfigManager;
 import com.dingyabin.work.common.utils.CatUtils;
@@ -27,24 +28,11 @@ import java.util.function.Consumer;
  */
 public class CatNewConnectDialog extends JDialog implements ActionListener {
 
-    /**
-     * 新建-保存模式
-     */
-    public static final int SAVE_MODE = 0;
-
-    /**
-     * 编辑模式
-     */
-    public static final int EDIT_MODE = 1;
-
+    private CatNewConModel catNewConModel;
 
     private DataBaseTypeEnum dataBaseType;
 
-    private int mode;
-
     private Consumer<ConnectConfig> okBtnCallBack;
-
-    private ConnectConfig oldConnectConfig;
 
     private JLabel conNameLabel = GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14);
 
@@ -89,6 +77,9 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
 
     private void init() {
+        //默认新建保存模式
+        this.catNewConModel = CatNewConModel.saveMode();
+        //拼装组件
         generateComponent();
         //始终在最上面
         setAlwaysOnTop(true);
@@ -201,19 +192,9 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     }
 
 
-    public Consumer<ConnectConfig> getOkBtnCallBack() {
-        return okBtnCallBack;
-    }
-
-
 
     public void setOkBtnCallBack(Consumer<ConnectConfig> okBtnCallBack) {
         this.okBtnCallBack = okBtnCallBack;
-    }
-
-
-    public ConnectConfig getOldConnectConfig() {
-        return oldConnectConfig;
     }
 
 
@@ -238,13 +219,14 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
         boolean saveRet;
         //编辑模式，进行修改操作, 否则才是新增操作
-        if (mode == EDIT_MODE) {
-            saveRet = oldConnectConfig.equals(curConnect) || ConnectConfigManager.updateConnectConfig(oldConnectConfig, curConnect);
+        if (catNewConModel.isEditMode()) {
+            ConnectConfig oldConFig = catNewConModel.getOldConnectConfig();
+            saveRet = oldConFig.equals(curConnect) || ConnectConfigManager.updateConnectConfig(oldConFig, curConnect);
         } else {
             saveRet = ConnectConfigManager.addConnectConfig(curConnect);
         }
         //编辑模式不弹框
-        if (mode == SAVE_MODE) {
+        if (catNewConModel.isSaveMode()) {
             //弹框
             GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
         }
@@ -253,7 +235,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
             okBtnCallBack.accept(curConnect);
         }
         //如果是编辑模式的话，就关闭
-        if (mode == EDIT_MODE) {
+        if (catNewConModel.isEditMode()) {
             dispose();
         }
     }
@@ -268,18 +250,19 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     }
 
 
+
     /**
      * 开启编辑模式
+     *
      * @param oldConfig 编辑之前，老的ConnectConfig
      */
     public void editMode(@NotNull ConnectConfig oldConfig) {
-        this.mode = EDIT_MODE;
+        this.catNewConModel = CatNewConModel.editMode(oldConfig);
         conNameField.setText(oldConfig.getName());
         hostField.setText(oldConfig.getHost());
         portField.setText(oldConfig.getPort());
         userNameField.setText(oldConfig.getUserName());
         pwdField.setText(oldConfig.getPwd());
-        this.oldConnectConfig = oldConfig;
     }
 
 

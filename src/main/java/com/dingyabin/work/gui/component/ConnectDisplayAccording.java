@@ -170,6 +170,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         }
         ConnectConfig connectConfig = ((ConnectConfig) conMeta).copy();
         CatNewConnectDialog dialog = new CatNewConnectDialog(jFrame, connectConfig.typeEnum(), e.getActionCommand(), false);
+        //设置编辑模式
         dialog.editMode(connectConfig);
 
         //查看操作
