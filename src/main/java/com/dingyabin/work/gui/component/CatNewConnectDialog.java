@@ -200,11 +200,15 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
      * 添加监听
      * @param saveConnectListener 监听器
      */
-    public void addSaveConnectListener(SaveConnectListener saveConnectListener) {
+    public CatNewConnectDialog addSaveConnectListener(SaveConnectListener saveConnectListener) {
+        if (saveConnectListener == null) {
+            return this;
+        }
         if (this.saveConnectListeners == null) {
             this.saveConnectListeners = new ArrayList<>();
         }
         this.saveConnectListeners.add(saveConnectListener);
+        return this;
     }
 
 

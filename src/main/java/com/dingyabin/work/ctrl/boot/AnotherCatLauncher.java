@@ -41,14 +41,15 @@ public class AnotherCatLauncher {
     private final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 
     /**
+     * 左侧的连接展示页
+     */
+    private ConnectDisplayAccording connectDisplay = new ConnectDisplayAccording(jf, tabbedPane);
+
+    /**
      * 菜单栏
      */
     private final CatMenuBar catMenuBar = new CatMenuBar(tabbedPane, jf);
 
-    /**
-     * 左侧的tree页
-     */
-    private ConnectDisplayAccording connectDisplay = new ConnectDisplayAccording(jf, tabbedPane);
 
 
     /**

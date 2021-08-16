@@ -9,6 +9,7 @@ import com.alee.extended.accordion.WebAccordion;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
+import com.dingyabin.work.common.listeners.SaveConnectListener;
 import com.dingyabin.work.common.model.*;
 import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import com.dingyabin.work.ctrl.config.ExecutorUtils;
@@ -31,10 +32,7 @@ import static com.dingyabin.work.common.model.ConnectConfigManager.removeConnect
  * Date: 2021/8/15.
  * Time:13:00
  */
-public class ConnectDisplayAccording extends WebAccordion implements AccordionPaneListener, ActionListener {
-
-
-    private Set<ConnectConfig> connectConfigs;
+public class ConnectDisplayAccording extends WebAccordion implements AccordionPaneListener, ActionListener, SaveConnectListener {
 
     private JFrame jFrame;
 
@@ -52,7 +50,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
 
 
-    public ConnectDisplayAccording(JFrame jFrame,JTabbedPane tabbedPane) {
+    public ConnectDisplayAccording(JFrame jFrame, JTabbedPane tabbedPane) {
         super(StyleId.accordion, BoxOrientation.top, 0, 1);
         this.jFrame = jFrame;
         this.tabbedPane = tabbedPane;
@@ -72,7 +70,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
 
     public void setConnectConfigs(Set<ConnectConfig> connectConfigs) {
-        this.connectConfigs = connectConfigs;
         if (CollectionUtils.isEmpty(connectConfigs)) {
             return;
         }
@@ -130,6 +127,22 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     public void collapsed(WebAccordion accordion, AccordionPane pane) {
 
     }
+
+
+
+    @Override
+    public void onSaveFinish(SaveConnectEvent saveConnectEvent) {
+        CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
+        if (catNewConModel.isEditMode()) {
+            return;
+        }
+        ConnectConfig connect = saveConnectEvent.getSavedConnectConfig();
+        AccordionPane accordionPane = addPane(CatIcons.dbcon, connect.getName(), null);
+        accordionPane.putClientProperty(Const.ACCORDING_META, connect);
+    }
+
+
+
 
 
     public void setCatAdapterService(CatAdapterService catAdapterService) {
@@ -289,7 +302,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             //用JScrollPane包装一下
             JScrollPane jscrollPane = GuiUtils.createJscrollPane(tableCatList);
 
-            tabbedPane.addTab("表", jscrollPane);
+            tabbedPane.addTab("表", CatIcons.table, jscrollPane);
             int index = tabbedPane.indexOfComponent(jscrollPane);
             tabbedPane.setTabComponentAt(index, GuiUtils.createTabBarComponent("表", CatIcons.table, tabbedPane, jscrollPane));
         });

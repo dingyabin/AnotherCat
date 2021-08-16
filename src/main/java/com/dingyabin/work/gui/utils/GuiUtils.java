@@ -88,15 +88,6 @@ public class GuiUtils {
         tabHorizontalBox.add(new JLabel(title, icon, SwingConstants.CENTER));
         //添加关闭按钮
         tabHorizontalBox.add(closeBtn);
-//        //创建右键菜单
-//        JPopupMenu jPopupMenu = new JPopupMenu();
-//        JMenuItem closeAll = new JMenuItem("关闭所有", Icons.crossHover);
-//        //监听，关闭所有
-//        closeAll.addActionListener(e -> tabbedPane.removeAll());
-//        //添加 关闭所有按钮
-//        jPopupMenu.add(closeAll);
-//        //添加右键菜单
-//        tabHorizontalBox.setComponentPopupMenu(jPopupMenu);
         return tabHorizontalBox;
     }
 
