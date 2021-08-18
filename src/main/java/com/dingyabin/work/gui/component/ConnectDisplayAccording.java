@@ -44,10 +44,11 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
     private JMenuItem delete = new JMenuItem("删除连接", CatIcons.delete);
 
+    private JMenuItem close = new JMenuItem("关闭连接", CatIcons.cross);
+
     private JPopupMenu jPopupMenu = new JPopupMenu();
 
     private CatAdapterService catAdapterService;
-
 
 
     public ConnectDisplayAccording(JFrame jFrame, JTabbedPane tabbedPane) {
@@ -65,8 +66,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         collapsePane(accordionPane.getId());
         return accordionPane;
     }
-
-
 
 
     public void setConnectConfigs(Set<ConnectConfig> connectConfigs) {
@@ -90,7 +89,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         Object conMeta = pane.getClientProperty(Const.ACCORDING_META);
         ConnectConfig connectConfig = (ConnectConfig) conMeta;
 
-        ExecutorUtils.execute(()-> {
+        ExecutorUtils.execute(() -> {
             //查询对应的数据库
             CatRet<List<DataBaseSchema>> catRet = catAdapterService.getDbsWithConnect(connectConfig);
             if (!catRet.isSuccess()) {
@@ -111,8 +110,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     }
 
 
-
-
     @Override
     public void expanded(WebAccordion accordion, AccordionPane pane) {
 
@@ -129,7 +126,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     }
 
 
-
     @Override
     public void onSaveFinish(SaveConnectEvent saveConnectEvent) {
         CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
@@ -140,9 +136,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         AccordionPane accordionPane = addPane(CatIcons.dbcon, connect.getName(), null);
         accordionPane.putClientProperty(Const.ACCORDING_META, connect);
     }
-
-
-
 
 
     public void setCatAdapterService(CatAdapterService catAdapterService) {
@@ -175,68 +168,88 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         CatNewConnectDialog dialog = new CatNewConnectDialog(jFrame, connectConfig.typeEnum(), e.getActionCommand(), false);
         //设置编辑模式
         dialog.editMode(connectConfig);
-
         //查看操作
         if (source == see) {
-            dialog.enAbleInput(false);
-            dialog.showSelf();
+            seeConnect(dialog);
+            return;
         }
-
         //删除操作
         if (source == delete) {
-            dialog.enAbleInput(false);
-            dialog.showSelf();
-            //删除连接
-            boolean deleteRet = GuiUtils.createYesNoOptionPane(dialog, "确定要删除么") && removeConnectConfig(connectConfig);
-            if (deleteRet) {
-                removePane(accordionPane);
-            }
-            //关闭弹窗
-            dialog.dispose();
+            deleteConnect(accordionPane, connectConfig, dialog);
+            return;
         }
+        //关闭操作
+        if (source == close) {
 
 
+
+        }
         //编辑操作
         if (source == edit) {
-            dialog.addSaveConnectListener(saveConnectEvent -> {
-                CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
-                //保存-新建模式下，不处理
-                if (catNewConModel.isSaveMode()) {
-                    return;
-                }
-                //只处理编辑模式
-                ConnectConfig savedConfig = saveConnectEvent.getSavedConnectConfig();
-                //如果没有变化，不处理
-                if (savedConfig.equals(catNewConModel.getOldConnectConfig())) {
-                    return;
-                }
-                AccordionPane newAccordionPane = createAccordionPane(CatIcons.dbcon, savedConfig.getName(), null);
-                newAccordionPane.putClientProperty(Const.ACCORDING_META, savedConfig);
-                replaceAccordionPane(accordionPane, newAccordionPane);
-            });
-            dialog.showSelf();
+            editConnect(accordionPane, dialog);
         }
     }
 
+
+    private void editConnect(AccordionPane accordionPane, CatNewConnectDialog dialog) {
+        dialog.addSaveConnectListener(saveConnectEvent -> {
+            CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
+            //保存-新建模式下，不处理
+            if (catNewConModel.isSaveMode()) {
+                return;
+            }
+            //只处理编辑模式
+            ConnectConfig savedConfig = saveConnectEvent.getSavedConnectConfig();
+            //如果没有变化，不处理
+            if (savedConfig.equals(catNewConModel.getOldConnectConfig())) {
+                return;
+            }
+            AccordionPane newAccordionPane = createAccordionPane(CatIcons.dbcon, savedConfig.getName(), null);
+            newAccordionPane.putClientProperty(Const.ACCORDING_META, savedConfig);
+            replaceAccordionPane(accordionPane, newAccordionPane);
+        });
+        dialog.showSelf();
+    }
+
+
+    private void deleteConnect(AccordionPane accordionPane, ConnectConfig connectConfig, CatNewConnectDialog dialog) {
+        dialog.enAbleInput(false);
+        dialog.showSelf();
+        //删除连接
+        boolean deleteRet = GuiUtils.createYesNoOptionPane(dialog, "确定要删除么") && removeConnectConfig(connectConfig);
+        if (deleteRet) {
+            removePane(accordionPane);
+        }
+        //关闭弹窗
+        dialog.dispose();
+    }
+
+
+    private void seeConnect(CatNewConnectDialog dialog) {
+        dialog.enAbleInput(false);
+        dialog.showSelf();
+    }
 
 
     private void initPopupMenu() {
         see.addActionListener(this);
         edit.addActionListener(this);
         delete.addActionListener(this);
+        close.addActionListener(this);
 
         jPopupMenu.add(see);
         jPopupMenu.add(edit);
         jPopupMenu.addSeparator();
         jPopupMenu.add(delete);
+        jPopupMenu.add(close);
     }
-
 
 
     /**
      * 添加右键菜单
+     *
      * @param accordionPane accordionPane
-     * @param component 需要添加菜单的组件
+     * @param component     需要添加菜单的组件
      */
     private void addPopupMenu(AccordionPane accordionPane, JComponent component) {
         //右键菜单
@@ -271,7 +284,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     }
 
 
-
     public AccordionPane replaceAccordionPane(AccordionPane oldAccordionPane, AccordionPane newAccordionPane) {
         int paneIndex = getPaneIndex(oldAccordionPane.getId());
         if (paneIndex < 0) {
@@ -284,8 +296,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
         return newAccordionPane;
     }
-
-
 
 
     private JList<DataBaseSchema> getDataBaseList(CatRet<List<DataBaseSchema>> catRet, ConnectConfig connectConfig) {
