@@ -1,5 +1,6 @@
 package com.dingyabin.work.gui.component;
 
+import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.sun.istack.internal.Nullable;
 
@@ -27,6 +28,7 @@ public class CatList<T> extends JList<T> {
 
 
     public CatList(List<T> listData) {
+        putClientProperty(StyleId.STYLE_PROPERTY, StyleId.list);
         DefaultListModel<T> listModel = new DefaultListModel<>();
         listData.forEach(listModel::addElement);
         setModel(listModel);
@@ -51,21 +53,32 @@ public class CatList<T> extends JList<T> {
     }
 
 
-    public CatList<T> layoutVW(){
+    public CatList<T> layoutVW() {
         super.setLayoutOrientation(JList.VERTICAL_WRAP);
         return this;
     }
 
 
-    public CatList<T> visCount(int count){
+    public CatList<T> visCount(int count) {
         setVisibleRowCount(count);
         return this;
     }
 
 
-    public CatList<T> layoutOri(int layoutOrientation){
+    public CatList<T> layoutOri(int layoutOrientation) {
         super.setLayoutOrientation(layoutOrientation);
         return this;
+    }
+
+
+    public void clear() {
+        ListModel<T> model = getModel();
+        if (model instanceof DefaultListModel) {
+            DefaultListModel<T> listModel = (DefaultListModel<T>) model;
+            listModel.clear();
+        } else {
+            setModel(new DefaultListModel<>());
+        }
     }
 
 
@@ -79,9 +92,6 @@ public class CatList<T> extends JList<T> {
             }
         });
     }
-
-
-
 
 
 }
