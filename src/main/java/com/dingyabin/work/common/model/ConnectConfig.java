@@ -55,6 +55,11 @@ public class ConnectConfig implements Serializable {
     }
 
 
+    public boolean onlyNameDifferent(ConnectConfig that){
+        return Objects.equals(type, that.type) && Objects.equals(host, that.host) && Objects.equals(port, that.port) && Objects.equals(userName, that.userName) && Objects.equals(pwd, that.pwd);
+    }
+
+
     public DataSourceKey defaultDataSourceKey() {
         SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(typeEnum());
         return new DataSourceKey(host, port, schemaMeta.getDefaultDbName());

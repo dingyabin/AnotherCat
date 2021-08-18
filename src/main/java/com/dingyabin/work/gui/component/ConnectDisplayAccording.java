@@ -6,6 +6,7 @@ import com.alee.api.data.BoxOrientation;
 import com.alee.extended.accordion.AccordionPane;
 import com.alee.extended.accordion.AccordionPaneListener;
 import com.alee.extended.accordion.WebAccordion;
+import com.alee.extended.collapsible.AbstractTitleLabel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
@@ -226,6 +227,10 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             if (savedConfig.equals(catNewConModel.getOldConnectConfig())) {
                 return;
             }
+            //如果只是名字变了,则只用修改名字就行了
+            if (savedConfig.onlyNameDifferent(catNewConModel.getOldConnectConfig()) && updatePaneText(accordionPane, savedConfig.getName())) {
+                return;
+            }
             AccordionPane newAccordionPane = createAccordionPane(CatIcons.dbcon, savedConfig.getName(), null);
             newAccordionPane.putClientProperty(Const.ACCORDING_META, savedConfig);
             replaceAccordionPane(accordionPane, newAccordionPane);
@@ -349,6 +354,24 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             tabbedPane.setTabComponentAt(index, GuiUtils.createTabBarComponent("表", CatIcons.table, tabbedPane, jscrollPane));
         });
         return schemaCatList;
+    }
+
+
+    /**
+     * 修改AccordionPane的标题
+     * @param accordionPane accordionPane
+     * @param text 要修改的标题
+     * @return 是否成功
+     */
+    private boolean updatePaneText(AccordionPane accordionPane, String text){
+        JComponent header = accordionPane.getHeader();
+        Component component = header.getComponent(0);
+        if (component instanceof AbstractTitleLabel) {
+            AbstractTitleLabel titleLabel = (AbstractTitleLabel) component;
+            titleLabel.setText(text);
+            return true;
+        }
+        return false;
     }
 
 }
