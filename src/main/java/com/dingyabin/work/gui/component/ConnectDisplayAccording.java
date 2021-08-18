@@ -287,10 +287,11 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.isPopupTrigger()) {
-                    see.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
-                    edit.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
-                    delete.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
-                    close.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
+                    String accordionPaneId = accordionPane.getId();
+                    see.putClientProperty(Const.ACCORDING_PANE_ID, accordionPaneId);
+                    edit.putClientProperty(Const.ACCORDING_PANE_ID, accordionPaneId);
+                    delete.putClientProperty(Const.ACCORDING_PANE_ID, accordionPaneId);
+                    close.putClientProperty(Const.ACCORDING_PANE_ID, accordionPaneId);
                     jPopupMenu.show(header, e.getX(), e.getY());
                 }
             }
