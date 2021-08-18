@@ -180,9 +180,8 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         }
         //关闭操作
         if (source == close) {
-
-
-
+            closeConnect(accordionPane, connectConfig);
+            return;
         }
         //编辑操作
         if (source == edit) {
@@ -191,6 +190,24 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     }
 
 
+    /**
+     * 关闭连接
+     * @param accordionPane accordionPane
+     * @param connectConfig 连接配置
+     */
+    private void closeConnect(AccordionPane accordionPane, ConnectConfig connectConfig) {
+        accordionPane.setContent(null);
+        accordionPane.putClientProperty(Const.ACCORDING_LOAD, Boolean.FALSE);
+        //默认收起
+        collapsePane(accordionPane.getId());
+        catAdapterService.closeConnect(connectConfig);
+    }
+
+    /**
+     * 编辑连接
+     * @param accordionPane accordionPane
+     * @param dialog 对话框
+     */
     private void editConnect(AccordionPane accordionPane, CatNewConnectDialog dialog) {
         dialog.addSaveConnectListener(saveConnectEvent -> {
             CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
@@ -211,7 +228,12 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         dialog.showSelf();
     }
 
-
+    /**
+     * 删除连接
+     * @param accordionPane accordionPane
+     * @param connectConfig 连接配置
+     * @param dialog 对话框
+     */
     private void deleteConnect(AccordionPane accordionPane, ConnectConfig connectConfig, CatNewConnectDialog dialog) {
         dialog.enAbleInput(false);
         dialog.showSelf();
@@ -224,7 +246,10 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         dialog.dispose();
     }
 
-
+    /**
+     * 查看连接
+     * @param dialog 对话框
+     */
     private void seeConnect(CatNewConnectDialog dialog) {
         dialog.enAbleInput(false);
         dialog.showSelf();
@@ -249,18 +274,19 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
      * 添加右键菜单
      *
      * @param accordionPane accordionPane
-     * @param component     需要添加菜单的组件
      */
-    private void addPopupMenu(AccordionPane accordionPane, JComponent component) {
+    private void addPopupMenu(AccordionPane accordionPane) {
+        JComponent header = accordionPane.getHeader();
         //右键菜单
-        component.addMouseListener(new MouseAdapter() {
+        header.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.isPopupTrigger()) {
                     see.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
                     edit.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
                     delete.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
-                    jPopupMenu.show(component, e.getX(), e.getY());
+                    close.putClientProperty(Const.ACCORDING_PANE_ID, accordionPane.getId());
+                    jPopupMenu.show(header, e.getX(), e.getY());
                 }
             }
         });
@@ -279,7 +305,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         FontMethodsImpl.setFontSize(header.getComponent(0), 13);
         FontMethodsImpl.setFontName(header.getComponent(0), "微软雅黑");
         //添加右键菜单
-        addPopupMenu(accordionPane, header);
+        addPopupMenu(accordionPane);
         return accordionPane;
     }
 

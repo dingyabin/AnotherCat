@@ -32,6 +32,12 @@ public class CatAdapterService {
     private TableContentDataService tableContentDataService;
 
 
+
+    public void closeConnect(ConnectConfig connectConfig){
+        dynamicDataSource.closeAndRemoveDatasource(connectConfig);
+    }
+
+
     public CatRet<List<DataBaseSchema>> getDbsWithConnect(ConnectConfig connectConfig) {
         try {
             DataSourceKey dataSourceKey = connectConfig.defaultDataSourceKey();

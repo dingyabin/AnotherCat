@@ -11,6 +11,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -106,6 +107,38 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         //注册数据源连接池，连接默认的库
         addDataSource(dataSourceKey, dataSource);
         return dataSourceKey;
+    }
+
+
+
+    /**
+     * 关闭 并删除连接
+     * @param connectConfig 连接配置
+     */
+    public void closeAndRemoveDatasource(ConnectConfig connectConfig) {
+        Iterator<Map.Entry<Object, Object>> iterator = dynamicDataSources.entrySet().iterator();
+        boolean remove = false;
+        while (iterator.hasNext()) {
+            Map.Entry<Object, Object> entry = iterator.next();
+            Object key = entry.getKey();
+            if (!(key instanceof DataSourceKey)) {
+                continue;
+            }
+            DataSourceKey sourceKey = (DataSourceKey) key;
+            if (sourceKey.getHost().equals(connectConfig.getHost()) && sourceKey.getPort().equals(connectConfig.getPort())) {
+                Object value = entry.getValue();
+                if (!(value instanceof DruidDataSource)) {
+                    continue;
+                }
+                DruidDataSource druid = (DruidDataSource) value;
+                druid.close();
+                iterator.remove();
+                remove = true;
+            }
+        }
+        if (remove) {
+            afterPropertiesSet();
+        }
     }
 
 
