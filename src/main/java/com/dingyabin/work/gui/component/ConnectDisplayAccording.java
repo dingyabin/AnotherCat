@@ -197,6 +197,11 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
      */
     private void closeConnect(AccordionPane accordionPane, ConnectConfig connectConfig) {
         accordionPane.setContent(null);
+        Object loaded = accordionPane.getClientProperty(Const.ACCORDING_LOAD);
+        //本来就没有连接
+        if (loaded == null || Boolean.FALSE.equals(loaded)) {
+            return;
+        }
         accordionPane.putClientProperty(Const.ACCORDING_LOAD, Boolean.FALSE);
         //默认收起
         collapsePane(accordionPane.getId());
