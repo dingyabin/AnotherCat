@@ -37,7 +37,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
     private JFrame jFrame;
 
-    private JTabbedPane tabbedPane;
+    private CatTabPane tabbedPane;
 
     private JLabel boomLabel = new JLabel(CatIcons.boom);
 
@@ -54,7 +54,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     private CatAdapterService catAdapterService;
 
 
-    public ConnectDisplayAccording(JFrame jFrame, JTabbedPane tabbedPane) {
+    public ConnectDisplayAccording(JFrame jFrame, CatTabPane tabbedPane) {
         super(StyleId.accordion, BoxOrientation.top, 0, 1);
         this.jFrame = jFrame;
         this.tabbedPane = tabbedPane;
@@ -359,9 +359,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             //用JScrollPane包装一下
             JScrollPane jscrollPane = GuiUtils.createJscrollPane(tableCatList);
 
-            tabbedPane.addTab("表", CatIcons.table, jscrollPane);
-            int index = tabbedPane.indexOfComponent(jscrollPane);
-            tabbedPane.setTabComponentAt(index, GuiUtils.createTabBarComponent("表", CatIcons.table, tabbedPane, jscrollPane));
+            tabbedPane.addTabWithTabComponent("表",CatIcons.table,jscrollPane,true);
         });
         return schemaCatList;
     }

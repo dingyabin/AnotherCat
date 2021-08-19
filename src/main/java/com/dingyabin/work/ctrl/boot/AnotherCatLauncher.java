@@ -5,6 +5,7 @@ import com.dingyabin.work.common.model.ConnectConfigManager;
 import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import com.dingyabin.work.gui.component.CatIcons;
 import com.dingyabin.work.gui.component.CatMenuBar;
+import com.dingyabin.work.gui.component.CatTabPane;
 import com.dingyabin.work.gui.component.ConnectDisplayAccording;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.springframework.context.annotation.Lazy;
@@ -38,7 +39,7 @@ public class AnotherCatLauncher {
     /**
      * 右侧的tab页面
      */
-    private final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    private final CatTabPane tabbedPane = new CatTabPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 
     /**
      * 左侧的连接展示页
@@ -87,9 +88,6 @@ public class AnotherCatLauncher {
 
         //左右分割栏设置一键收起
         mainSplitPane.setOneTouchExpandable(true);
-
-        //tab页面设置界面主题
-        tabbedPane.putClientProperty (StyleId.STYLE_PROPERTY, StyleId.tabbedpane);
     }
 
 

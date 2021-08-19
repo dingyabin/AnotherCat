@@ -1,7 +1,6 @@
 package com.dingyabin.work.gui.utils;
 
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.icon.Icons;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
@@ -69,27 +68,6 @@ public class GuiUtils {
     }
 
 
-
-    /**
-     * @param title 标题
-     * @param icon 图标
-     * @param tabbedPane tabbedPane
-     * @param content 当前tab页面放置的组件
-     * @return tab面板
-     */
-    public static Component createTabBarComponent(String title, Icon icon, JTabbedPane tabbedPane, Component content) {
-        Box tabHorizontalBox = Box.createHorizontalBox();
-        //关闭 按钮
-        JButton closeBtn = new JButton(CatIcons.cross);
-        closeBtn.addActionListener(e -> tabbedPane.removeTabAt(tabbedPane.indexOfComponent(content)));
-        closeBtn.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.buttonIconHover);
-        closeBtn.setPreferredSize(new Dimension(20, 20));
-        //添加标签
-        tabHorizontalBox.add(new JLabel(title, icon, SwingConstants.CENTER));
-        //添加关闭按钮
-        tabHorizontalBox.add(closeBtn);
-        return tabHorizontalBox;
-    }
 
 
 

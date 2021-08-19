@@ -15,7 +15,7 @@ import javax.swing.*;
  */
 public class CatMenuBar extends JMenuBar {
 
-    private JTabbedPane tabbedPane;
+    private CatTabPane tabbedPane;
 
     private JFrame jframe;
 
@@ -38,7 +38,7 @@ public class CatMenuBar extends JMenuBar {
     }
 
 
-    public CatMenuBar(JTabbedPane tabbedPane, JFrame jframe) {
+    public CatMenuBar(CatTabPane tabbedPane, JFrame jframe) {
         this();
         this.tabbedPane = tabbedPane;
         this.jframe = jframe;
@@ -109,8 +109,7 @@ public class CatMenuBar extends JMenuBar {
             }
             LogTabTextArea logTabTextArea = new LogTabTextArea(10, 10).lineWrap(true).fontSize(15).noEdit().addPopupMenu();
             JScrollPane jScrollPane = GuiUtils.createJscrollPane(logTabTextArea);
-            tabbedPane.addTab(title, jScrollPane);
-            tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(jScrollPane), GuiUtils.createTabBarComponent(title, CatIcons.log, tabbedPane, jScrollPane));
+            tabbedPane.addTabWithTabComponent(title, CatIcons.log, jScrollPane,true);
             //读取日志
             logTabTextArea.showLog();
         });
