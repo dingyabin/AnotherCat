@@ -67,6 +67,10 @@ public class CatIcons {
 
     public static final ImageIcon table = new ImageIcon(CatIcons.class.getResource("/icons/table.png"));
 
+    public static final ImageIcon disconnect = new ImageIcon(CatIcons.class.getResource("/icons/disconnect.png"));
+
+    public static final ImageIcon boom = new ImageIcon(CatIcons.class.getResource("/icons/boom.png"));
+
 
 
 

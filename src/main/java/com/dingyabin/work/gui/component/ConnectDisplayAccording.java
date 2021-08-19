@@ -39,13 +39,15 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
     private JTabbedPane tabbedPane;
 
+    private JLabel boomLabel = new JLabel(CatIcons.boom);
+
     private JMenuItem see = new JMenuItem("查看连接", CatIcons.watch);
 
     private JMenuItem edit = new JMenuItem("编辑连接", CatIcons.edit);
 
     private JMenuItem delete = new JMenuItem("删除连接", CatIcons.delete);
 
-    private JMenuItem close = new JMenuItem("关闭连接", CatIcons.cross);
+    private JMenuItem close = new JMenuItem("关闭连接", CatIcons.disconnect);
 
     private JPopupMenu jPopupMenu = new JPopupMenu();
 
@@ -94,10 +96,12 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             //查询对应的数据库
             CatRet<List<DataBaseSchema>> catRet = catAdapterService.getDbsWithConnect(connectConfig);
             if (!catRet.isSuccess()) {
+                pane.setContent(boomLabel);
                 GuiUtils.createOptionPane(jFrame, catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
                 return;
             }
             if (CollectionUtils.isEmpty(catRet.getData())) {
+                pane.setContent(boomLabel);
                 GuiUtils.createOptionPane(jFrame, "该连接下暂无数据库!", JOptionPane.DEFAULT_OPTION);
                 return;
             }
@@ -201,10 +205,12 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         Object loaded = accordionPane.getClientProperty(Const.ACCORDING_LOAD);
         //本来就没有连接
         if (loaded == null || Boolean.FALSE.equals(loaded)) {
+            //收起
+            collapsePane(accordionPane.getId());
             return;
         }
         accordionPane.putClientProperty(Const.ACCORDING_LOAD, Boolean.FALSE);
-        //默认收起
+        //收起
         collapsePane(accordionPane.getId());
         catAdapterService.closeConnect(connectConfig);
     }
