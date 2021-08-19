@@ -327,17 +327,21 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     }
 
 
-    public AccordionPane replaceAccordionPane(AccordionPane oldAccordionPane, AccordionPane newAccordionPane) {
+
+    /**
+     * 替换pane
+     * @param oldAccordionPane 老的pane
+     * @param newAccordionPane 新的pane
+     */
+    public void replaceAccordionPane(AccordionPane oldAccordionPane, AccordionPane newAccordionPane) {
         int paneIndex = getPaneIndex(oldAccordionPane.getId());
         if (paneIndex < 0) {
-            return oldAccordionPane;
+            return;
         }
         //先删除老的pane
         removePane(oldAccordionPane);
         //再添加一个新的pane
         addPane(paneIndex, newAccordionPane);
-
-        return newAccordionPane;
     }
 
 
