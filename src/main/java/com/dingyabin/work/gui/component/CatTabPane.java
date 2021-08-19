@@ -64,9 +64,17 @@ public class CatTabPane extends JTabbedPane {
     }
 
 
+
     public int addTabWithFirstIndex(String title, Icon icon, boolean withCloseBtn) {
         return addTabWithFirstIndex(title, icon, null, withCloseBtn);
     }
+
+
+
+    public int addTabWithFirstIndex(String title, Icon icon) {
+        return addTabWithFirstIndex(title, icon, null, false);
+    }
+
 
 
 
