@@ -64,6 +64,11 @@ public class CatTabPane extends JTabbedPane {
     }
 
 
+    public int addTabWithFirstIndex(String title, Icon icon, boolean withCloseBtn) {
+        return addTabWithFirstIndex(title, icon, null, withCloseBtn);
+    }
+
+
 
     private void init() {
         //tab页面设置界面主题
