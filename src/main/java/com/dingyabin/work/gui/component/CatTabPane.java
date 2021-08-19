@@ -34,6 +34,7 @@ public class CatTabPane extends JTabbedPane {
         if (withCloseBtn) {
             setTabComponentAt(newTabIndex, createTabBarComponent(title, icon));
         }
+        setSelectedIndex(newTabIndex);
         return newTabIndex;
     }
 
@@ -45,6 +46,7 @@ public class CatTabPane extends JTabbedPane {
         if (withCloseBtn) {
             setTabComponentAt(newTabIndex, createTabBarComponent(title, null));
         }
+        setSelectedIndex(newTabIndex);
         return newTabIndex;
     }
 
@@ -57,6 +59,7 @@ public class CatTabPane extends JTabbedPane {
         if (withCloseBtn) {
             setTabComponentAt(firstIndex, createTabBarComponent(title, icon));
         }
+        setSelectedIndex(firstIndex);
         return firstIndex;
     }
 
