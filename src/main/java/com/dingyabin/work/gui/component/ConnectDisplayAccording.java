@@ -356,10 +356,8 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             List<TableSchema> tables = catAdapterService.getTablesWithDb(connectConfig, dataBaseSchema);
             //组装List
             CatList<TableSchema> tableCatList = new CatList<>(CatIcons.table, tables).fontSize(15).fontName("Consolas").layoutVW().visCount(0);
-            //用JScrollPane包装一下
-            JScrollPane jscrollPane = GuiUtils.createJscrollPane(tableCatList);
 
-            tabbedPane.addTabWithTabComponent("表", CatIcons.table, jscrollPane, true);
+            tabbedPane.addTabWithTabComponent("表", CatIcons.table, new CatTableListPanel(tableCatList), true);
         });
         return schemaCatList;
     }

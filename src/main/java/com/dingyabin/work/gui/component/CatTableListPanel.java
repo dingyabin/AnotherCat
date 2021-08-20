@@ -25,13 +25,14 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
     private JButton newTable = GuiUtils.createButton("新建表", CatIcons.newone, StyleId.buttonIconHover);
 
-    private JButton deleteTable = GuiUtils.createButton("删除表", CatIcons.design, StyleId.buttonIconHover);
+    private JButton deleteTable = GuiUtils.createButton("删除表", CatIcons.delete, StyleId.buttonIconHover);
 
-    private JPanel topBarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    private JPanel topBarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 
 
     public CatTableListPanel() {
         super(new BorderLayout(0, 0));
+        init();
     }
 
 
