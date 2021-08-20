@@ -3,6 +3,7 @@ package com.dingyabin.work.gui.component;
 import com.alee.managers.style.StyleId;
 import com.dingyabin.work.common.model.TableSchema;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +28,11 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
     private JButton deleteTable = GuiUtils.createButton("删除表", CatIcons.delete, StyleId.buttonIconHover);
 
-    private JPanel topBarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+    private JButton searchBtn = GuiUtils.createButton(StringUtils.EMPTY, CatIcons.search, StyleId.buttonIconHover);
+
+    private JTextField searchInput = GuiUtils.createTextField(25, StyleId.textfieldNoFocus);
+
+    private JPanel topBarPanel = new JPanel(new GridLayout(1,2));
 
 
     public CatTableListPanel() {
@@ -50,6 +55,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
 
     private void init() {
+        //左侧的按钮区
+        JPanel leftToolBarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+
         //设置监听
         openTable.addActionListener(this);
         designTable.addActionListener(this);
@@ -57,12 +65,23 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
         deleteTable.addActionListener(this);
 
         //组装按钮
-        topBarPanel.add(openTable);
-        topBarPanel.add(designTable);
-        topBarPanel.add(newTable);
-        topBarPanel.add(deleteTable);
+        leftToolBarPanel.add(openTable);
+        leftToolBarPanel.add(designTable);
+        leftToolBarPanel.add(newTable);
+        leftToolBarPanel.add(deleteTable);
 
-        //安装按钮栏
+        //安装左侧的按钮区
+        topBarPanel.add(leftToolBarPanel);
+
+        //组装右侧的搜索栏
+        JPanel rightToolBarPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        rightToolBarPanel.add(searchInput);
+        rightToolBarPanel.add(searchBtn);
+
+        //安装右侧的搜索栏
+        topBarPanel.add(rightToolBarPanel);
+
+        //安装工具栏
         add(topBarPanel,BorderLayout.NORTH);
     }
 

@@ -77,6 +77,8 @@ public class CatIcons {
 
     public static final ImageIcon open = new ImageIcon(CatIcons.class.getResource("/icons/open.png"));
 
+    public static final ImageIcon search = new ImageIcon(CatIcons.class.getResource("/icons/search.png"));
+
 
 
 

@@ -158,4 +158,31 @@ public class GuiUtils {
     }
 
 
+    /**
+     * 创建按钮
+     * @param text 文字
+     * @param icon 图标
+     * @param styleId 样式
+     * @return 按钮
+     */
+    public static JButton createButton(String text, Icon icon, StyleId styleId, int fontSize){
+        JButton jButton = new JButton(text,icon);
+        jButton.putClientProperty(StyleId.STYLE_PROPERTY, styleId);
+        FontMethodsImpl.setFontSize(jButton,fontSize);
+        return jButton;
+    }
+
+
+    /**
+     * 创建输入框
+     * @param column 宽度
+     * @param styleId 样式
+     * @return 输入框
+     */
+    public static JTextField createTextField(int column, StyleId styleId) {
+        JTextField textField = new JTextField(column);
+        textField.putClientProperty(StyleId.STYLE_PROPERTY, styleId);
+        return textField;
+    }
+
 }
