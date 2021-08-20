@@ -144,4 +144,18 @@ public class GuiUtils {
     }
 
 
+    /**
+     * 创建按钮
+     * @param text 文字
+     * @param icon 图标
+     * @param styleId 样式
+     * @return 按钮
+     */
+    public static JButton createButton(String text, Icon icon, StyleId styleId){
+        JButton jButton = new JButton(text,icon);
+        jButton.putClientProperty(StyleId.STYLE_PROPERTY, styleId);
+        return jButton;
+    }
+
+
 }

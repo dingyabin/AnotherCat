@@ -71,6 +71,12 @@ public class CatIcons {
 
     public static final ImageIcon boom = new ImageIcon(CatIcons.class.getResource("/icons/boom.png"));
 
+    public static final ImageIcon newone = new ImageIcon(CatIcons.class.getResource("/icons/new.png"));
+
+    public static final ImageIcon design = new ImageIcon(CatIcons.class.getResource("/icons/design.png"));
+
+    public static final ImageIcon open = new ImageIcon(CatIcons.class.getResource("/icons/open.png"));
+
 
 
 

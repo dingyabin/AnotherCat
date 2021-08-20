@@ -359,7 +359,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             //用JScrollPane包装一下
             JScrollPane jscrollPane = GuiUtils.createJscrollPane(tableCatList);
 
-            tabbedPane.addTabWithTabComponent("表",CatIcons.table,jscrollPane,true);
+            tabbedPane.addTabWithTabComponent("表", CatIcons.table, jscrollPane, true);
         });
         return schemaCatList;
     }
