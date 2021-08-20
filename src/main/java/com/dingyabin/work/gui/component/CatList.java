@@ -66,6 +66,18 @@ public class CatList<T> extends JList<T> {
         return this;
     }
 
+    public CatList<T> multi(){
+        setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        return this;
+    }
+
+
+    public CatList<T> single(){
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        return this;
+    }
+
+
 
     public CatList<T> layoutOri(int layoutOrientation) {
         super.setLayoutOrientation(layoutOrientation);

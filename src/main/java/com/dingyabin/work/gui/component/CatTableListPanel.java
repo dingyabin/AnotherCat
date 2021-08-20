@@ -124,16 +124,19 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
      * 查找表
      */
     private void searchTable() {
+        if (tableCatList == null) {
+            return;
+        }
+        //清空选择
+        tableCatList.clearSelection();
+        //关键字
         String text = searchInput.getText();
         if (StringUtils.isBlank(text)) {
             return;
         }
-        if (tableCatList == null) {
-            return;
-        }
         tableCatList.searchEveryElement((tableSchema, index) -> {
             if (tableSchema.getTableName().toUpperCase().contains(text.toUpperCase())) {
-                tableCatList.setSelectedIndex(index);
+                tableCatList.addSelectionInterval(index,index);
             }
         });
 
