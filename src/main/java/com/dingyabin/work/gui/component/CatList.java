@@ -3,11 +3,13 @@ package com.dingyabin.work.gui.component;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.sun.istack.internal.Nullable;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -86,6 +88,18 @@ public class CatList<T> extends JList<T> {
         clear();
         DefaultListModel<T> listModel = (DefaultListModel<T>) (getModel());
         listData.forEach(listModel::addElement);
+    }
+
+
+    public void searchEveryElement(BiConsumer<T, Integer> consumer) {
+        ListModel<T> model = getModel();
+        if (model == null) {
+            return;
+        }
+        int size = model.getSize();
+        for (int i = 0; i < size; i++) {
+            consumer.accept(model.getElementAt(i), i);
+        }
     }
 
 

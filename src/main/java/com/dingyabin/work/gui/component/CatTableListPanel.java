@@ -63,6 +63,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
         designTable.addActionListener(this);
         newTable.addActionListener(this);
         deleteTable.addActionListener(this);
+        searchBtn.addActionListener(this);
 
         //组装按钮
         leftToolBarPanel.add(openTable);
@@ -98,12 +99,32 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source == searchBtn) {
+            searchTable();
+        }
 
     }
 
 
+    /**
+     * 查找表
+     */
+    private void searchTable() {
+        String text = searchInput.getText();
+        if (StringUtils.isBlank(text)) {
+            return;
+        }
+        if (tableCatList == null) {
+            return;
+        }
+        tableCatList.searchEveryElement((tableSchema, index) -> {
+            if (tableSchema.getTableName().toUpperCase().contains(text.toUpperCase())) {
+                tableCatList.setSelectedIndex(index);
+            }
+        });
 
-
+    }
 
 
 }
