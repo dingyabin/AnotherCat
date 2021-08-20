@@ -39,6 +39,8 @@ public class Const {
 
     public static  final String ACCORDING_PANE_ID = "accordionPane.connect.paneId";
 
+    public static  final String JLIST_CURRENT_SELECTED_INDEX = "jlist.selected.index";
+
 
 
 
