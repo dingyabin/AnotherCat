@@ -82,6 +82,13 @@ public class CatList<T> extends JList<T> {
     }
 
 
+    public void clearAndResetModel(List<T> listData) {
+        clear();
+        DefaultListModel<T> listModel = (DefaultListModel<T>) (getModel());
+        listData.forEach(listModel::addElement);
+    }
+
+
     public void addDoubleClickListener(Consumer<MouseEvent> eventConsumer) {
         addMouseListener(new MouseAdapter() {
             @Override
