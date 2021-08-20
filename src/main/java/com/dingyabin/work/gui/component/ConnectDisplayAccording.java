@@ -349,7 +349,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         //数据库列表
         CatList<DataBaseSchema> schemaCatList = new CatList<>(CatIcons.db, catRet.getData()).fontSize(14).fontName("Consolas");
         //双击打开
-        schemaCatList.setDoubleClickListener(mouseEvent -> {
+        schemaCatList.addDoubleClickListener(mouseEvent -> {
             //当前选中的数据库
             DataBaseSchema dataBaseSchema = schemaCatList.getSelectedValue();
             //查询这个库下面的表

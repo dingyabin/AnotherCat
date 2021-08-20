@@ -7,7 +7,6 @@ import com.sun.istack.internal.Nullable;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -20,9 +19,6 @@ import java.util.function.Consumer;
 public class CatList<T> extends JList<T> {
 
     private CatListCellRenderer listCellRenderer = new CatListCellRenderer();
-
-
-    private CatListMouseListener catListMouseListener = new CatListMouseListener();
 
 
     public CatList(@Nullable Icon itemIcon, List<T> listData) {
@@ -99,11 +95,13 @@ public class CatList<T> extends JList<T> {
     }
 
 
+
     public void clearAndResetModel(List<T> listData) {
         clear();
         DefaultListModel<T> listModel = (DefaultListModel<T>) (getModel());
         listData.forEach(listModel::addElement);
     }
+
 
 
     public void searchEveryElement(BiConsumer<T, Integer> consumer) {
@@ -118,52 +116,24 @@ public class CatList<T> extends JList<T> {
     }
 
 
-    public void setPopMenuToList(JPopupMenu jPopupMenu) {
-        catListMouseListener.setPopupClickEventConsumer(mouseEvent -> {
 
-            jPopupMenu.show(CatList.this, mouseEvent.getX(), mouseEvent.getY());
+    public void addDoubleClickListener(Consumer<MouseEvent> eventConsumer) {
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    eventConsumer.accept(e);
+                }
+            }
         });
-        addMouseListener(catListMouseListener);
     }
 
 
 
-    public void setDoubleClickListener(Consumer<MouseEvent> eventConsumer) {
-        catListMouseListener.setDoubleClickEventConsumer(eventConsumer);
-        addMouseListener(catListMouseListener);
+    public void setPopMenuToList(JPopupMenu jPopupMenu) {
+
     }
 
-
-
-    private static class CatListMouseListener extends MouseAdapter {
-
-        private Consumer<MouseEvent> doubleClickEventConsumer;
-
-        private Consumer<MouseEvent> popupClickEventConsumer;
-
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            if (e.isPopupTrigger() && popupClickEventConsumer != null) {
-                popupClickEventConsumer.accept(e);
-            }
-        }
-
-        public void setDoubleClickEventConsumer(Consumer<MouseEvent> doubleClickEventConsumer) {
-            this.doubleClickEventConsumer = doubleClickEventConsumer;
-        }
-
-        public void setPopupClickEventConsumer(Consumer<MouseEvent> popupClickEventConsumer) {
-            this.popupClickEventConsumer = popupClickEventConsumer;
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount() == 2 && doubleClickEventConsumer != null) {
-                doubleClickEventConsumer.accept(e);
-            }
-        }
-    }
 
 
 }
