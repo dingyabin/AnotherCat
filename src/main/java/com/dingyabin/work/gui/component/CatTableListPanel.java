@@ -7,8 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 
 /**
@@ -33,6 +32,15 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
     private JTextField searchInput = GuiUtils.createTextField(25, StyleId.textfieldNoFocus);
 
     private JPanel topBarPanel = new JPanel(new GridLayout(1,2));
+
+    private KeyListener searchTriggerListener = new KeyAdapter(){
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                searchTable();
+            }
+        }
+    };
 
 
     public CatTableListPanel() {
@@ -76,7 +84,11 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
         //组装右侧的搜索栏
         JPanel rightToolBarPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        //按键监听器
+        searchInput.addKeyListener(searchTriggerListener);
+        //组装输入框
         rightToolBarPanel.add(searchInput);
+        //组装搜索按钮
         rightToolBarPanel.add(searchBtn);
 
         //安装右侧的搜索栏
@@ -105,6 +117,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
         }
 
     }
+
 
 
     /**
