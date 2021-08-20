@@ -57,9 +57,11 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
     public CatTableListPanel setTableCatList(CatList<TableSchema> tableSchemaList) {
         tableCatList = tableSchemaList;
+        tableSchemaList.setPopMenuToList(null);
         add(GuiUtils.createJscrollPane(tableCatList), BorderLayout.CENTER);
         return this;
     }
+
 
 
     private void init() {
