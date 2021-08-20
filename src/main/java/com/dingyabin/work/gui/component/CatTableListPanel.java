@@ -19,6 +19,17 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
     private CatList<TableSchema> tableCatList;
 
+    private JMenuItem copy = new JMenuItem("复制", CatIcons.copy);
+
+    private JMenuItem open = new JMenuItem("打开", CatIcons.open);
+
+    private JMenuItem delete = new JMenuItem("删除", CatIcons.delete);
+
+    private JMenuItem modify = new JMenuItem("修改", CatIcons.design);
+
+    private JPopupMenu jPopupMenu = new JPopupMenu();
+
+
     private JButton openTable = GuiUtils.createButton("打开表", CatIcons.open, StyleId.buttonIconHover);
 
     private JButton designTable = GuiUtils.createButton("设计表", CatIcons.design, StyleId.buttonIconHover);
@@ -55,16 +66,22 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
     }
 
 
-    public CatTableListPanel setTableCatList(CatList<TableSchema> tableSchemaList) {
+    public void setTableCatList(CatList<TableSchema> tableSchemaList) {
         tableCatList = tableSchemaList;
-        tableSchemaList.addPopMenuToList(null);
+        tableSchemaList.addPopMenuToList(jPopupMenu);
         add(GuiUtils.createJscrollPane(tableCatList), BorderLayout.CENTER);
-        return this;
     }
 
 
 
     private void init() {
+        //安装右键菜单
+        jPopupMenu.add(copy);
+        jPopupMenu.add(open);
+        jPopupMenu.add(modify);
+        jPopupMenu.addSeparator();
+        jPopupMenu.add(delete);
+
         //左侧的按钮区
         JPanel leftToolBarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 
