@@ -136,6 +136,12 @@ public class CatList<T> extends JList<T> {
 
 
     public void addPopMenuToList(JPopupMenu jPopupMenu) {
+//        AccessibleJList accessibleJList = (AccessibleJList)getAccessibleContext();
+//        int size = accessibleJList.getAccessibleChildrenCount();
+//        for (int i = 0; i < size; i++) {
+//            int index = accessibleJList.getAccessibleChild(i).getAccessibleContext().getAccessibleIndexInParent();
+//            jPopupMenu.putClientProperty(Const.JLIST_CURRENT_SELECTED_INDEX, index);
+//        }
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {

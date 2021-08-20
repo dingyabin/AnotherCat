@@ -114,7 +114,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
         topBarPanel.add(rightToolBarPanel);
 
         //安装工具栏
-        add(topBarPanel,BorderLayout.NORTH);
+        add(topBarPanel, BorderLayout.NORTH);
     }
 
 
