@@ -35,6 +35,8 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
     private CatList<TableSchema> tableCatList;
 
+    private JLabel bottomBar =  FontMethodsImpl.setFontSize(new JLabel(CatIcons.dbcon),13);
+
     private JDialog renameDialog = new JDialog(ComContextManager.getMainFrame(), "重命名", true);
 
     private JTextField renameField = new JTextField(35);
@@ -110,6 +112,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         tableCatList.addListSelectionListener(this);
         tableSchemaList.addPopMenuToList(jPopupMenu);
         add(GuiUtils.createJscrollPane(tableCatList), BorderLayout.CENTER);
+        refreshBottomBar();
     }
 
 
@@ -172,8 +175,14 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         //安装工具栏
         add(topBarPanel, BorderLayout.NORTH);
 
+        //底部状态栏
+        add(bottomBar, BorderLayout.SOUTH);
+
         //初始化对话框
         initDialog();
+
+        //底部bar
+        bottomBar.setHorizontalTextPosition(SwingConstants.RIGHT);
     }
 
 
@@ -316,7 +325,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     /**
      * 刷新列表
      */
-    public void refreshTables() {
+    private void refreshTables() {
         if (connectConfig == null || dataBaseSchema == null) {
             return;
         }
@@ -324,6 +333,23 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         //查询这个库下面的表
         List<TableSchema> tables = catAdapter.getTablesWithDb(connectConfig, dataBaseSchema);
         tableCatList.clearAndResetModel(tables);
+        refreshBottomBar();
+    }
+
+
+    private void refreshBottomBar(){
+        StringBuilder builder  = new StringBuilder();
+        if (connectConfig != null) {
+            builder.append("连接:").append(connectConfig.getName());
+            builder.append("    类型:").append(connectConfig.getType());
+            builder.append("    Host:").append(connectConfig.getHost());
+            builder.append("    数据库:").append(dataBaseSchema.getSchemaName());
+            builder.append("    用户:").append(connectConfig.getUserName());
+        }
+        if (tableCatList != null) {
+            builder.append("    共").append(tableCatList.getModel().getSize()).append("张表");
+        }
+        bottomBar.setText(builder.toString());
     }
 
 
