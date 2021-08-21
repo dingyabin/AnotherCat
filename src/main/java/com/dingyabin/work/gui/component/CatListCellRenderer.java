@@ -16,9 +16,11 @@ public class CatListCellRenderer extends DefaultListCellRenderer {
 
 
     public CatListCellRenderer() {
+        super();
     }
 
     public CatListCellRenderer(Icon icon) {
+        super();
         this.itemIcon = icon;
     }
 
