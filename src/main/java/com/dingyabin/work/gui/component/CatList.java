@@ -5,9 +5,6 @@ import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
 import com.sun.istack.internal.Nullable;
 
-import javax.accessibility.Accessible;
-import javax.accessibility.AccessibleComponent;
-import javax.accessibility.AccessibleContext;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -89,6 +86,17 @@ public class CatList<T> extends JList<T> {
     }
 
 
+
+    public T getModelByIndex(int index){
+        ListModel<T> model = getModel();
+        if (model == null || model.getSize() <= index) {
+            return null;
+        }
+        return model.getElementAt(index);
+    }
+
+
+
     public void clear() {
         ListModel<T> model = getModel();
         if (model instanceof DefaultListModel) {
@@ -136,12 +144,6 @@ public class CatList<T> extends JList<T> {
 
 
     public void addPopMenuToList(JPopupMenu jPopupMenu) {
-//        AccessibleJList accessibleJList = (AccessibleJList)getAccessibleContext();
-//        int size = accessibleJList.getAccessibleChildrenCount();
-//        for (int i = 0; i < size; i++) {
-//            int index = accessibleJList.getAccessibleChild(i).getAccessibleContext().getAccessibleIndexInParent();
-//            jPopupMenu.putClientProperty(Const.JLIST_CURRENT_SELECTED_INDEX, index);
-//        }
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {

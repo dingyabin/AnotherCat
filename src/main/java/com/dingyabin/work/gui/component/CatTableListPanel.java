@@ -1,12 +1,15 @@
 package com.dingyabin.work.gui.component;
 
 import com.alee.managers.style.StyleId;
+import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.model.TableSchema;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 
 
@@ -75,6 +78,12 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
 
     private void init() {
+        //设置监听
+        copy.addActionListener(this);
+        open.addActionListener(this);
+        modify.addActionListener(this);
+        delete.addActionListener(this);
+
         //安装右键菜单
         jPopupMenu.add(copy);
         jPopupMenu.add(open);
@@ -131,12 +140,36 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
+        //查找
         if (source == searchBtn) {
             searchTable();
+        }
+        if (source == copy) {
+            copyTableName();
         }
 
     }
 
+
+    /**
+     * 复制表名字
+     */
+    private void copyTableName() {
+        try {
+            Object property = jPopupMenu.getClientProperty(Const.JLIST_CURRENT_SELECTED_INDEX);
+            if (!(property instanceof Integer)) {
+                return;
+            }
+            TableSchema modelByIndex = tableCatList.getModelByIndex((Integer) property);
+            if (modelByIndex == null) {
+                return;
+            }
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(new StringSelection(modelByIndex.getTableName()), null);
+        } catch (Exception e) {
+            //ignore
+        }
+    }
 
 
     /**
