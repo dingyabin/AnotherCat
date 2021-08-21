@@ -81,7 +81,6 @@ public class AnotherCatLauncher {
         //大小
         jf.setPreferredSize(new Dimension(1600,1000));
 
-        connectDisplay.setCatAdapterService(catAdapterService);
         connectDisplay.setPreferredSize(new Dimension(170,1000));
         connectDisplay.setConnectConfigs(ConnectConfigManager.getConnectConfigs());
 

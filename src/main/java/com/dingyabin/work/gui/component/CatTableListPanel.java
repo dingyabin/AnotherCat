@@ -313,6 +313,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     }
 
 
+    /**
+     * 刷新列表
+     */
     public void refreshTables() {
         if (connectConfig == null || dataBaseSchema == null) {
             return;

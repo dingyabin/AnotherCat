@@ -14,6 +14,7 @@ import com.dingyabin.work.common.listeners.SaveConnectListener;
 import com.dingyabin.work.common.model.*;
 import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import com.dingyabin.work.ctrl.config.ExecutorUtils;
+import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -50,8 +51,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     private JMenuItem close = new JMenuItem("关闭连接", CatIcons.disconnect);
 
     private JPopupMenu jPopupMenu = new JPopupMenu();
-
-    private CatAdapterService catAdapterService;
 
 
     public ConnectDisplayAccording(JFrame jFrame, CatTabPane tabbedPane) {
@@ -94,7 +93,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
         ExecutorUtils.execute(() -> {
             //查询对应的数据库
-            CatRet<List<DataBaseSchema>> catRet = catAdapterService.getDbsWithConnect(connectConfig);
+            CatRet<List<DataBaseSchema>> catRet =  SpringBeanHolder.getCatAdapter().getDbsWithConnect(connectConfig);
             if (!catRet.isSuccess()) {
                 pane.setContent(boomLabel);
                 GuiUtils.createOptionPane(jFrame, catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
@@ -142,10 +141,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         accordionPane.putClientProperty(Const.ACCORDING_META, connect);
     }
 
-
-    public void setCatAdapterService(CatAdapterService catAdapterService) {
-        this.catAdapterService = catAdapterService;
-    }
 
 
     @Override
@@ -212,7 +207,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         accordionPane.putClientProperty(Const.ACCORDING_LOAD, Boolean.FALSE);
         //收起
         collapsePane(accordionPane.getId());
-        catAdapterService.closeConnect(connectConfig);
+        SpringBeanHolder.getCatAdapter().closeConnect(connectConfig);
         tabbedPane.closeAllTab();
     }
 
@@ -354,7 +349,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             //当前选中的数据库
             DataBaseSchema dataBaseSchema = schemaCatList.getSelectedValue();
             //查询这个库下面的表
-            List<TableSchema> tables = catAdapterService.getTablesWithDb(connectConfig, dataBaseSchema);
+            List<TableSchema> tables = SpringBeanHolder.getCatAdapter().getTablesWithDb(connectConfig, dataBaseSchema);
             //组装List
             CatList<TableSchema> tableCatList = new CatList<>(CatIcons.table, tables).fontSize(15).fontName("Consolas").layoutVW().visCount(0).multi();
 
