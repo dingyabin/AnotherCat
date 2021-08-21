@@ -213,6 +213,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         //收起
         collapsePane(accordionPane.getId());
         catAdapterService.closeConnect(connectConfig);
+        tabbedPane.closeAllTab();
     }
 
     /**

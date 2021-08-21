@@ -76,6 +76,14 @@ public class CatTabPane extends JTabbedPane {
     }
 
 
+    public void closeAllTab() {
+        int count = getTabCount();
+        for (int i = count-1; i >= 0; i--) {
+            removeTabAt(i);
+        }
+    }
+
+
 
 
     private void init() {
