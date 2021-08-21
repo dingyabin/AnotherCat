@@ -1,6 +1,7 @@
 package com.dingyabin.work.gui.component;
 
 import com.alee.managers.style.StyleId;
+import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.model.TableSchema;
 import com.dingyabin.work.gui.utils.GuiUtils;
@@ -24,6 +25,21 @@ import java.awt.event.*;
 public class CatTableListPanel extends JPanel  implements ActionListener, ListSelectionListener {
 
     private CatList<TableSchema> tableCatList;
+
+    private JDialog renameDialog = new JDialog(ComContextManager.getMainFrame(), "重命名", true);
+
+    private JTextField renameField = new JTextField(25);
+
+    private JLabel renameLabel = FontMethodsImpl.setFontSize(new JLabel("新表名："),14);
+
+    private JPanel reNameInputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,5,20));
+
+    private JPanel reNameButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,10,10));
+
+    private JButton okToRename = FontMethodsImpl.setFontSize(new JButton("确定", CatIcons.ok), 14);
+
+    private JButton cancelToRename =FontMethodsImpl.setFontSize(new JButton("取消", CatIcons.cancel), 14);
+
 
     private JMenuItem copy = new JMenuItem("复制", CatIcons.copy);
 
@@ -139,7 +155,34 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
         //安装工具栏
         add(topBarPanel, BorderLayout.NORTH);
+
+        //初始化对话框
+        initDialog();
     }
+
+
+
+    private void initDialog(){
+        //对话框居中
+        reNameInputPanel.add(renameLabel);
+        reNameInputPanel.add(renameField);
+
+        reNameButtonPanel.add(okToRename);
+        reNameButtonPanel.add(cancelToRename);
+
+        //大小设置
+        renameDialog.setSize(new Dimension(350, 120));
+        //不可调大小
+        renameDialog.setResizable(false);
+        //位置居中设置
+        renameDialog.setLocationRelativeTo(null);
+        //默认关闭动作
+        renameDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        //添加组件
+        renameDialog.add(reNameInputPanel);
+        renameDialog.add(reNameButtonPanel, BorderLayout.SOUTH);
+    }
+
 
 
 
@@ -168,6 +211,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         }
         if (source == copy) {
             copyTableName();
+        }
+        if (source == reName || source == reNameTable) {
+            renameDialog.setVisible(true);
         }
 
     }
