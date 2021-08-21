@@ -28,7 +28,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
     private JDialog renameDialog = new JDialog(ComContextManager.getMainFrame(), "重命名", true);
 
-    private JTextField renameField = new JTextField(25);
+    private JTextField renameField = new JTextField(35);
 
     private JLabel renameLabel = FontMethodsImpl.setFontSize(new JLabel("新表名："),14);
 
@@ -167,6 +167,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         reNameInputPanel.add(renameLabel);
         reNameInputPanel.add(renameField);
 
+        okToRename.addActionListener(this);
+        cancelToRename.addActionListener(this);
+
         reNameButtonPanel.add(okToRename);
         reNameButtonPanel.add(cancelToRename);
 
@@ -208,14 +211,32 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         //查找
         if (source == searchBtn) {
             searchTable();
+            return;
         }
         if (source == copy) {
             copyTableName();
+            return;
         }
         if (source == reName || source == reNameTable) {
-            renameDialog.setVisible(true);
+            showReNameTableDialog();
+            return;
         }
+        if (source == okToRename) {
+            renameDialog.dispose();
+            return;
+        }
+        if (source == cancelToRename) {
+            renameDialog.dispose();
+        }
+    }
 
+
+    /**
+     * 打开重命名表对话框
+     */
+    private void showReNameTableDialog() {
+        renameField.setText(tableCatList.getSelectedValue().getTableName());
+        renameDialog.setVisible(true);
     }
 
 
