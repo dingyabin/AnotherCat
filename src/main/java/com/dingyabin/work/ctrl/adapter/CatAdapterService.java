@@ -48,7 +48,7 @@ public class CatAdapterService implements InitializingBean {
     public CatRet<List<DataBaseSchema>> getDbsWithConnect(ConnectConfig connectConfig) {
         try {
             DataSourceKey dataSourceKey = connectConfig.defaultDataSourceKey();
-            addDataSource(connectConfig);
+            addDefaultDataSource(connectConfig);
             List<DataBaseSchema> dataBaseSchemas = systemMetaService.selectDataBaseSchema(dataSourceKey, connectConfig.typeEnum());
             return CatRet.success(dataBaseSchemas);
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public class CatAdapterService implements InitializingBean {
 
 
 
-    public DataSourceKey addDataSource(ConnectConfig connectConfig){
+    public DataSourceKey addDefaultDataSource(ConnectConfig connectConfig){
        return dynamicDataSource.addDefaultDataSource(connectConfig);
     }
 
@@ -86,6 +86,20 @@ public class CatAdapterService implements InitializingBean {
 
     public List<Map<String,Object>> queryTable(DataSourceKey dataSourceKey, String tableName){
         return tableContentDataService.queryTable(dataSourceKey ,tableName);
+    }
+
+
+
+    public boolean reNameTable(ConnectConfig con, DataBaseSchema dataBaseSchema, String oldName, String newName) {
+        try {
+            DataBaseTypeEnum typeEnum = con.typeEnum();
+            addDataSource(typeEnum, con.getHost(), con.getPort(), con.getUserName(), con.getPwd(), dataBaseSchema.getSchemaName());
+            systemMetaService.reNameTable(con.dataSourceKey(dataBaseSchema.getSchemaName()), typeEnum, oldName, newName);
+            return true;
+        } catch (Exception e) {
+            log.error("reNameTable error,oldName={}, newName={}", oldName, newName, e);
+        }
+        return false;
     }
 
 }

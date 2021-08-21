@@ -66,6 +66,12 @@ public class ConnectConfig implements Serializable {
     }
 
 
+    public DataSourceKey dataSourceKey(String dbName) {
+        return new DataSourceKey(host, port, dbName);
+    }
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

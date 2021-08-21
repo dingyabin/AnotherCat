@@ -24,20 +24,24 @@
     </resultMap>
 
 
-  <select id="selectTheWholeDataBaseSchema" resultMap="DataBaseSchemaBaseResultMap">
+    <select id="selectTheWholeDataBaseSchema" resultMap="DataBaseSchemaBaseResultMap">
       ${sql};
-  </select>
+    </select>
 
-  <select id="selectTheWholeTableSchema" resultMap="TableSchemaBaseResultMap">
+    <select id="selectTheWholeTableSchema" resultMap="TableSchemaBaseResultMap">
       ${sql};
-  </select>
+     </select>
 
-  <select id="selectTheWholeColumnSchema" resultMap="ColumnSchemaBaseResultMap">
+    <select id="selectTheWholeColumnSchema" resultMap="ColumnSchemaBaseResultMap">
       ${sql};
-  </select>
+     </select>
 
-  <select id="selectTheWholeIndexSchema" resultMap="IndexSchemaBaseResultMap">
+    <select id="selectTheWholeIndexSchema" resultMap="IndexSchemaBaseResultMap">
       ${sql};
-  </select>
+    </select>
+
+    <update id="reNameTable">
+        ${sql};
+    </update>
 
 </mapper>

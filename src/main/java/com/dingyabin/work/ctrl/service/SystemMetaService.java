@@ -91,4 +91,21 @@ public class SystemMetaService {
     }
 
 
+    /**
+     * 查找所有索引信息
+     *
+     * @param dataBaseTypeEnum dataBaseTypeEnum
+     * @param oldName        旧表名
+     * @param newName        新表名
+     * @return 结果
+     */
+    public int reNameTable(DataSourceKey dataSourceKey, DataBaseTypeEnum dataBaseTypeEnum, String oldName, String newName) {
+        SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(dataBaseTypeEnum);
+        if (schemaMeta == null) {
+            return 0;
+        }
+        DataSourceKeyHolder.setKey(dataSourceKey);
+        return systemMetaMapper.reNameTable(schemaMeta.getReNameTableSql(oldName, newName));
+    }
+
 }

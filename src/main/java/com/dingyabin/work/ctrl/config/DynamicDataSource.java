@@ -74,6 +74,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     /**
      * 增加一个新的数据库连接池
+     * 如果已经包含了这个连接，则noting to do
      *
      * @param dataBaseTypeEnum 类型
      * @param host             主机地址

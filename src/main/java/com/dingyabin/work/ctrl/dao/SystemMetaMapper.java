@@ -47,4 +47,12 @@ public interface SystemMetaMapper {
      */
     List<IndexSchema> selectTheWholeIndexSchema(@Param("sql")String sql);
 
+
+    /**
+     * 修改表名
+     * @param sql sql
+     * @return 结果
+     */
+    int reNameTable(@Param("sql")String sql);
+
 }

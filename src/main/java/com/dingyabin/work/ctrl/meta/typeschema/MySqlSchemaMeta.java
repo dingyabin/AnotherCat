@@ -69,6 +69,13 @@ public class MySqlSchemaMeta implements SchemaMeta {
         return "information_schema";
     }
 
+
+    @Override
+    public String getReNameTableSql(String oldName, String newName) {
+        return String.format("RENAME TABLE %s TO %s", oldName, newName);
+    }
+
+
     @Override
     public void afterPropertiesSet() throws Exception {
         SchemaMetaManager.registerSchema(DataBaseTypeEnum.MYSQL,this);

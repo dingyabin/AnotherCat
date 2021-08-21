@@ -65,6 +65,13 @@ public interface SchemaMeta extends InitializingBean {
     String getDefaultDbName();
 
 
+    /**
+     * 修改表名字sql
+     * @return 修改表名字sql
+     */
+    String getReNameTableSql(String oldName, String newName);
+
+
     @Override
     default void afterPropertiesSet() throws Exception {
 
