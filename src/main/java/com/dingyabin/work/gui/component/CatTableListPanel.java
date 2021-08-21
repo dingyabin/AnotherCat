@@ -33,6 +33,8 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
     private JMenuItem modify = new JMenuItem("修改", CatIcons.design);
 
+    private JMenuItem reName = new JMenuItem("重命名", CatIcons.edit);
+
     private JPopupMenu jPopupMenu = new JPopupMenu();
 
 
@@ -41,6 +43,8 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     private JButton designTable = GuiUtils.createButton("设计表", CatIcons.design, StyleId.buttonIconHover);
 
     private JButton newTable = GuiUtils.createButton("新建表", CatIcons.newone, StyleId.buttonIconHover);
+
+    private JButton reNameTable = GuiUtils.createButton("重命名", CatIcons.edit, StyleId.buttonIconHover);
 
     private JButton deleteTable = GuiUtils.createButton("删除表", CatIcons.delete, StyleId.buttonIconHover);
 
@@ -83,18 +87,20 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
     private void init() {
         //按钮先置灰
-        onSelectOccur(false);
+        onSelectOccur(0);
 
         //设置监听
         copy.addActionListener(this);
         open.addActionListener(this);
         modify.addActionListener(this);
+        reName.addActionListener(this);
         delete.addActionListener(this);
 
         //安装右键菜单
         jPopupMenu.add(copy);
         jPopupMenu.add(open);
         jPopupMenu.add(modify);
+        jPopupMenu.add(reName);
         jPopupMenu.addSeparator();
         jPopupMenu.add(delete);
 
@@ -105,12 +111,14 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         openTable.addActionListener(this);
         designTable.addActionListener(this);
         newTable.addActionListener(this);
+        reNameTable.addActionListener(this);
         deleteTable.addActionListener(this);
         searchBtn.addActionListener(this);
 
         //组装按钮
         leftToolBarPanel.add(openTable);
         leftToolBarPanel.add(designTable);
+        leftToolBarPanel.add(reNameTable);
         leftToolBarPanel.add(newTable);
         leftToolBarPanel.add(deleteTable);
 
@@ -146,7 +154,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     public void valueChanged(ListSelectionEvent e) {
         //如果选中了，就让按钮可用，否则就继续置灰按钮
         int[] selectedIndices = tableCatList.getSelectedIndices();
-        onSelectOccur(ArrayUtils.getLength(selectedIndices) > 0);
+        onSelectOccur(ArrayUtils.getLength(selectedIndices));
     }
 
 
@@ -208,10 +216,11 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     }
 
 
-    private void onSelectOccur(boolean enable) {
-        openTable.setEnabled(enable);
-        designTable.setEnabled(enable);
-        deleteTable.setEnabled(enable);
+    private void onSelectOccur(int selectSize) {
+        openTable.setEnabled(selectSize > 0);
+        designTable.setEnabled(selectSize == 1);
+        deleteTable.setEnabled(selectSize > 0);
+        reNameTable.setEnabled(selectSize == 1);
     }
 
 
