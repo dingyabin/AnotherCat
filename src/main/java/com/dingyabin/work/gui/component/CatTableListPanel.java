@@ -222,11 +222,22 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
             return;
         }
         if (source == okToRename) {
-            renameDialog.dispose();
+            doReNameTable();
             return;
         }
         if (source == cancelToRename) {
             renameDialog.dispose();
+        }
+    }
+
+
+    /**
+     * 重命名表
+     */
+    private void doReNameTable() {
+        String newName = renameField.getText();
+        if (StringUtils.isBlank(newName)){
+            return;
         }
     }
 
