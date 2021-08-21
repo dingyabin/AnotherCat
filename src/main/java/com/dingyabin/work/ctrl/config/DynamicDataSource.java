@@ -99,7 +99,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         }
 
         //没包含，继续添加
-        DruidDataSource dataSource = SpringBeanUtil.getBean(DruidDataSource.class);
+        DruidDataSource dataSource = SpringBeanHolder.getBean(DruidDataSource.class);
         dataSource.setUrl(schemaMeta.connectUrl(host, port, dbName));
         dataSource.setUsername(userName);
         dataSource.setPassword(pwd);

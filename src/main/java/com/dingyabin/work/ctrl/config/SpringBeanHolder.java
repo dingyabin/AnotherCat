@@ -1,5 +1,6 @@
 package com.dingyabin.work.ctrl.config;
 
+import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -11,14 +12,24 @@ import org.springframework.stereotype.Component;
  * Time:1:00
  */
 @Component
-public class SpringBeanUtil implements ApplicationContextAware {
+public class SpringBeanHolder implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext = null;
 
+    private static CatAdapterService catAdapterService;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        SpringBeanUtil.applicationContext = applicationContext;
+        SpringBeanHolder.applicationContext = applicationContext;
+    }
+
+    public static void registryCatAdapter(CatAdapterService catAdapterService){
+        SpringBeanHolder.catAdapterService = catAdapterService;
+    }
+
+
+    public static CatAdapterService getCatAdapter(){
+        return SpringBeanHolder.catAdapterService;
     }
 
 

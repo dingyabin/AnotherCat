@@ -6,6 +6,8 @@ import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.DataBaseSchema;
 import com.dingyabin.work.common.model.TableSchema;
+import com.dingyabin.work.ctrl.adapter.CatAdapterService;
+import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +19,7 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+import java.util.List;
 
 
 /**
@@ -56,6 +59,8 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     private JMenuItem modify = new JMenuItem("修改", CatIcons.design);
 
     private JMenuItem reName = new JMenuItem("重命名", CatIcons.edit);
+
+    private JMenuItem reFresh = new JMenuItem("刷新", CatIcons.refresh);
 
     private JPopupMenu jPopupMenu = new JPopupMenu();
 
@@ -119,6 +124,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         modify.addActionListener(this);
         reName.addActionListener(this);
         delete.addActionListener(this);
+        reFresh.addActionListener(this);
 
         //安装右键菜单
         jPopupMenu.add(copy);
@@ -127,6 +133,8 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         jPopupMenu.add(reName);
         jPopupMenu.addSeparator();
         jPopupMenu.add(delete);
+        jPopupMenu.addSeparator();
+        jPopupMenu.add(reFresh);
 
         //左侧的按钮区
         JPanel leftToolBarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
@@ -236,6 +244,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         if (source == cancelToRename) {
             renameDialog.dispose();
         }
+        if (source == reFresh) {
+            refreshTables();
+        }
     }
 
 
@@ -299,6 +310,17 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
                 tableCatList.addSelectionInterval(index,index);
             }
         });
+    }
+
+
+    public void refreshTables() {
+        if (connectConfig == null || dataBaseSchema == null) {
+            return;
+        }
+        CatAdapterService catAdapter = SpringBeanHolder.getCatAdapter();
+        //查询这个库下面的表
+        List<TableSchema> tables = catAdapter.getTablesWithDb(connectConfig, dataBaseSchema);
+        tableCatList.clearAndResetModel(tables);
     }
 
 

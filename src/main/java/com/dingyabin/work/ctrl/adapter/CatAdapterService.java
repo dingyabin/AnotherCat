@@ -3,9 +3,11 @@ package com.dingyabin.work.ctrl.adapter;
 import com.dingyabin.work.ctrl.config.DynamicDataSource;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.common.model.*;
+import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.ctrl.service.SystemMetaService;
 import com.dingyabin.work.ctrl.service.TableContentDataService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -19,7 +21,7 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-public class CatAdapterService {
+public class CatAdapterService implements InitializingBean {
 
 
     @Resource
@@ -31,6 +33,11 @@ public class CatAdapterService {
     @Resource
     private TableContentDataService tableContentDataService;
 
+
+    @Override
+    public void afterPropertiesSet() {
+        SpringBeanHolder.registryCatAdapter(this);
+    }
 
 
     public void closeConnect(ConnectConfig connectConfig){

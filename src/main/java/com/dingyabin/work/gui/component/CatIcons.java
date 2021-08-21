@@ -79,6 +79,8 @@ public class CatIcons {
 
     public static final ImageIcon search = new ImageIcon(CatIcons.class.getResource("/icons/search.png"));
 
+    public static final ImageIcon refresh = new ImageIcon(CatIcons.class.getResource("/icons/refresh.png"));
+
 
 
 
