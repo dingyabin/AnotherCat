@@ -4,9 +4,12 @@ import com.alee.managers.style.StyleId;
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.model.TableSchema;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -18,7 +21,7 @@ import java.awt.event.*;
  * Date: 2021/8/20.
  * Time:21:30
  */
-public class CatTableListPanel extends JPanel  implements ActionListener {
+public class CatTableListPanel extends JPanel  implements ActionListener, ListSelectionListener {
 
     private CatList<TableSchema> tableCatList;
 
@@ -71,6 +74,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
     public void setTableCatList(CatList<TableSchema> tableSchemaList) {
         tableCatList = tableSchemaList;
+        tableCatList.addListSelectionListener(this);
         tableSchemaList.addPopMenuToList(jPopupMenu);
         add(GuiUtils.createJscrollPane(tableCatList), BorderLayout.CENTER);
     }
@@ -78,6 +82,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
 
     private void init() {
+        //按钮先置灰
+        onSelectOccur(false);
+
         //设置监听
         copy.addActionListener(this);
         open.addActionListener(this);
@@ -135,6 +142,13 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
 
 
 
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        //如果选中了，就让按钮可用，否则就继续置灰按钮
+        int[] selectedIndices = tableCatList.getSelectedIndices();
+        onSelectOccur(ArrayUtils.getLength(selectedIndices) > 0);
+    }
+
 
 
     @Override
@@ -191,7 +205,13 @@ public class CatTableListPanel extends JPanel  implements ActionListener {
                 tableCatList.addSelectionInterval(index,index);
             }
         });
+    }
 
+
+    private void onSelectOccur(boolean enable) {
+        openTable.setEnabled(enable);
+        designTable.setEnabled(enable);
+        deleteTable.setEnabled(enable);
     }
 
 
