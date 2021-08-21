@@ -3,6 +3,8 @@ package com.dingyabin.work.gui.component;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
+import com.dingyabin.work.common.model.ConnectConfig;
+import com.dingyabin.work.common.model.DataBaseSchema;
 import com.dingyabin.work.common.model.TableSchema;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -23,6 +25,10 @@ import java.awt.event.*;
  * Time:21:30
  */
 public class CatTableListPanel extends JPanel  implements ActionListener, ListSelectionListener {
+
+    private ConnectConfig connectConfig;
+
+    private DataBaseSchema dataBaseSchema;
 
     private CatList<TableSchema> tableCatList;
 
@@ -80,14 +86,16 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     };
 
 
-    public CatTableListPanel() {
+    public CatTableListPanel(ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
         super(new BorderLayout(0, 0));
+        this.connectConfig = connectConfig;
+        this.dataBaseSchema = dataBaseSchema;
         init();
     }
 
 
-    public CatTableListPanel(CatList<TableSchema> tableSchemaList) {
-        this();
+    public CatTableListPanel(CatList<TableSchema> tableSchemaList, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
+        this(connectConfig, dataBaseSchema);
         setTableCatList(tableSchemaList);
     }
 

@@ -358,7 +358,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             //组装List
             CatList<TableSchema> tableCatList = new CatList<>(CatIcons.table, tables).fontSize(15).fontName("Consolas").layoutVW().visCount(0).multi();
 
-            tabbedPane.addTabWithTabComponent("表", CatIcons.table, new CatTableListPanel(tableCatList), true);
+            tabbedPane.addTabWithTabComponent("表", CatIcons.table, new CatTableListPanel(tableCatList, connectConfig, dataBaseSchema), true);
         });
         return schemaCatList;
     }
