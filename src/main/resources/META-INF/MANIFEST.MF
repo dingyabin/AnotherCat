@@ -1,3 +1,0 @@
-Manifest-Version: 1.0.0
-Main-Class: com.dingyabin.work.ServerStart
-SplashScreen-Image: about64.png
