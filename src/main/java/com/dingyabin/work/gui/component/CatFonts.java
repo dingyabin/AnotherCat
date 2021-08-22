@@ -11,4 +11,6 @@ public class CatFonts {
 
     public static final Font CONNECT_WINDOW_BORDER = new Font("Consolas", Font.PLAIN,20);
 
+    public static final String DEFAULT_FONT_NAME = "Consolas";
+
 }

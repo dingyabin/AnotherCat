@@ -343,7 +343,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
     private JList<DataBaseSchema> getDataBaseList(CatRet<List<DataBaseSchema>> catRet, ConnectConfig connectConfig) {
         //数据库列表
-        CatList<DataBaseSchema> schemaCatList = new CatList<>(CatIcons.db, catRet.getData()).fontSize(14).fontName("Consolas");
+        CatList<DataBaseSchema> schemaCatList = new CatList<>(CatIcons.db, catRet.getData()).fontSize(14).fontName(CatFonts.DEFAULT_FONT_NAME);
         //双击打开
         schemaCatList.addDoubleClickListener(mouseEvent -> {
             //当前选中的数据库
@@ -351,7 +351,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             //查询这个库下面的表
             List<TableSchema> tables = SpringBeanHolder.getCatAdapter().getTablesWithDb(connectConfig, dataBaseSchema);
             //组装List
-            CatList<TableSchema> tableCatList = new CatList<>(CatIcons.table, tables).fontSize(15).fontName("Consolas").layoutVW().visCount(0).multi();
+            CatList<TableSchema> tableCatList = new CatList<>(CatIcons.table, tables).fontSize(15).fontName(CatFonts.DEFAULT_FONT_NAME).layoutVW().visCount(0).multi();
 
             tabbedPane.addTabWithTabComponent("表", CatIcons.table, new CatTableListPanel(tableCatList, connectConfig, dataBaseSchema), true);
         });

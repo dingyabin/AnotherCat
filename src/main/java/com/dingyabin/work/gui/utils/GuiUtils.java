@@ -3,6 +3,7 @@ package com.dingyabin.work.gui.utils;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
+import com.dingyabin.work.gui.component.CatFonts;
 import com.dingyabin.work.gui.component.CatIcons;
 import lombok.extern.slf4j.Slf4j;
 
@@ -156,6 +157,7 @@ public class GuiUtils {
      */
     public static JTextField createTextField(int column, StyleId styleId) {
         JTextField textField = new JTextField(column);
+        FontMethodsImpl.setFontName(textField, CatFonts.DEFAULT_FONT_NAME);
         textField.putClientProperty(StyleId.STYLE_PROPERTY, styleId);
         return textField;
     }
