@@ -115,7 +115,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <SplashScreen-Image>BOOT-INF/classes/icons/about64.png</SplashScreen-Image>
+                            <SplashScreen-Image>BOOT-INF/classes/logo/Logo.png</SplashScreen-Image>
                         </manifestEntries>
                     </archive>
                 </configuration>
