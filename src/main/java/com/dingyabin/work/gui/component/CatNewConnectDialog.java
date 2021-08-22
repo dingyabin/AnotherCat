@@ -10,7 +10,6 @@ import com.dingyabin.work.common.model.ConnectConfigManager;
 import com.dingyabin.work.common.model.SaveConnectEvent;
 import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.gui.utils.GuiUtils;
-import com.sun.istack.internal.NotNull;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -267,7 +266,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
      *
      * @param oldConfig 编辑之前，老的ConnectConfig
      */
-    public void editMode(@NotNull ConnectConfig oldConfig) {
+    public void editMode(ConnectConfig oldConfig) {
         this.catNewConModel = CatNewConModel.editMode(oldConfig);
         conNameField.setText(oldConfig.getName());
         hostField.setText(oldConfig.getHost());

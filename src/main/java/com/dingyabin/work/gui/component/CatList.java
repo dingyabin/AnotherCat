@@ -3,7 +3,6 @@ package com.dingyabin.work.gui.component;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
-import com.sun.istack.internal.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +22,7 @@ public class CatList<T> extends JList<T> {
     private CatListCellRenderer listCellRenderer = new CatListCellRenderer();
 
 
-    public CatList(@Nullable Icon itemIcon, List<T> listData) {
+    public CatList(Icon itemIcon, List<T> listData) {
         this(listData);
         listCellRenderer.setItemIcon(itemIcon);
         setCellRenderer(listCellRenderer);
