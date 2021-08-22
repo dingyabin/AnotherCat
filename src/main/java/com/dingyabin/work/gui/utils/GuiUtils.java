@@ -1,6 +1,5 @@
 package com.dingyabin.work.gui.utils;
 
-import com.alee.laf.label.WebLabel;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
@@ -68,30 +67,6 @@ public class GuiUtils {
     }
 
 
-
-
-
-    /**
-     * 打开一个对话框
-     * @param image 标题图标
-     * @param width  宽度
-     * @param height 高度
-     * @param labelStr 内容文字
-     * @param centerWithWho 相对于哪个组件居中
-     */
-    public static void createDialog(Image image, int width, int height , String labelStr, Component centerWithWho) {
-        JDialog dialog = new JDialog();
-        dialog.getRootPane().putClientProperty(StyleId.STYLE_PROPERTY, StyleId.dialog);
-        dialog.setIconImage(image);
-        dialog.add(new WebLabel(StyleId.label, labelStr, WebLabel.CENTER).setFontSize(14));
-        dialog.setSize(width, height);
-        //居中显示
-        dialog.setLocationRelativeTo(centerWithWho);
-        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //不可调大小
-        dialog.setResizable(false);
-        dialog.setVisible(true);
-    }
 
 
     /**

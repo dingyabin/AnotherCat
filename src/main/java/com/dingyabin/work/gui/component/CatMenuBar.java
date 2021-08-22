@@ -1,12 +1,15 @@
 package com.dingyabin.work.gui.component;
 
+import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.MenuBarLayout;
 import com.alee.managers.icon.Icons;
+import com.alee.managers.style.StyleId;
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author 丁亚宾
@@ -84,7 +87,7 @@ public class CatMenuBar extends JMenuBar {
         helpMenu.addSeparator();
         //关于
         JMenuItem about = new JMenuItem("关于AnotherCat", CatIcons.about);
-        about.addActionListener(e -> GuiUtils.createDialog(CatIcons.about.getImage(), 400, 150, Const.ABOUT, jframe));
+        about.addActionListener(e -> createAboutDialog());
         helpMenu.add(about);
         return helpMenu;
     }
@@ -146,6 +149,27 @@ public class CatMenuBar extends JMenuBar {
         //添加按钮
         fileMenu.add(connectMenu);
         return fileMenu;
+    }
+
+
+    /**
+     * 打开“关于”对话框
+     */
+    private void createAboutDialog() {
+        JDialog dialog = new JDialog(jframe,"关于");
+        dialog.getRootPane().putClientProperty(StyleId.STYLE_PROPERTY, StyleId.dialog);
+        //标题图标
+        dialog.setIconImage(CatIcons.about.getImage());
+        //图标以及说明
+        dialog.add(new WebLabel(StyleId.label, Const.ABOUT, CatIcons.biglogo, WebLabel.CENTER).setFontSize(14));
+        //最佳大小
+        dialog.pack();
+        //居中显示
+        dialog.setLocationRelativeTo(jframe);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //不可调大小
+        dialog.setResizable(false);
+        dialog.setVisible(true);
     }
 
 

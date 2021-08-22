@@ -81,6 +81,8 @@ public class CatIcons {
 
     public static final ImageIcon refresh = new ImageIcon(CatIcons.class.getResource("/icons/refresh.png"));
 
+    public static final ImageIcon biglogo = new ImageIcon(CatIcons.class.getResource("/logo/Logo.png"));
+
 
 
 

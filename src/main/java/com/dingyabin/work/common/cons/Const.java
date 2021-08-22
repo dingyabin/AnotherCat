@@ -17,7 +17,7 @@ public class Const {
 
     public static  final String GIT_ADDRESS = "https://github.com/dingyabin/AnotherCat";
 
-    public static  final String ABOUT = "<html>&nbsp;&nbsp;&nbsp;AnotherCat是一个基于Java Swing的开源数据库连接工具客户端。体积轻盈，没有繁杂的功能，欢迎下载使用，并提出宝贵意见！<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; —— 作者：Mr.丁<br/><br/></html>";
+    public static  final String ABOUT = "<html>&nbsp;&nbsp;&nbsp;AnotherCat是一个基于Java Swing<br/>的开源数据库连接工具客户端。体积轻盈，<br/>没有繁杂的功能。<br/>&nbsp;&nbsp;&nbsp;欢迎下载使用，并提出宝贵意见！<br/><br/><br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;—— 作者：丁同学<br/><br/></html>";
 
     public static  final int MAX_LOG_ROWS = 500;
 
