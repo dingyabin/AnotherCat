@@ -9,7 +9,6 @@ import com.dingyabin.work.common.enums.DataBaseTypeEnum;
 import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author 丁亚宾
@@ -17,10 +16,6 @@ import java.awt.*;
  * Time:23:30
  */
 public class CatMenuBar extends JMenuBar {
-
-    private CatTabPane tabbedPane;
-
-    private JFrame jframe;
 
     private final JMenu fileMenu = new JMenu("文件");
 
@@ -38,13 +33,6 @@ public class CatMenuBar extends JMenuBar {
     public CatMenuBar() {
         super();
         init();
-    }
-
-
-    public CatMenuBar(CatTabPane tabbedPane, JFrame jframe) {
-        this();
-        this.tabbedPane = tabbedPane;
-        this.jframe = jframe;
     }
 
 
@@ -107,12 +95,12 @@ public class CatMenuBar extends JMenuBar {
         //日志调试
         JMenuItem log = new JMenuItem(title, CatIcons.log);
         log.addActionListener(e -> {
-            if (tabbedPane == null) {
+            if (ComContextManager.getTabbedPane() == null) {
                 return;
             }
             LogTabTextArea logTabTextArea = new LogTabTextArea(10, 10).lineWrap(true).fontSize(15).noEdit().addPopupMenu();
             JScrollPane jScrollPane = GuiUtils.createJscrollPane(logTabTextArea);
-            tabbedPane.addTabWithTabComponent(title, CatIcons.log, jScrollPane,true);
+            ComContextManager.getTabbedPane().addTabWithTabComponent(title, CatIcons.log, jScrollPane,true);
             //读取日志
             logTabTextArea.showLog();
         });
@@ -139,7 +127,7 @@ public class CatMenuBar extends JMenuBar {
         //具体数据源类型
         for (DataBaseTypeEnum typeEnum : DataBaseTypeEnum.values()) {
             JMenuItem dsItem = new JMenuItem(typeEnum.getType(), typeEnum.getIcon());
-            dsItem.addActionListener(e -> new CatNewConnectDialog(jframe, typeEnum, title,true).showSelf());
+            dsItem.addActionListener(e -> new CatNewConnectDialog(ComContextManager.getMainFrame(), typeEnum, title,true).showSelf());
             connectMenu.add(dsItem);
         }
         //未知数据源
@@ -156,7 +144,7 @@ public class CatMenuBar extends JMenuBar {
      * 打开“关于”对话框
      */
     private void createAboutDialog() {
-        JDialog dialog = new JDialog(jframe,"关于");
+        JDialog dialog = new JDialog(ComContextManager.getMainFrame(),"关于");
         dialog.getRootPane().putClientProperty(StyleId.STYLE_PROPERTY, StyleId.dialog);
         //标题图标
         dialog.setIconImage(CatIcons.about.getImage());
@@ -165,7 +153,7 @@ public class CatMenuBar extends JMenuBar {
         //最佳大小
         dialog.pack();
         //居中显示
-        dialog.setLocationRelativeTo(jframe);
+        dialog.setLocationRelativeTo(ComContextManager.getMainFrame());
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         //不可调大小
         dialog.setResizable(false);

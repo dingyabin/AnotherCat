@@ -1,13 +1,9 @@
 package com.dingyabin.work.ctrl.boot;
 
 import com.dingyabin.work.common.model.ConnectConfigManager;
-import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import com.dingyabin.work.gui.component.*;
 import com.dingyabin.work.gui.utils.GuiUtils;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.swing.*;
 import java.awt.*;
 
@@ -16,12 +12,14 @@ import java.awt.*;
  * Date: 2021/8/9.
  * Time:21:22
  */
-@Lazy
-@Component
 public class AnotherCatLauncher {
 
-    @Resource
-    private CatAdapterService catAdapterService;
+    private static final AnotherCatLauncher ANOTHER_CAT_LAUNCHER = new AnotherCatLauncher();
+
+    //单例模式
+    public static AnotherCatLauncher getInstance() {
+        return AnotherCatLauncher.ANOTHER_CAT_LAUNCHER;
+    }
 
     /**
      * 主窗口
@@ -42,11 +40,12 @@ public class AnotherCatLauncher {
      */
     private ConnectDisplayAccording connectDisplay = new ConnectDisplayAccording(jf, tabbedPane);
 
-    /**
-     * 菜单栏
-     */
-    private final CatMenuBar catMenuBar = new CatMenuBar(tabbedPane, jf);
 
+    private AnotherCatLauncher() {
+        //注册容器
+        ComContextManager.registerMainFrame(jf);
+        ComContextManager.registerTabbedPane(tabbedPane);
+    }
 
 
     /**
@@ -59,7 +58,7 @@ public class AnotherCatLauncher {
         mainSplitPane.setLeftComponent(connectDisplay);
         mainSplitPane.setRightComponent(tabbedPane);
 
-        jf.setJMenuBar(catMenuBar);
+        jf.setJMenuBar(new CatMenuBar());
 
         jf.add(mainSplitPane);
 
@@ -73,9 +72,6 @@ public class AnotherCatLauncher {
      * 对组件、容器等，做一些初始化操作
      */
     private void intComponent(){
-        //注册容器
-        ComContextManager.registerMainFrame(jf);
-
         //窗口logo
         jf.setIconImage(CatIcons.cat.getImage());
         //大小
