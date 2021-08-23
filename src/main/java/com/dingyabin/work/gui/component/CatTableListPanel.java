@@ -232,6 +232,20 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     }
 
 
+    /**
+     * 清空
+     */
+    public void clearTableList() {
+        if (tableCatList != null) {
+            tableCatList.clear();
+        }
+        this.connectConfig = null;
+        this.dataBaseSchema = null;
+        refreshBottomBar();
+        onSelectOccur(0);
+    }
+
+
 
 
     @Override

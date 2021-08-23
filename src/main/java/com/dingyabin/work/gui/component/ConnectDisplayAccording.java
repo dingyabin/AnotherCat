@@ -208,7 +208,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         //收起
         collapsePane(accordionPane.getId());
         SpringBeanHolder.getCatAdapter().closeConnect(connectConfig);
-        tabbedPane.closeAllTab();
+        tabbedPane.closeAllTabExceptFirst();
     }
 
     /**

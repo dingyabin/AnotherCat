@@ -50,11 +50,14 @@ public class CatTabPane extends JTabbedPane {
     }
 
 
-
-    public void closeAllTab() {
+    public void closeAllTabExceptFirst() {
         int count = getTabCount();
-        for (int i = count-1; i >= 0; i--) {
+        for (int i = count - 1; i > 0; i--) {
             removeTabAt(i);
+        }
+        CatTableListPanel catTableListPanel = getCatTableListPanel();
+        if (catTableListPanel != null) {
+            catTableListPanel.clearTableList();
         }
     }
 
@@ -76,11 +79,20 @@ public class CatTabPane extends JTabbedPane {
      * @param dataBaseSchema 库
      */
     public void reSetTableListWithNewDataBaseSchema(List<TableSchema> listData, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
+        CatTableListPanel catTableListPanel = getCatTableListPanel();
+        if (catTableListPanel != null) {
+            catTableListPanel.reFreshTableListWithNewDataBaseSchema(listData, connectConfig, dataBaseSchema);
+        }
+    }
+
+
+
+    private CatTableListPanel getCatTableListPanel() {
         Component component = getComponentAt(FIRST_INDEX);
         if (!(component instanceof CatTableListPanel)) {
-            return;
+            return null;
         }
-        ((CatTableListPanel) component).reFreshTableListWithNewDataBaseSchema(listData, connectConfig, dataBaseSchema);
+        return ((CatTableListPanel) component);
     }
 
 
