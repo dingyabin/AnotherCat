@@ -50,6 +50,9 @@ public class CatTabPane extends JTabbedPane {
     }
 
 
+    /**
+     * 关闭除了第一个以外的所有tab
+     */
     public void closeAllTabExceptFirst() {
         int count = getTabCount();
         for (int i = count - 1; i > 0; i--) {
@@ -87,7 +90,10 @@ public class CatTabPane extends JTabbedPane {
     }
 
 
-
+    /**
+     * 获取index为0处的CatTableListPanel
+     * @return index为0处的CatTableListPanel
+     */
     private CatTableListPanel getCatTableListPanel() {
         Component component = getComponentAt(FIRST_INDEX);
         if (!(component instanceof CatTableListPanel)) {
