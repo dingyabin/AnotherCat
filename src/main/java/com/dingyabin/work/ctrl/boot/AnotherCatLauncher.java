@@ -75,7 +75,7 @@ public class AnotherCatLauncher {
         //窗口logo
         jf.setIconImage(CatIcons.cat.getImage());
         //大小
-        jf.setPreferredSize(new Dimension(1600,1000));
+        jf.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
 
         connectDisplay.setPreferredSize(new Dimension(170,1000));
         connectDisplay.setConnectConfigs(ConnectConfigManager.getConnectConfigs());
