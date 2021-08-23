@@ -146,7 +146,7 @@ public class CatList<T> extends JList<T> {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (e.isPopupTrigger()) {
+                if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3) {
                     int index = locationToIndex(new Point(e.getX(), e.getY()));
                     if (index < 0) {
                         return;

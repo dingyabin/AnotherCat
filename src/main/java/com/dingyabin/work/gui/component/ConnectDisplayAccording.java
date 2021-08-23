@@ -293,7 +293,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         header.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (e.isPopupTrigger()) {
+                if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3) {
                     String accordionPaneId = accordionPane.getId();
                     see.putClientProperty(Const.ACCORDING_PANE_ID, accordionPaneId);
                     edit.putClientProperty(Const.ACCORDING_PANE_ID, accordionPaneId);
