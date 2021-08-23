@@ -115,9 +115,9 @@ public class CatList<T> extends JList<T> {
 
 
     public void clearAndResetModel(List<T> listData) {
-        clear();
-        DefaultListModel<T> listModel = (DefaultListModel<T>) (getModel());
-        listData.forEach(listModel::addElement);
+        DefaultListModel<T> listModel = new DefaultListModel<>();
+        ofNullable(listData).ifPresent(list -> list.forEach(listModel::addElement));
+        setModel(listModel);
     }
 
 
