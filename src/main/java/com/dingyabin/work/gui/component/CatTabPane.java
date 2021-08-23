@@ -82,6 +82,7 @@ public class CatTabPane extends JTabbedPane {
         CatTableListPanel catTableListPanel = getCatTableListPanel();
         if (catTableListPanel != null) {
             catTableListPanel.reFreshTableListWithNewDataBaseSchema(listData, connectConfig, dataBaseSchema);
+            setSelectedIndex(FIRST_INDEX);
         }
     }
 
