@@ -1,9 +1,13 @@
 package com.dingyabin.work.gui.component;
 
 import com.alee.managers.style.StyleId;
+import com.dingyabin.work.common.model.ConnectConfig;
+import com.dingyabin.work.common.model.DataBaseSchema;
+import com.dingyabin.work.common.model.TableSchema;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * @author 丁亚宾
@@ -12,6 +16,7 @@ import java.awt.*;
  */
 public class CatTabPane extends JTabbedPane {
 
+    private final int FIRST_INDEX = 0;
 
     public CatTabPane() {
         init();
@@ -41,39 +46,9 @@ public class CatTabPane extends JTabbedPane {
 
 
     public int addTabWithTabComponent(String title, Component component, boolean withCloseBtn) {
-        int newTabIndex = getTabCount();
-        super.addTab(title, component);
-        if (withCloseBtn) {
-            setTabComponentAt(newTabIndex, createTabBarComponent(title, null));
-        }
-        setSelectedIndex(newTabIndex);
-        return newTabIndex;
+        return addTabWithTabComponent(title, null, component, withCloseBtn);
     }
 
-
-
-
-    public int addTabWithFirstIndex(String title, Icon icon, Component component, boolean withCloseBtn) {
-        int firstIndex = 0;
-        insertTab(title, icon, component, null, firstIndex);
-        if (withCloseBtn) {
-            setTabComponentAt(firstIndex, createTabBarComponent(title, icon));
-        }
-        setSelectedIndex(firstIndex);
-        return firstIndex;
-    }
-
-
-
-    public int addTabWithFirstIndex(String title, Icon icon, boolean withCloseBtn) {
-        return addTabWithFirstIndex(title, icon, null, withCloseBtn);
-    }
-
-
-
-    public int addTabWithFirstIndex(String title, Icon icon) {
-        return addTabWithFirstIndex(title, icon, null, false);
-    }
 
 
     public void closeAllTab() {
@@ -84,12 +59,30 @@ public class CatTabPane extends JTabbedPane {
     }
 
 
-
-
     private void init() {
         //tab页面设置界面主题
-        putClientProperty (StyleId.STYLE_PROPERTY, StyleId.tabbedpane);
+        putClientProperty(StyleId.STYLE_PROPERTY, StyleId.tabbedpane);
+        //在第一个tab插入一个CatTableListPanel
+        insertTab("表", CatIcons.table, new CatTableListPanel(), null, FIRST_INDEX);
+        setSelectedIndex(FIRST_INDEX);
     }
+
+
+
+    /**
+     * 在新的连接下面刷新列表
+     * @param listData 表
+     * @param connectConfig 连接
+     * @param dataBaseSchema 库
+     */
+    public void reSetTableListWithNewDataBaseSchema(List<TableSchema> listData, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
+        Component component = getComponentAt(FIRST_INDEX);
+        if (!(component instanceof CatTableListPanel)) {
+            return;
+        }
+        ((CatTableListPanel) component).reFreshTableListWithNewDataBaseSchema(listData, connectConfig, dataBaseSchema);
+    }
+
 
 
 
@@ -106,6 +99,5 @@ public class CatTabPane extends JTabbedPane {
         tabHorizontalBox.add(closeBtn);
         return tabHorizontalBox;
     }
-
 
 }

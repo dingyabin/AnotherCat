@@ -108,7 +108,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
 
     public CatTableListPanel() {
-        this(new CatList<TableSchema>(CatIcons.table), null, null);
+        this(new CatList<TableSchema>(CatIcons.table).fontSize(15).fontName(CatFonts.DEFAULT_FONT_NAME).layoutVW().visCount(0).multi(), null, null);
     }
 
 
@@ -217,10 +217,18 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     }
 
 
-
-
-    public CatList<TableSchema> getTableCatList() {
-        return tableCatList;
+    /**
+     * 在新的连接下面刷新列表
+     * @param listData 表
+     * @param connectConfig 连接
+     * @param dataBaseSchema 库
+     */
+    public void reFreshTableListWithNewDataBaseSchema(List<TableSchema> listData, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
+        this.connectConfig = connectConfig;
+        this.dataBaseSchema = dataBaseSchema;
+        tableCatList.clearAndResetModel(listData);
+        refreshBottomBar();
+        onSelectOccur(0);
     }
 
 
@@ -377,6 +385,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         designTable.setEnabled(selectSize == 1);
         deleteTable.setEnabled(selectSize > 0);
         reNameTable.setEnabled(selectSize == 1);
+        newTable.setEnabled(this.connectConfig != null && this.dataBaseSchema != null);
     }
 
 

@@ -350,10 +350,8 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             DataBaseSchema dataBaseSchema = schemaCatList.getSelectedValue();
             //查询这个库下面的表
             List<TableSchema> tables = SpringBeanHolder.getCatAdapter().getTablesWithDb(connectConfig, dataBaseSchema);
-            //组装List
-            CatList<TableSchema> tableCatList = new CatList<>(CatIcons.table, tables).fontSize(15).fontName(CatFonts.DEFAULT_FONT_NAME).layoutVW().visCount(0).multi();
-
-            tabbedPane.addTabWithTabComponent("表", CatIcons.table, new CatTableListPanel(tableCatList, connectConfig, dataBaseSchema), true);
+            //刷新List
+            tabbedPane.reSetTableListWithNewDataBaseSchema(tables, connectConfig, dataBaseSchema);
         });
         return schemaCatList;
     }
