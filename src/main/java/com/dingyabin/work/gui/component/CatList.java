@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import static java.util.Optional.ofNullable;
 
 /**
  * @author 丁亚宾
@@ -20,6 +21,11 @@ import java.util.function.Consumer;
 public class CatList<T> extends JList<T> {
 
     private CatListCellRenderer listCellRenderer = new CatListCellRenderer();
+
+
+    public CatList(Icon itemIcon) {
+        this(itemIcon, null);
+    }
 
 
     public CatList(Icon itemIcon, List<T> listData) {
@@ -32,7 +38,7 @@ public class CatList<T> extends JList<T> {
     public CatList(List<T> listData) {
         putClientProperty(StyleId.STYLE_PROPERTY, StyleId.list);
         DefaultListModel<T> listModel = new DefaultListModel<>();
-        listData.forEach(listModel::addElement);
+        ofNullable(listData).ifPresent(list -> list.forEach(listModel::addElement));
         setModel(listModel);
     }
 

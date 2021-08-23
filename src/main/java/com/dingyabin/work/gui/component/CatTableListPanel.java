@@ -107,6 +107,11 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     }
 
 
+    public CatTableListPanel() {
+        this(new CatList<TableSchema>(CatIcons.table), null, null);
+    }
+
+
     public void setTableCatList(CatList<TableSchema> tableSchemaList) {
         tableCatList = tableSchemaList;
         tableCatList.addListSelectionListener(this);
