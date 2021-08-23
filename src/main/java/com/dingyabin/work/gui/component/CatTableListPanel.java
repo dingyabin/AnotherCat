@@ -269,6 +269,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         }
         String oldName = tableCatList.getSelectedValue().getTableName();
         CatAdapterService catAdapter = SpringBeanHolder.getCatAdapter();
+        if (StringUtils.equals(oldName, newName)) {
+            return;
+        }
         //重命名
         if (catAdapter.reNameTable(connectConfig, dataBaseSchema, oldName, newName)) {
             renameDialog.dispose();
