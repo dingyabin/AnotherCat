@@ -263,12 +263,14 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
      * 重命名表
      */
     private void doReNameTable() {
+        //参数校验
         String newName = renameField.getText();
         if (StringUtils.isBlank(newName)) {
             return;
         }
         String oldName = tableCatList.getSelectedValue().getTableName();
         CatAdapterService catAdapter = SpringBeanHolder.getCatAdapter();
+        //如果新的等于老的，do nothing
         if (StringUtils.equals(oldName, newName)) {
             return;
         }
