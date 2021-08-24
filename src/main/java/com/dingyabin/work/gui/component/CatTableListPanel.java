@@ -214,19 +214,6 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     }
 
 
-    /**
-     * 在新的连接下面刷新列表
-     * @param listData 表
-     * @param connectConfig 连接
-     * @param dataBaseSchema 库
-     */
-    public void reFreshTableListWithNewDataBaseSchema(List<TableSchema> listData, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
-        this.connectConfig = connectConfig;
-        this.dataBaseSchema = dataBaseSchema;
-        tableCatList.clearAndResetModel(listData);
-        refreshBottomBar();
-    }
-
 
     /**
      * 右键-清空
@@ -371,6 +358,8 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         tableCatList.clearAndResetModel(tables);
         refreshBottomBar();
     }
+
+
 
 
     private void refreshBottomBar(){

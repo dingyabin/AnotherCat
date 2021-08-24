@@ -25,6 +25,9 @@ public class CatTabPane extends JTabbedPane {
     }
 
 
+
+
+
     public int addTabWithTabComponent(String title, Icon icon, Component component, boolean withCloseBtn) {
         int newTabIndex = getTabCount();
         super.addTab(title, icon, component);
@@ -37,9 +40,15 @@ public class CatTabPane extends JTabbedPane {
 
 
 
+
+
     public int addTabWithTabComponent(String title, Component component, boolean withCloseBtn) {
         return addTabWithTabComponent(title, null, component, withCloseBtn);
     }
+
+
+
+
 
 
     /**
@@ -57,6 +66,10 @@ public class CatTabPane extends JTabbedPane {
     }
 
 
+
+
+
+
     private void init() {
         //tab页面设置界面主题
         putClientProperty(StyleId.STYLE_PROPERTY, StyleId.tabbedpane);
@@ -68,23 +81,27 @@ public class CatTabPane extends JTabbedPane {
 
 
 
+
+
     /**
      * 在新的连接下面刷新列表
-     * @param listData 表
-     * @param connectConfig 连接
+     *
+     * @param listData       表
+     * @param connectConfig  连接
      * @param dataBaseSchema 库
      */
-    public void reSetTableListWithNewDataBaseSchema(List<TableSchema> listData, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
-        CatTableListPanel catTableListPanel = getCatTableListPanel();
-        if (catTableListPanel != null) {
-            catTableListPanel.reFreshTableListWithNewDataBaseSchema(listData, connectConfig, dataBaseSchema);
-            setSelectedIndex(FIRST_INDEX);
-        }
+    public void reSetTablePanelNewDataBaseSchema(List<TableSchema> listData, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
+        CatList<TableSchema> tableList = new CatList<>(CatIcons.table, listData).fontSize(15).fontName(CatFonts.DEFAULT_FONT_NAME).layoutVW().visCount(0).multi();
+        setComponentAt(FIRST_INDEX, new CatTableListPanel(tableList, connectConfig, dataBaseSchema));
     }
+
+
+
 
 
     /**
      * 获取index为0处的CatTableListPanel
+     *
      * @return index为0处的CatTableListPanel
      */
     private CatTableListPanel getCatTableListPanel() {
@@ -94,6 +111,7 @@ public class CatTabPane extends JTabbedPane {
         }
         return ((CatTableListPanel) component);
     }
+
 
 
 
