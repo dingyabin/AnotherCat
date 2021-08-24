@@ -18,14 +18,6 @@ public class CatTabPane extends JTabbedPane {
 
     private final int FIRST_INDEX = 0;
 
-    public CatTabPane() {
-        init();
-    }
-
-    public CatTabPane(int tabPlacement) {
-        super(tabPlacement);
-        init();
-    }
 
     public CatTabPane(int tabPlacement, int tabLayoutPolicy) {
         super(tabPlacement, tabLayoutPolicy);
@@ -55,7 +47,7 @@ public class CatTabPane extends JTabbedPane {
      */
     public void closeAllTabExceptFirst() {
         int count = getTabCount();
-        for (int i = count - 1; i > 0; i--) {
+        for (int i = count - 1; i > FIRST_INDEX; i--) {
             removeTabAt(i);
         }
         CatTableListPanel catTableListPanel = getCatTableListPanel();
@@ -70,6 +62,7 @@ public class CatTabPane extends JTabbedPane {
         putClientProperty(StyleId.STYLE_PROPERTY, StyleId.tabbedpane);
         //在第一个tab插入一个CatTableListPanel
         insertTab("表", CatIcons.table, new CatTableListPanel(), null, FIRST_INDEX);
+        //选中
         setSelectedIndex(FIRST_INDEX);
     }
 
