@@ -343,7 +343,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
     private JList<DataBaseSchema> getDataBaseList(CatRet<List<DataBaseSchema>> catRet, ConnectConfig connectConfig) {
         //数据库列表
-        CatList<DataBaseSchema> schemaCatList = new CatList<>(CatIcons.db, catRet.getData()).fontSize(14).fontName(CatFonts.DEFAULT_FONT_NAME);
+        CatList<DataBaseSchema> schemaCatList = new CatList<>(CatIcons.db, catRet.getData()).fontSize(15).fontName(CatFonts.DEFAULT_FONT_NAME);
         //双击打开
         schemaCatList.addDoubleClickListener(mouseEvent -> {
             //当前选中的数据库
