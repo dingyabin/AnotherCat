@@ -79,7 +79,7 @@ public class AnotherCatLauncher {
         //设置窗口大小
         jf.setPreferredSize(new Dimension((int) bounds.getWidth(), (int) bounds.getHeight()));
 
-        connectDisplay.setPreferredSize(new Dimension(170,1000));
+        connectDisplay.setPreferredSize(new Dimension(200,1000));
         connectDisplay.setConnectConfigs(ConnectConfigManager.getConnectConfigs());
 
         //左右分割栏设置一键收起
