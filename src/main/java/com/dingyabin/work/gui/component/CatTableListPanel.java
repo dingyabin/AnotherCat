@@ -216,7 +216,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
 
     /**
-     * 右键-清空
+     * 清空列表
      */
     public void clearTableList() {
         this.connectConfig = null;

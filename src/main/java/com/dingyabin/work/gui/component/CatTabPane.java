@@ -41,16 +41,6 @@ public class CatTabPane extends JTabbedPane {
 
 
 
-
-    public int addTabWithTabComponent(String title, Component component, boolean withCloseBtn) {
-        return addTabWithTabComponent(title, null, component, withCloseBtn);
-    }
-
-
-
-
-
-
     /**
      * 关闭除了第一个以外的所有tab
      */
@@ -90,7 +80,7 @@ public class CatTabPane extends JTabbedPane {
      * @param connectConfig  连接
      * @param dataBaseSchema 库
      */
-    public void reSetTablePanelNewDataBaseSchema(List<TableSchema> listData, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
+    public void setTablePanelWithNewDBSchema(List<TableSchema> listData, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
         CatList<TableSchema> tableList = new CatList<>(CatIcons.table, listData).fontSize(15).fontName(CatFonts.DEFAULT_FONT_NAME).layoutVW().visCount(0).multi();
         setComponentAt(FIRST_INDEX, new CatTableListPanel(tableList, connectConfig, dataBaseSchema));
     }
