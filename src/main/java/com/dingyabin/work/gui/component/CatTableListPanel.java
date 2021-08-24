@@ -110,15 +110,12 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
 
     private void initComponent() {
-        //按钮先置灰
-        onSelectOccur(0);
-
         //列表监听
         tableCatList.addListSelectionListener(this);
         //列表右键菜单
         tableCatList.addPopMenuToList(jPopupMenu);
 
-        //设置监听
+        //右键菜单项设置监听
         copy.addActionListener(this);
         open.addActionListener(this);
         modify.addActionListener(this);
@@ -126,7 +123,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         delete.addActionListener(this);
         reFresh.addActionListener(this);
 
-        //安装右键菜单
+        //安装右键菜单项
         jPopupMenu.add(copy);
         jPopupMenu.add(open);
         jPopupMenu.add(modify);
@@ -183,6 +180,10 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
         //底部bar
         bottomBar.setHorizontalTextPosition(SwingConstants.RIGHT);
+
+        //按钮状态设置
+        onSelectOccur(0);
+        //刷新底部bar
         refreshBottomBar();
     }
 
@@ -224,7 +225,6 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         this.dataBaseSchema = dataBaseSchema;
         tableCatList.clearAndResetModel(listData);
         refreshBottomBar();
-        onSelectOccur(0);
     }
 
 
@@ -232,13 +232,12 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
      * 清空
      */
     public void clearTableList() {
+        this.connectConfig = null;
+        this.dataBaseSchema = null;
         if (tableCatList != null) {
             tableCatList.clear();
         }
-        this.connectConfig = null;
-        this.dataBaseSchema = null;
         refreshBottomBar();
-        onSelectOccur(0);
     }
 
 
