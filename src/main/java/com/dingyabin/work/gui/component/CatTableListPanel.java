@@ -93,13 +93,12 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     };
 
 
-
     public CatTableListPanel(CatList<TableSchema> tableSchemaList, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
         super(new BorderLayout(0, 0));
         this.connectConfig = connectConfig;
         this.dataBaseSchema = dataBaseSchema;
+        this.tableCatList = tableSchemaList;
         initComponent();
-        setTableCatList(tableSchemaList);
     }
 
 
@@ -108,19 +107,16 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     }
 
 
-    private void setTableCatList(CatList<TableSchema> tableSchemaList) {
-        tableCatList = tableSchemaList;
-        tableCatList.addListSelectionListener(this);
-        tableCatList.addPopMenuToList(jPopupMenu);
-        add(GuiUtils.createJscrollPane(tableCatList), BorderLayout.CENTER);
-        refreshBottomBar();
-    }
-
 
 
     private void initComponent() {
         //按钮先置灰
         onSelectOccur(0);
+
+        //列表监听
+        tableCatList.addListSelectionListener(this);
+        //列表右键菜单
+        tableCatList.addPopMenuToList(jPopupMenu);
 
         //设置监听
         copy.addActionListener(this);
@@ -182,8 +178,12 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         //初始化对话框
         initDialog();
 
+        //添加列表
+        add(GuiUtils.createJscrollPane(tableCatList), BorderLayout.CENTER);
+
         //底部bar
         bottomBar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        refreshBottomBar();
     }
 
 
