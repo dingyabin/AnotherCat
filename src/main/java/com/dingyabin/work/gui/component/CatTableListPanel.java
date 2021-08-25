@@ -62,9 +62,11 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
     private JMenuItem deleteMenu = new JMenuItem("删除", CatIcons.delete);
 
-    private JMenuItem modifyMenu = new JMenuItem("修改", CatIcons.design);
+    private JMenuItem modifyMenu = new JMenuItem("设计", CatIcons.design);
 
     private JMenuItem reNameMenu = new JMenuItem("重命名", CatIcons.edit);
+
+    private JMenuItem mybatisMenu = new JMenuItem("Mybatis工具", CatIcons.mybatis);
 
     private JMenuItem reFreshMenu = new JMenuItem("刷新", CatIcons.refresh);
 
@@ -137,6 +139,8 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         jPopupMenu.add(reNameMenu);
         jPopupMenu.addSeparator();
         jPopupMenu.add(deleteMenu);
+        jPopupMenu.addSeparator();
+        jPopupMenu.add(mybatisMenu);
         jPopupMenu.addSeparator();
         jPopupMenu.add(reFreshMenu);
 
@@ -431,7 +435,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         copyMenu.setEnabled(selectSize > 0);
         deleteMenu.setEnabled(selectSize > 0);
         openMenu.setEnabled(selectSize > 0);
+        mybatisMenu.setEnabled(selectSize > 0);
         reNameMenu.setEnabled(selectSize == 1);
         modifyMenu.setEnabled(selectSize == 1);
+        reFreshMenu.setEnabled(this.connectConfig != null && this.dataBaseSchema != null);
     }
 }
