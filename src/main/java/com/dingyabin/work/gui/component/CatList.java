@@ -2,15 +2,14 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
-import com.dingyabin.work.common.cons.Const;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
 import static java.util.Optional.ofNullable;
 
 /**
@@ -145,27 +144,5 @@ public class CatList<T> extends JList<T> {
             }
         });
     }
-
-
-
-    public void addPopMenuToList(JPopupMenu jPopupMenu) {
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3) {
-                    int index = locationToIndex(new Point(e.getX(), e.getY()));
-                    if (index < 0) {
-                        return;
-                    }
-                    CatList.this.clearSelection();
-                    setSelectedIndex(index);
-                    jPopupMenu.putClientProperty(Const.JLIST_CURRENT_SELECTED_INDEX, index);
-                    jPopupMenu.show(CatList.this, e.getX(), e.getY());
-                }
-            }
-        });
-    }
-
-
 
 }

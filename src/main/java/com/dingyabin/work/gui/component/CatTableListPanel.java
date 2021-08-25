@@ -9,17 +9,21 @@ import com.dingyabin.work.common.model.TableSchema;
 import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -27,7 +31,7 @@ import java.util.List;
  * Date: 2021/8/20.
  * Time:21:30
  */
-public class CatTableListPanel extends JPanel  implements ActionListener, ListSelectionListener {
+public class CatTableListPanel extends JPanel  implements ActionListener, ListSelectionListener, PopupMenuListener {
 
     private ConnectConfig connectConfig;
 
@@ -52,32 +56,32 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     private JButton cancelToRename =FontMethodsImpl.setFontSize(new JButton("取消", CatIcons.cancel), 14);
 
 
-    private JMenuItem copy = new JMenuItem("复制", CatIcons.copy);
+    private JMenuItem copyMenu = new JMenuItem("复制", CatIcons.copy);
 
-    private JMenuItem open = new JMenuItem("打开", CatIcons.open);
+    private JMenuItem openMenu = new JMenuItem("打开", CatIcons.open);
 
-    private JMenuItem delete = new JMenuItem("删除", CatIcons.delete);
+    private JMenuItem deleteMenu = new JMenuItem("删除", CatIcons.delete);
 
-    private JMenuItem modify = new JMenuItem("修改", CatIcons.design);
+    private JMenuItem modifyMenu = new JMenuItem("修改", CatIcons.design);
 
-    private JMenuItem reName = new JMenuItem("重命名", CatIcons.edit);
+    private JMenuItem reNameMenu = new JMenuItem("重命名", CatIcons.edit);
 
-    private JMenuItem reFresh = new JMenuItem("刷新", CatIcons.refresh);
+    private JMenuItem reFreshMenu = new JMenuItem("刷新", CatIcons.refresh);
 
     private JPopupMenu jPopupMenu = new JPopupMenu();
 
 
-    private JButton openTable = GuiUtils.createButton("打开表", CatIcons.open, StyleId.buttonIconHover);
+    private JButton openTableBtn = GuiUtils.createButton("打开表", CatIcons.open, StyleId.buttonIconHover);
 
-    private JButton designTable = GuiUtils.createButton("设计表", CatIcons.design, StyleId.buttonIconHover);
+    private JButton designTableBtn = GuiUtils.createButton("设计表", CatIcons.design, StyleId.buttonIconHover);
 
-    private JButton newTable = GuiUtils.createButton("新建表", CatIcons.newone, StyleId.buttonIconHover);
+    private JButton newTableBtn = GuiUtils.createButton("新建表", CatIcons.newone, StyleId.buttonIconHover);
 
-    private JButton reNameTable = GuiUtils.createButton("重命名", CatIcons.edit, StyleId.buttonIconHover);
+    private JButton reNameTableBtn = GuiUtils.createButton("重命名", CatIcons.edit, StyleId.buttonIconHover);
 
-    private JButton deleteTable = GuiUtils.createButton("删除表", CatIcons.delete, StyleId.buttonIconHover);
+    private JButton deleteTableBtn = GuiUtils.createButton("删除表", CatIcons.delete, StyleId.buttonIconHover);
 
-    private JButton searchBtn = GuiUtils.createButton(StringUtils.EMPTY, CatIcons.search, StyleId.buttonIconHover);
+    private JButton searchBtnBtn = GuiUtils.createButton(StringUtils.EMPTY, CatIcons.search, StyleId.buttonIconHover);
 
     private JTextField searchInput = GuiUtils.createTextField(25, StyleId.textfieldNoFocus);
 
@@ -112,44 +116,47 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     private void initComponent() {
         //列表监听
         tableCatList.addListSelectionListener(this);
+
+        //右键菜单弹框设置监听
+        jPopupMenu.addPopupMenuListener(this);
         //列表右键菜单
-        tableCatList.addPopMenuToList(jPopupMenu);
+        tableCatList.setComponentPopupMenu(jPopupMenu);
 
         //右键菜单项设置监听
-        copy.addActionListener(this);
-        open.addActionListener(this);
-        modify.addActionListener(this);
-        reName.addActionListener(this);
-        delete.addActionListener(this);
-        reFresh.addActionListener(this);
+        copyMenu.addActionListener(this);
+        openMenu.addActionListener(this);
+        modifyMenu.addActionListener(this);
+        reNameMenu.addActionListener(this);
+        deleteMenu.addActionListener(this);
+        reFreshMenu.addActionListener(this);
 
         //安装右键菜单项
-        jPopupMenu.add(copy);
-        jPopupMenu.add(open);
-        jPopupMenu.add(modify);
-        jPopupMenu.add(reName);
+        jPopupMenu.add(copyMenu);
+        jPopupMenu.add(openMenu);
+        jPopupMenu.add(modifyMenu);
+        jPopupMenu.add(reNameMenu);
         jPopupMenu.addSeparator();
-        jPopupMenu.add(delete);
+        jPopupMenu.add(deleteMenu);
         jPopupMenu.addSeparator();
-        jPopupMenu.add(reFresh);
+        jPopupMenu.add(reFreshMenu);
 
         //左侧的按钮区
         JPanel leftToolBarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 
         //设置监听
-        openTable.addActionListener(this);
-        designTable.addActionListener(this);
-        newTable.addActionListener(this);
-        reNameTable.addActionListener(this);
-        deleteTable.addActionListener(this);
-        searchBtn.addActionListener(this);
+        openTableBtn.addActionListener(this);
+        designTableBtn.addActionListener(this);
+        newTableBtn.addActionListener(this);
+        reNameTableBtn.addActionListener(this);
+        deleteTableBtn.addActionListener(this);
+        searchBtnBtn.addActionListener(this);
 
         //组装按钮
-        leftToolBarPanel.add(openTable);
-        leftToolBarPanel.add(designTable);
-        leftToolBarPanel.add(reNameTable);
-        leftToolBarPanel.add(newTable);
-        leftToolBarPanel.add(deleteTable);
+        leftToolBarPanel.add(openTableBtn);
+        leftToolBarPanel.add(designTableBtn);
+        leftToolBarPanel.add(reNameTableBtn);
+        leftToolBarPanel.add(newTableBtn);
+        leftToolBarPanel.add(deleteTableBtn);
 
         //安装左侧的按钮区
         topBarPanel.add(leftToolBarPanel);
@@ -161,7 +168,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         //组装输入框
         rightToolBarPanel.add(searchInput);
         //组装搜索按钮
-        rightToolBarPanel.add(searchBtn);
+        rightToolBarPanel.add(searchBtnBtn);
 
         //安装右侧的搜索栏
         topBarPanel.add(rightToolBarPanel);
@@ -182,7 +189,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         bottomBar.setHorizontalTextPosition(SwingConstants.RIGHT);
 
         //按钮状态设置
-        onSelectOccur(0);
+        changeToolMenuWhenSelectOccur(0);
         //刷新底部bar
         refreshBottomBar();
     }
@@ -234,7 +241,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     public void valueChanged(ListSelectionEvent e) {
         //如果选中了，就让按钮可用，否则就继续置灰按钮
         int[] selectedIndices = tableCatList.getSelectedIndices();
-        onSelectOccur(ArrayUtils.getLength(selectedIndices));
+        changeToolMenuWhenSelectOccur(ArrayUtils.getLength(selectedIndices));
     }
 
 
@@ -243,15 +250,15 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         //查找
-        if (source == searchBtn) {
+        if (source == searchBtnBtn) {
             searchTable();
             return;
         }
-        if (source == copy) {
+        if (source == copyMenu) {
             copyTableName();
             return;
         }
-        if (source == reName || source == reNameTable) {
+        if (source == reNameMenu || source == reNameTableBtn) {
             showReNameTableDialog();
             return;
         }
@@ -262,9 +269,29 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         if (source == cancelToRename) {
             renameDialog.dispose();
         }
-        if (source == reFresh) {
+        if (source == reFreshMenu) {
             refreshTables();
         }
+    }
+
+
+    @Override
+    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        if (e.getSource() != jPopupMenu || tableCatList == null) {
+            return;
+        }
+        //右键菜单弹出时选中的项目
+        changePopupMenuWhenSelectOccur(ArrayUtils.getLength(tableCatList.getSelectedIndices()));
+    }
+
+    @Override
+    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+    }
+
+    @Override
+    public void popupMenuCanceled(PopupMenuEvent e) {
+
     }
 
 
@@ -307,16 +334,19 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
      */
     private void copyTableName() {
         try {
-            Object property = jPopupMenu.getClientProperty(Const.JLIST_CURRENT_SELECTED_INDEX);
-            if (!(property instanceof Integer)) {
+            List<TableSchema> selectedValues = tableCatList.getSelectedValuesList();
+            if (CollectionUtils.isEmpty(selectedValues)) {
                 return;
             }
-            TableSchema modelByIndex = tableCatList.getModelByIndex((Integer) property);
-            if (modelByIndex == null) {
-                return;
+            String copyText;
+            //只选中了一个,则直接get(0)
+            if (selectedValues.size() == 1) {
+                copyText = selectedValues.get(0).getTableName();
+            } else {
+                copyText = selectedValues.stream().map(TableSchema::getTableName).collect(Collectors.joining(","));
             }
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(new StringSelection(modelByIndex.getTableName()), null);
+            clipboard.setContents(new StringSelection(copyText), null);
         } catch (Exception e) {
             //ignore
         }
@@ -361,7 +391,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
 
 
-
+    /**
+     * 刷新底部bar
+     */
     private void refreshBottomBar(){
         StringBuilder builder  = new StringBuilder();
         if (connectConfig != null) {
@@ -378,13 +410,28 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     }
 
 
-    private void onSelectOccur(int selectSize) {
-        openTable.setEnabled(selectSize > 0);
-        designTable.setEnabled(selectSize == 1);
-        deleteTable.setEnabled(selectSize > 0);
-        reNameTable.setEnabled(selectSize == 1);
-        newTable.setEnabled(this.connectConfig != null && this.dataBaseSchema != null);
+    /**
+     * 当选择改变时，改变toolbar的按钮状态
+     * @param selectSize 选中的个数
+     */
+    private void changeToolMenuWhenSelectOccur(int selectSize) {
+        openTableBtn.setEnabled(selectSize > 0);
+        designTableBtn.setEnabled(selectSize == 1);
+        deleteTableBtn.setEnabled(selectSize > 0);
+        reNameTableBtn.setEnabled(selectSize == 1);
+        newTableBtn.setEnabled(this.connectConfig != null && this.dataBaseSchema != null);
     }
 
 
+    /**
+     * 当右键时，改变右键菜单的按钮状态
+     * @param selectSize 选中的个数
+     */
+    private void changePopupMenuWhenSelectOccur(int selectSize) {
+        copyMenu.setEnabled(selectSize > 0);
+        deleteMenu.setEnabled(selectSize > 0);
+        openMenu.setEnabled(selectSize > 0);
+        reNameMenu.setEnabled(selectSize == 1);
+        modifyMenu.setEnabled(selectSize == 1);
+    }
 }
