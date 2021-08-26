@@ -12,7 +12,6 @@ import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.listeners.SaveConnectListener;
 import com.dingyabin.work.common.model.*;
-import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.utils.GuiUtils;
