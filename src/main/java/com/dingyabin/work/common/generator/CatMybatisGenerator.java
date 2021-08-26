@@ -23,7 +23,7 @@ public class CatMybatisGenerator {
 
 
     public boolean start(ConnectConfig connectConfig, List<ConfigXmlProcessor> xmlProcessors) {
-        try (InputStream inputStream = CatMybatisGenerator.class.getResourceAsStream("/template/generator.xml")) {
+        try (InputStream inputStream = CatMybatisGenerator.class.getResourceAsStream("/template/generator.cfg")) {
             List<String> warnings = new ArrayList<>();
 
             String configXml = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
