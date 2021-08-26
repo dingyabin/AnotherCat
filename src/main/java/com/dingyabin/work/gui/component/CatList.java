@@ -138,7 +138,7 @@ public class CatList<T> extends JList<T> {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
                     eventConsumer.accept(e);
                 }
             }
