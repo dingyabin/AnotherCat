@@ -4,44 +4,41 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
-    <!-- 数据库驱动:选择本地硬盘上面的数据库驱动包-->
-    <classPathEntry  location="/Users/didi/repository/mysql/mysql-connector-java/5.1.41/mysql-connector-java-5.1.41.jar"/>
-
     <context id="context"  targetRuntime="MyBatis3">
 
         <commentGenerator>
-            <property name="suppressDate" value="true"/>
-            <!-- 是否去除自动生成的注释 true:是;false:否 -->
-            <property name="suppressAllComments" value="true"/>
-            <property name="addRemarkComments" value="true"/>
+            <property name="suppressDate" value="${commentGenerator.suppressDate}"/>
+            <!-- 是否去除自动生成的注释-->
+            <property name="suppressAllComments" value="${commentGenerator.suppressAllComments}"/>
+            <property name="addRemarkComments" value="${commentGenerator.addRemarkComments}"/>
         </commentGenerator>
 
         <!--数据库链接URL，用户名、密码 -->
-        <jdbcConnection driverClass="${driverClass}" connectionURL="${connectionURL}" userId="${userId}" password="${password}">
+        <jdbcConnection driverClass="${jdbcConnection.driverClass}" connectionURL="${jdbcConnection.connectionURL}" userId="${jdbcConnection.userId}" password="${jdbcConnection.password}">
 
         </jdbcConnection>
 
         <javaTypeResolver>
-            <property name="forceBigDecimals" value="false"/>
+            <property name="forceBigDecimals" value="${javaTypeResolver.forceBigDecimals}"/>
         </javaTypeResolver>
 
-        <!-- 生成模型的包名和位置-->
-        <javaModelGenerator targetPackage="com.didi.security.crimereview.biz.storage.db.entity" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true"/>
-            <property name="trimStrings" value="true"/>
+        <!-- 生成模型Model的包名和位置-->
+        <javaModelGenerator targetPackage="${javaModelGenerator.targetPackage}" targetProject="${javaModelGenerator.targetProject}">
+            <property name="enableSubPackages" value="${javaModelGenerator.enableSubPackages}"/>
+            <property name="trimStrings" value="${javaModelGenerator.trimStrings}"/>
         </javaModelGenerator>
 
-        <!-- 生成映射文件的包名和位置-->
-        <sqlMapGenerator targetPackage="mappers" targetProject="src/main/resources/mybatis">
-            <property name="enableSubPackages" value="true"/>
+        <!-- 生成映射文件XML的包名和位置-->
+        <sqlMapGenerator targetPackage="${sqlMapGenerator.targetPackage}" targetProject="${sqlMapGenerator.targetProject}">
+            <property name="enableSubPackages" value="${sqlMapGenerator.enableSubPackages}"/>
         </sqlMapGenerator>
 
-        <!-- 生成DAO的包名和位置-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.didi.security.crimereview.biz.storage.db.dao" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true"/>
+        <!-- 生成接口Interface的包名和位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="${javaClientGenerator.targetPackage}" targetProject="${javaClientGenerator.targetProject}">
+            <property name="enableSubPackages" value="${javaClientGenerator.enableSubPackages}"/>
         </javaClientGenerator>
 
         <!-- 要生成的表 tableName是数据库中的表名 domainObjectName是实体类名-->
-        <table tableName="biz_info" domainObjectName="BizInfo" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>
+        <table tableName="demo_demo_demo1" domainObjectName="BizInfo" enableCountByExample="false"  enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>

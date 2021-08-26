@@ -1,5 +1,6 @@
-package com.dingyabin.work.common.utils;
+package com.dingyabin.work.common.generator;
 
+import com.dingyabin.work.common.generator.processor.ConfigXmlProcessor;
 import com.dingyabin.work.common.model.ConnectConfig;
 import org.apache.commons.io.IOUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
@@ -21,13 +22,17 @@ public class CatMybatisGenerator {
 
 
 
-    public boolean start(ConnectConfig connectConfig) {
+    public boolean start(ConnectConfig connectConfig, List<ConfigXmlProcessor> xmlProcessors) {
         try (InputStream inputStream = CatMybatisGenerator.class.getResourceAsStream("/template/generator.xml")) {
             List<String> warnings = new ArrayList<>();
 
-            String configFile = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+            String configXml = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 
-            Configuration config = new ConfigurationParser(warnings).parseConfiguration(new ByteArrayInputStream(configFile.getBytes()));
+            for (ConfigXmlProcessor xmlProcessor : xmlProcessors) {
+                configXml = xmlProcessor.process(configXml);
+            }
+
+            Configuration config = new ConfigurationParser(warnings).parseConfiguration(new ByteArrayInputStream(configXml.getBytes()));
 
             DefaultShellCallback callback = new DefaultShellCallback(true);
             MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
@@ -35,6 +40,7 @@ public class CatMybatisGenerator {
             return true;
         } catch (Exception e) {
             //ignore
+            e.printStackTrace();
         }
         return false;
     }
