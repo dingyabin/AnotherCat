@@ -1,12 +1,15 @@
 package com.dingyabin.work.common.utils;
 
 import com.dingyabin.work.common.model.ConnectConfig;
+import org.apache.commons.io.IOUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,16 +22,12 @@ public class CatMybatisGenerator {
 
 
     public boolean start(ConnectConfig connectConfig) {
-        try {
+        try (InputStream inputStream = CatMybatisGenerator.class.getResourceAsStream("/template/generator.xml")) {
             List<String> warnings = new ArrayList<>();
 
-            File configFile = new File("generatorConfig.xml");
+            String configFile = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 
-
-            ConfigurationParser parser = new ConfigurationParser(warnings);
-
-            Configuration config = parser.parseConfiguration(configFile);
-
+            Configuration config = new ConfigurationParser(warnings).parseConfiguration(new ByteArrayInputStream(configFile.getBytes()));
 
             DefaultShellCallback callback = new DefaultShellCallback(true);
             MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
