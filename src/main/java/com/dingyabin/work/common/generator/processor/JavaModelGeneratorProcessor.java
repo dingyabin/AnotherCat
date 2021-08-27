@@ -12,14 +12,14 @@ import java.util.Properties;
 public class JavaModelGeneratorProcessor extends JavaModelGeneratorConfiguration implements ConfigXmlProcessor {
 
 
-    public static final String enableSubPackages = "enableSubPackages";
+    public static final String ENABLE_SUB_PACKAGES = "enableSubPackages";
 
-    public static final String trimStrings = "trimStrings";
+    public static final String TRIM_STRINGS = "trimStrings";
 
 
     public JavaModelGeneratorProcessor() {
-        addProperty(enableSubPackages, "true");
-        addProperty(trimStrings, "false");
+        addProperty(ENABLE_SUB_PACKAGES, "true");
+        addProperty(TRIM_STRINGS, "false");
     }
 
 
