@@ -1,18 +1,16 @@
 package com.dingyabin.work.common.generator;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
-import org.mybatis.generator.api.dom.java.Field;
-import org.mybatis.generator.api.dom.java.JavaElement;
-import org.mybatis.generator.api.dom.java.Method;
-import org.mybatis.generator.api.dom.java.TopLevelClass;
+import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.DefaultCommentGenerator;
 import org.mybatis.generator.internal.util.StringUtility;
 
 import java.text.SimpleDateFormat;
-import java.util.Properties;
+import java.util.*;
 
 import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 
@@ -23,15 +21,10 @@ import static org.mybatis.generator.internal.util.StringUtility.isTrue;
  */
 public class CatCommentGenerator extends DefaultCommentGenerator {
 
-    private Properties properties;
-
     private boolean suppressDate;
 
     private boolean suppressAllComments;
 
-    /**
-     * If suppressAllComments is true, this option is ignored.
-     */
     private boolean addRemarkComments;
 
     private SimpleDateFormat dateFormat;
@@ -47,7 +40,6 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
 
     public CatCommentGenerator() {
         super();
-        properties = new Properties();
         suppressDate = false;
         suppressAllComments = false;
         addRemarkComments = false;
@@ -56,7 +48,7 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
 
     @Override
     public void addConfigurationProperties(Properties properties) {
-        this.properties.putAll(properties);
+        super.addConfigurationProperties(properties);
         suppressDate = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_DATE));
         suppressAllComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS));
         addRemarkComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_ADD_REMARK_COMMENTS));
@@ -142,10 +134,7 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
             return;
         }
         method.addJavaDocLine("/**");
-        String name = method.getName();
-        if () {
-
-        }
+        generalMethodComment(method, introspectedTable);
         method.addJavaDocLine(" */");
     }
 
@@ -160,6 +149,64 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
 
     @Override
     protected void addJavadocTag(JavaElement javaElement, boolean markAsDoNotDelete) {
+    }
+
+
+    private void generalMethodComment(Method method, IntrospectedTable introspectedTable) {
+        String name = method.getName();
+        if ("deleteByPrimaryKey".equalsIgnoreCase(name)) {
+            method.addJavaDocLine("* 根据主键删除记录");
+            List<Parameter> parameters = method.getParameters();
+            if (CollectionUtils.isNotEmpty(parameters)) {
+                method.addJavaDocLine(String.format("* @param %s 主键", parameters.get(0).getName()));
+            }
+            method.addJavaDocLine("* @return 删除的条数");
+        }
+
+        if ("insert".equalsIgnoreCase(name)) {
+            method.addJavaDocLine("* 插入一条记录(所有字段都会插入)");
+            List<Parameter> parameters = method.getParameters();
+            if (CollectionUtils.isNotEmpty(parameters)) {
+                method.addJavaDocLine(String.format("* @param %s 待插入的记录", parameters.get(0).getName()));
+            }
+            method.addJavaDocLine("* @return 插入的条数");
+        }
+
+        if ("insertSelective".equalsIgnoreCase(name)) {
+            method.addJavaDocLine("* 选择性的插入一条记录(只会插入非空的字段)");
+            List<Parameter> parameters = method.getParameters();
+            if (CollectionUtils.isNotEmpty(parameters)) {
+                method.addJavaDocLine(String.format("* @param %s 待插入的记录", parameters.get(0).getName()));
+            }
+            method.addJavaDocLine("* @return 插入的条数");
+        }
+
+        if ("selectByPrimaryKey".equalsIgnoreCase(name)) {
+            method.addJavaDocLine("* 根据主键查找记录");
+            List<Parameter> parameters = method.getParameters();
+            if (CollectionUtils.isNotEmpty(parameters)) {
+                method.addJavaDocLine(String.format("* @param %s 主键", parameters.get(0).getName()));
+            }
+            method.addJavaDocLine("* @return 结果");
+        }
+
+        if ("updateByPrimaryKeySelective".equalsIgnoreCase(name)) {
+            method.addJavaDocLine("* 根据主键选择性的修改记录(只会修改非空字段)");
+            List<Parameter> parameters = method.getParameters();
+            if (CollectionUtils.isNotEmpty(parameters)) {
+                method.addJavaDocLine(String.format("* @param %s 待修改的记录", parameters.get(0).getName()));
+            }
+            method.addJavaDocLine("* @return 修改的条数");
+        }
+
+        if ("updateByPrimaryKey".equalsIgnoreCase(name)) {
+            method.addJavaDocLine("* 根据主键删除记录(所有字段都会修改)");
+            List<Parameter> parameters = method.getParameters();
+            if (CollectionUtils.isNotEmpty(parameters)) {
+                method.addJavaDocLine(String.format("* @param %s 待修改的记录", parameters.get(0).getName()));
+            }
+            method.addJavaDocLine("* @return 修改的条数");
+        }
     }
 
 
