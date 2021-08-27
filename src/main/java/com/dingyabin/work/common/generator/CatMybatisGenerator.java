@@ -3,6 +3,7 @@ package com.dingyabin.work.common.generator;
 import com.dingyabin.work.common.generator.processor.ConfigXmlProcessor;
 import com.dingyabin.work.common.model.ConnectConfig;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
@@ -21,18 +22,31 @@ import java.util.List;
 public class CatMybatisGenerator {
 
 
-
-    public boolean start(ConnectConfig connectConfig, List<ConfigXmlProcessor> xmlProcessors) {
+    public String makeCfgXml(ConnectConfig connectConfig, List<ConfigXmlProcessor> xmlProcessors) {
         try (InputStream inputStream = CatMybatisGenerator.class.getResourceAsStream("/template/generator.cfg")) {
-            List<String> warnings = new ArrayList<>();
-
+            //xml模板
             String configXml = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-
+            //替换配置
             for (ConfigXmlProcessor xmlProcessor : xmlProcessors) {
                 configXml = xmlProcessor.process(configXml);
             }
+            return configXml;
+        } catch (Exception e) {
+            //ignore
+        }
+        return StringUtils.EMPTY;
+    }
 
-            Configuration config = new ConfigurationParser(warnings).parseConfiguration(new ByteArrayInputStream(configXml.getBytes()));
+
+
+    public boolean generate(String makeCfgXml) {
+        try {
+            if (StringUtils.isBlank(makeCfgXml)) {
+                return false;
+            }
+            List<String> warnings = new ArrayList<>();
+
+            Configuration config = new ConfigurationParser(warnings).parseConfiguration(new ByteArrayInputStream(makeCfgXml.getBytes()));
 
             DefaultShellCallback callback = new DefaultShellCallback(true);
             MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
@@ -40,7 +54,6 @@ public class CatMybatisGenerator {
             return true;
         } catch (Exception e) {
             //ignore
-            e.printStackTrace();
         }
         return false;
     }
