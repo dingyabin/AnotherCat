@@ -19,6 +19,7 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 import javax.swing.*;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -87,28 +88,27 @@ public class CatMybatisGenerator {
     }
 
 
-    public static void main(String[] args) {
-       // JdbcConnectionProcessor jdbcConnectionProcessor = new JdbcConnectionProcessor(new ConnectConfig("xxx","MYSQL","127.0.0.1","3306","root","12345678"),"weight_manager");
-        CommentGeneratorProcessor commentGeneratorProcessor = new CommentGeneratorProcessor();
-        JavaModelGeneratorProcessor javaModelGeneratorProcessor = new JavaModelGeneratorProcessor();
-        javaModelGeneratorProcessor.setTargetPackage("com");
-        javaModelGeneratorProcessor.setTargetProject("F:\\demo1");
-        List<ConfigXmlProcessor> xmlProcessors = new ArrayList<>();
-       // xmlProcessors.add(jdbcConnectionProcessor);
-        xmlProcessors.add(commentGeneratorProcessor);
-        xmlProcessors.add(javaModelGeneratorProcessor);
-        String s = CatMybatisGenerator.getInstance().makeCfgXml(xmlProcessors);
-        //System.out.println(s);
-        //CatMybatisGenerator.getInstance().generate(s);
-
-        JFrame j= new JFrame();
-        JEditorPane jEditorPane = new JEditorPane();
-        XMLEditorKit xmlEditorKit = new XMLEditorKit();
-//        xmlEditorKit.setTagCompletion(true);
-//        xmlEditorKit.setAutoIndentation(true);
-        jEditorPane.setEditorKit(xmlEditorKit);
-        jEditorPane.setText(s);
-        j.add(jEditorPane);
-        GuiUtils.jFrameCommonAction(j);
-    }
+//    public static void main(String[] args) throws IOException {
+//       // JdbcConnectionProcessor jdbcConnectionProcessor = new JdbcConnectionProcessor(new ConnectConfig("xxx","MYSQL","127.0.0.1","3306","root","12345678"),"weight_manager");
+//        CommentGeneratorProcessor commentGeneratorProcessor = new CommentGeneratorProcessor();
+//        JavaModelGeneratorProcessor javaModelGeneratorProcessor = new JavaModelGeneratorProcessor();
+//        javaModelGeneratorProcessor.setTargetPackage("com");
+//        javaModelGeneratorProcessor.setTargetProject("F:\\demo1");
+//        List<ConfigXmlProcessor> xmlProcessors = new ArrayList<>();
+//       // xmlProcessors.add(jdbcConnectionProcessor);
+//        xmlProcessors.add(commentGeneratorProcessor);
+//        xmlProcessors.add(javaModelGeneratorProcessor);
+//        String s = CatMybatisGenerator.getInstance().makeCfgXml(xmlProcessors);
+//        //System.out.println(s);
+//        //CatMybatisGenerator.getInstance().generate(s);
+//
+//        JFrame j= new JFrame();
+//        JEditorPane jEditorPane = new JEditorPane();
+//        JScrollPane scroller = new JScrollPane(jEditorPane);
+//        XMLEditorKit xmlEditorKit = new XMLEditorKit();
+//        jEditorPane.setEditorKit(xmlEditorKit);
+//        jEditorPane.setText(s);
+//        j.add(scroller);
+//        GuiUtils.jFrameCommonAction(j);
+//    }
 }

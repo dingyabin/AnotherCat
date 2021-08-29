@@ -102,11 +102,6 @@
             <artifactId>mybatis-generator-core</artifactId>
             <version>1.4.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>nz.ac.waikato.cms.weka.thirdparty</groupId>-->
-<!--            <artifactId>bounce</artifactId>-->
-<!--            <version>0.18</version>-->
-<!--        </dependency>-->
     </dependencies>
 
 

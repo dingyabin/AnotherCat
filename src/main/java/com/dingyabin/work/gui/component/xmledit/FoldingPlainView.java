@@ -291,8 +291,6 @@ public class FoldingPlainView extends PlainView {
 	protected void updateMetrics() {
 		Component host = getContainer();
 		Font f = host.getFont();
-		// FoldingMargin margin =
-		// ((JEditorPane)getContainer()).getFoldingMargin();
 
 		if (font != f) {
 			// The font changed, we need to recalculate the
