@@ -1,6 +1,9 @@
 package com.dingyabin.work.common.generator;
 
+import com.dingyabin.work.common.generator.processor.CommentGeneratorProcessor;
 import com.dingyabin.work.common.generator.processor.ConfigXmlProcessor;
+import com.dingyabin.work.common.generator.processor.JavaModelGeneratorProcessor;
+import com.dingyabin.work.common.generator.processor.JdbcConnectionProcessor;
 import com.dingyabin.work.common.model.ConnectConfig;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +25,7 @@ import java.util.List;
 public class CatMybatisGenerator {
 
 
-    public String makeCfgXml(ConnectConfig connectConfig, List<ConfigXmlProcessor> xmlProcessors) {
+    public String makeCfgXml(List<ConfigXmlProcessor> xmlProcessors) {
         try (InputStream inputStream = CatMybatisGenerator.class.getResourceAsStream("/template/generator.cfg")) {
             //xml模板
             String configXml = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
@@ -61,8 +64,6 @@ public class CatMybatisGenerator {
 
 
 
-
-
     /**
      * 内部类，持有MybatisGenerator的单例, 延迟加载
      */
@@ -80,4 +81,17 @@ public class CatMybatisGenerator {
     }
 
 
+//    public static void main(String[] args) {
+//        JdbcConnectionProcessor jdbcConnectionProcessor = new JdbcConnectionProcessor(new ConnectConfig("xxx","MYSQL","127.0.0.1","3306","root","12345678"),"weight_manager");
+//        CommentGeneratorProcessor commentGeneratorProcessor = new CommentGeneratorProcessor();
+//        JavaModelGeneratorProcessor javaModelGeneratorProcessor = new JavaModelGeneratorProcessor();
+//        javaModelGeneratorProcessor.setTargetPackage("com");
+//        javaModelGeneratorProcessor.setTargetProject("F:\\demo1");
+//        List<ConfigXmlProcessor> xmlProcessors = new ArrayList<>();
+//        xmlProcessors.add(jdbcConnectionProcessor);
+//        xmlProcessors.add(commentGeneratorProcessor);
+//        xmlProcessors.add(javaModelGeneratorProcessor);
+//        String s = CatMybatisGenerator.getInstance().makeCfgXml(xmlProcessors);
+//        System.out.println(s);
+//    }
 }

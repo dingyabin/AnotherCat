@@ -66,7 +66,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
     private JMenuItem reNameMenu = new JMenuItem("重命名", CatIcons.edit);
 
-    private JMenuItem mybatisMenu = new JMenuItem("Mybatis工具", CatIcons.mybatis);
+    private JMenuItem mybatisMenu = new JMenuItem("Mybatis代码生成", CatIcons.mybatis);
 
     private JMenuItem reFreshMenu = new JMenuItem("刷新", CatIcons.refresh);
 

@@ -42,7 +42,7 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
         super();
         suppressDate = false;
         suppressAllComments = false;
-        addRemarkComments = false;
+        addRemarkComments = true;
     }
 
 

@@ -11,6 +11,18 @@ import java.util.Properties;
 public class CommentGeneratorProcessor extends CommentGeneratorConfiguration implements ConfigXmlProcessor {
 
 
+    public static final String SUPPRESS_DATE = "suppressDate";
+
+    public static final String SUPPRESS_ALL_COMMENTS = "suppressAllComments";
+
+    public static final String ADD_REMARK_COMMENTS = "addRemarkComments";
+
+    public CommentGeneratorProcessor() {
+        addProperty(SUPPRESS_DATE,"false");
+        addProperty(SUPPRESS_ALL_COMMENTS,"false");
+        addProperty(ADD_REMARK_COMMENTS,"true");
+    }
+
     @Override
     public String process(String xmlString) {
         Properties properties = getProperties();
