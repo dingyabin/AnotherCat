@@ -17,7 +17,7 @@ public class JdbcConnectionProcessor extends JDBCConnectionConfiguration impleme
         setUserId(connectConfig.getUserName());
         setPassword(connectConfig.getPwd());
         SchemaMeta schemaMeta = SchemaMetaManager.getSchemaMeta(connectConfig.typeEnum());
-        setConnectionURL(schemaMeta.connectUrl(connectConfig.getHost(), connectConfig.getPort(), dbName));
+        setConnectionURL(schemaMeta.connectUrl(connectConfig.getHost(), connectConfig.getPort(), dbName).replaceAll("&","&amp;"));
         setDriverClass(schemaMeta.driverClassName());
     }
 
