@@ -30,7 +30,7 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
     private SimpleDateFormat dateFormat;
 
 
-    private static final String BR = "<br/>";
+    private static final String BR = "  <br/>";
     private static final String COLUMN_NAME = "* 字段名：";
     private static final String REMARKS = "* 字段描述：";
     private static final String GETTER_REMARKS = "* 该方法返回值对应数据库里的：";

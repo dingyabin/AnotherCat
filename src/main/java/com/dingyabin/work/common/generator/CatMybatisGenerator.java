@@ -93,5 +93,6 @@ public class CatMybatisGenerator {
 //        xmlProcessors.add(javaModelGeneratorProcessor);
 //        String s = CatMybatisGenerator.getInstance().makeCfgXml(xmlProcessors);
 //        System.out.println(s);
+//        CatMybatisGenerator.getInstance().generate(s);
 //    }
 }
