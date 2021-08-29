@@ -131,6 +131,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         reNameMenu.addActionListener(this);
         deleteMenu.addActionListener(this);
         reFreshMenu.addActionListener(this);
+        mybatisMenu.addActionListener(this);
 
         //安装右键菜单项
         jPopupMenu.add(copyMenu);
@@ -272,9 +273,14 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         }
         if (source == cancelToRename) {
             renameDialog.dispose();
+            return;
         }
         if (source == reFreshMenu) {
             refreshTables();
+            return;
+        }
+        if (source == mybatisMenu) {
+            //;
         }
     }
 
