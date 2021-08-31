@@ -85,7 +85,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
     private JButton searchBtnBtn = GuiUtils.createButton(StringUtils.EMPTY, CatIcons.search, StyleId.buttonIconHover);
 
-    private JTextField searchInput = GuiUtils.createTextField(25, StyleId.textfieldNoFocus);
+    private JTextField searchInput = GuiUtils.createTextField(25, StyleId.textfieldNoFocus, CatFonts.DEFAULT_FONT_NAME);
 
     private JPanel topBarPanel = new JPanel(new GridLayout(1,2));
 
@@ -280,7 +280,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
             return;
         }
         if (source == mybatisMenu) {
-            //;
+           new MybatisGeneratorDialog().showSelf();
         }
     }
 

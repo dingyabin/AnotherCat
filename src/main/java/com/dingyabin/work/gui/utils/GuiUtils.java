@@ -6,6 +6,7 @@ import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.gui.component.CatFonts;
 import com.dingyabin.work.gui.component.CatIcons;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -156,8 +157,22 @@ public class GuiUtils {
      * @return 输入框
      */
     public static JTextField createTextField(int column, StyleId styleId) {
+        return createTextField(column, styleId, null);
+    }
+
+
+    /**
+     * 创建输入框
+     * @param column 宽度
+     * @param styleId 样式
+     * @param fontName 字体
+     * @return 输入框
+     */
+    public static JTextField createTextField(int column, StyleId styleId, String fontName) {
         JTextField textField = new JTextField(column);
-        FontMethodsImpl.setFontName(textField, CatFonts.DEFAULT_FONT_NAME);
+        if (StringUtils.isNotBlank(fontName)) {
+            FontMethodsImpl.setFontName(textField, fontName);
+        }
         textField.putClientProperty(StyleId.STYLE_PROPERTY, styleId);
         return textField;
     }
