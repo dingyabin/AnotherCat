@@ -3,6 +3,7 @@ package com.dingyabin.work.gui.component;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
+import com.dingyabin.work.common.generator.bean.TableNameCfg;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.DataBaseSchema;
 import com.dingyabin.work.common.model.TableSchema;
@@ -22,6 +23,7 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -280,7 +282,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
             return;
         }
         if (source == mybatisMenu) {
-           new MybatisGeneratorDialog().showSelf();
+            mybatisGenerator();
         }
     }
 
@@ -445,5 +447,17 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         reNameMenu.setEnabled(selectSize == 1);
         modifyMenu.setEnabled(selectSize == 1);
         reFreshMenu.setEnabled(this.connectConfig != null && this.dataBaseSchema != null);
+    }
+
+
+
+    private void mybatisGenerator(){
+        List<TableSchema> selectedValues = tableCatList.getSelectedValuesList();
+        if (CollectionUtils.isEmpty(selectedValues)) {
+            return;
+        }
+        java.util.List<TableNameCfg> tableNameCfg = new ArrayList<>();
+        selectedValues.forEach(tableSchema -> tableNameCfg.add(new TableNameCfg(tableSchema.getTableName())));
+        new MybatisGeneratorDialog(tableNameCfg).showSelf();
     }
 }

@@ -2,6 +2,9 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.extended.filechooser.WebDirectoryChooser;
 import com.alee.managers.style.StyleId;
+import com.dingyabin.work.common.generator.bean.TableNameCfg;
+import com.dingyabin.work.common.model.ConnectConfig;
+import com.dingyabin.work.common.model.DataBaseSchema;
 import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
@@ -18,6 +21,12 @@ import java.io.File;
  * Time:22:15
  */
 public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
+
+    private java.util.List<TableNameCfg> tableNameCfgList;
+
+    private ConnectConfig connectConfig;
+
+    private DataBaseSchema dataBaseSchema;
 
     private LineBorder lineBorder = new LineBorder(CatColors.GENERATOR_WINDOW_BORDER, 3, true);
 
@@ -38,12 +47,9 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
     private JPanel sqlXmlInputPanel = new JPanel();
 
 
-
-
-
-
-    public MybatisGeneratorDialog() {
+    public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList) {
         super(ComContextManager.getMainFrame());
+        this.tableNameCfgList = tableNameCfgList;
         init();
     }
 
