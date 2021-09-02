@@ -25,4 +25,11 @@ public class TableNameCfg {
         this.tableName = tableName;
         this.modelName = modelName;
     }
+
+    @Override
+    public String toString() {
+        return "TableNameCfg{" +
+                "tableName='" + tableName + '\'' +
+                '}';
+    }
 }

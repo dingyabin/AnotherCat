@@ -29,9 +29,9 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
     private DataBaseSchema dataBaseSchema;
 
-    private LineBorder lineBorder = new LineBorder(CatColors.GENERATOR_WINDOW_BORDER, 3, true);
+    private LineBorder lineBorder = new LineBorder(CatColors.GENERATOR_WINDOW_BORDER, 2, true);
 
-    private JPanel projectInputPanel = new JPanel();
+    private JPanel projectInputPanel = new JPanel(new BorderLayout(10,5));
 
      private JLabel projectLabel = GuiUtils.createLabel("选择工程目录：", SwingConstants.RIGHT, 15);
 
@@ -41,7 +41,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
 
     //Model&Bean配置
-    private JPanel modelInputPanel = new JPanel();
+    private JPanel modelInputPanel = new JPanel(new BorderLayout(10,5));
 
     private JLabel modelPackageLabel = GuiUtils.createLabel("包名(Package)：", SwingConstants.RIGHT, 14);
 
@@ -52,11 +52,28 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
     private JTextField modelPathInputField = GuiUtils.createTextField(20, StyleId.textfieldNoFocus);
 
 
+    //DAO配置
+    private JPanel daoInputPanel = new JPanel(new BorderLayout(10,5));
 
-    private JPanel daoInputPanel = new JPanel();
+    private JLabel daoPackageLabel = GuiUtils.createLabel("包名(Package)：", SwingConstants.RIGHT, 14);
+
+    private JTextField daoPackageInputField = GuiUtils.createTextField(40, StyleId.textfieldNoFocus);
+
+    private JLabel daoPathLabel = GuiUtils.createLabel("Path：", SwingConstants.RIGHT, 14);
+
+    private JTextField daoPathInputField = GuiUtils.createTextField(20, StyleId.textfieldNoFocus);
 
 
-    private JPanel sqlXmlInputPanel = new JPanel();
+
+    private JPanel sqlXmlInputPanel = new JPanel(new BorderLayout(10,5));
+
+    private JLabel xmlPackageLabel = GuiUtils.createLabel("包名(Package)：", SwingConstants.RIGHT, 14);
+
+    private JTextField xmlPackageInputField = GuiUtils.createTextField(40, StyleId.textfieldNoFocus);
+
+    private JLabel xmlPathLabel = GuiUtils.createLabel("Path：", SwingConstants.RIGHT, 14);
+
+    private JTextField xmlPathInputField = GuiUtils.createTextField(20, StyleId.textfieldNoFocus);
 
 
     public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList) {
@@ -86,22 +103,27 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
         //工程路径选择
         projectInputPanel.setBorder(new TitledBorder(lineBorder, "工程目录", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.GENERATOR_WINDOW_BORDER));
-        projectInputPanel.add(GuiUtils.createHorizontalBox(projectLabel, projectInputField, Box.createHorizontalStrut(20), projectInputBtn));
+        projectInputPanel.add(GuiUtils.createHorizontalBox(projectLabel, projectInputField, Box.createHorizontalStrut(20), projectInputBtn), BorderLayout.NORTH);
 
 
         //Model配置
         modelInputPanel.setBorder(new TitledBorder(lineBorder, "Model&Bean配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.GENERATOR_WINDOW_BORDER));
         modelPathInputField.setText(Const.GENERATOR_DEFAULT_CODE_PATH);
-        modelInputPanel.add(GuiUtils.createHorizontalBox(modelPackageLabel, modelPackageInputField, Box.createHorizontalStrut(10), modelPathLabel, modelPathInputField));
+        modelInputPanel.add(GuiUtils.createHorizontalBox(modelPackageLabel, modelPackageInputField, Box.createHorizontalStrut(10), modelPathLabel, modelPathInputField), BorderLayout.NORTH);
+
+        modelInputPanel.add(GuiUtils.createVerticalBox(GuiUtils.createLabel("表名与Model名映射(双击可编辑)", JLabel.LEFT, 13), new CatList<>(tableNameCfgList)), BorderLayout.WEST);
+        modelInputPanel.add(GuiUtils.createVerticalBox(GuiUtils.createLabel("列名与Model字段名映射(双击可编辑)", JLabel.LEFT, 13), new CatList<>(tableNameCfgList)), BorderLayout.EAST);
 
 
         //DAO配置
         daoInputPanel.setBorder(new TitledBorder(lineBorder, "DAO配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.GENERATOR_WINDOW_BORDER));
-
+        daoPathInputField.setText(Const.GENERATOR_DEFAULT_CODE_PATH);
+        daoInputPanel.add(GuiUtils.createHorizontalBox(daoPackageLabel, daoPackageInputField, Box.createHorizontalStrut(10), daoPathLabel, daoPathInputField), BorderLayout.NORTH);
 
         //SQL XML配置
         sqlXmlInputPanel.setBorder(new TitledBorder(lineBorder, "XMLMapper配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.GENERATOR_WINDOW_BORDER));
-
+        xmlPathInputField.setText(Const.GENERATOR_DEFAULT_CODE_PATH);
+        sqlXmlInputPanel.add(GuiUtils.createHorizontalBox(xmlPackageLabel, xmlPackageInputField, Box.createHorizontalStrut(10), xmlPathLabel, xmlPathInputField), BorderLayout.NORTH);
 
 
 
