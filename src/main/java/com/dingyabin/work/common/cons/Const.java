@@ -41,6 +41,8 @@ public class Const {
 
     public static  final String JLIST_CURRENT_SELECTED_INDEX = "jlist.selected.index";
 
+    public static final String GENERATOR_DEFAULT_CODE_PATH = "src/main/java";
+
 
 
 

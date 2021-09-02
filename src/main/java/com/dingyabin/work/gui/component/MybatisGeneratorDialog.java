@@ -2,6 +2,7 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.extended.filechooser.WebDirectoryChooser;
 import com.alee.managers.style.StyleId;
+import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.generator.bean.TableNameCfg;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.DataBaseSchema;
@@ -30,15 +31,26 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
     private LineBorder lineBorder = new LineBorder(CatColors.GENERATOR_WINDOW_BORDER, 3, true);
 
-    private JPanel projectInputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,30,5));
+    private JPanel projectInputPanel = new JPanel();
 
-    private JTextField projectInputField = GuiUtils.createTextField(60, StyleId.textfieldNoFocus);
+     private JLabel projectLabel = GuiUtils.createLabel("选择工程目录：", SwingConstants.RIGHT, 15);
 
-    private JButton projectInputBtn = GuiUtils.createButton("选择目录...", CatIcons.open, StyleId.button);
+    private JTextField projectInputField = GuiUtils.createTextField(50, StyleId.textfieldNoFocus);
+
+    private JButton projectInputBtn = GuiUtils.createButton("选择目录...", CatIcons.open, StyleId.button, this);
 
 
-
+    //Model&Bean配置
     private JPanel modelInputPanel = new JPanel();
+
+    private JLabel modelPackageLabel = GuiUtils.createLabel("包名(Package)：", SwingConstants.RIGHT, 14);
+
+    private JTextField modelPackageInputField = GuiUtils.createTextField(40, StyleId.textfieldNoFocus);
+
+    private JLabel modelPathLabel = GuiUtils.createLabel("Path：", SwingConstants.RIGHT, 14);
+
+    private JTextField modelPathInputField = GuiUtils.createTextField(20, StyleId.textfieldNoFocus);
+
 
 
     private JPanel daoInputPanel = new JPanel();
@@ -57,8 +69,6 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
     private void init(){
         generateComponent();
-        //始终在最上面
-        setAlwaysOnTop(true);
         //自适应大小
         pack();
         //可调大小
@@ -76,17 +86,18 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
         //工程路径选择
         projectInputPanel.setBorder(new TitledBorder(lineBorder, "工程目录", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.GENERATOR_WINDOW_BORDER));
-        projectInputPanel.add(GuiUtils.createLabel("选择工程目录：", SwingConstants.RIGHT, 15));
-        projectInputPanel.add(projectInputField);
-        projectInputBtn.addActionListener(this);
-        projectInputPanel.add(projectInputBtn);
+        projectInputPanel.add(GuiUtils.createHorizontalBox(projectLabel, projectInputField, Box.createHorizontalStrut(20), projectInputBtn));
 
 
         //Model配置
         modelInputPanel.setBorder(new TitledBorder(lineBorder, "Model&Bean配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.GENERATOR_WINDOW_BORDER));
+        modelPathInputField.setText(Const.GENERATOR_DEFAULT_CODE_PATH);
+        modelInputPanel.add(GuiUtils.createHorizontalBox(modelPackageLabel, modelPackageInputField, Box.createHorizontalStrut(10), modelPathLabel, modelPathInputField));
+
 
         //DAO配置
         daoInputPanel.setBorder(new TitledBorder(lineBorder, "DAO配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.GENERATOR_WINDOW_BORDER));
+
 
         //SQL XML配置
         sqlXmlInputPanel.setBorder(new TitledBorder(lineBorder, "XMLMapper配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.GENERATOR_WINDOW_BORDER));

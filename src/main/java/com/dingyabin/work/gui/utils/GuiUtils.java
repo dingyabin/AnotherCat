@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.net.URI;
 
 /**
@@ -142,6 +143,21 @@ public class GuiUtils {
      * @param styleId 样式
      * @return 按钮
      */
+    public static JButton createButton(String text, Icon icon, StyleId styleId, ActionListener listener){
+        JButton jButton = new JButton(text,icon);
+        jButton.putClientProperty(StyleId.STYLE_PROPERTY, styleId);
+        jButton.addActionListener(listener);
+        return jButton;
+    }
+
+
+    /**
+     * 创建按钮
+     * @param text 文字
+     * @param icon 图标
+     * @param styleId 样式
+     * @return 按钮
+     */
     public static JButton createButton(String text, Icon icon, StyleId styleId, int fontSize){
         JButton jButton = new JButton(text,icon);
         jButton.putClientProperty(StyleId.STYLE_PROPERTY, styleId);
@@ -175,6 +191,38 @@ public class GuiUtils {
         }
         textField.putClientProperty(StyleId.STYLE_PROPERTY, styleId);
         return textField;
+    }
+
+
+
+
+    /**
+     *  创建横向的box
+     * @param components 要添加的元素
+     * @return 横向的box
+     */
+    public static Box createHorizontalBox(Component... components) {
+        Box horizontalBox = Box.createHorizontalBox();
+        for (Component component : components) {
+            horizontalBox.add(component);
+        }
+        return horizontalBox;
+    }
+
+
+
+
+    /**
+     * 创建竖向的box
+     * @param components 要添加的元素
+     * @return 竖向的box
+     */
+    public static Box createVerticalBox(Component... components) {
+        Box verticalBox = Box.createVerticalBox();
+        for (Component component : components) {
+            verticalBox.add(component);
+        }
+        return verticalBox;
     }
 
 }
