@@ -13,6 +13,10 @@ public class CatFonts {
 
     public static final String DEFAULT_FONT_NAME = "Consolas";
 
-    public static final Font GENERATOR_WINDOW_BORDER = new Font("微软雅黑", Font.PLAIN,15);
+    public static final Font CONSOLAS_15 = new Font("Consolas", Font.PLAIN,15);
+
+    public static final Font MICRO_SOFT_15 = new Font("微软雅黑", Font.PLAIN,15);
+
+    public static final Font MICRO_SOFT_14 = new Font("微软雅黑", Font.PLAIN,14);
 
 }

@@ -1,7 +1,9 @@
 package com.dingyabin.work.common.generator.bean;
 
+import com.dingyabin.work.gui.component.model.IGeneratorTableModel;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author 丁亚宾
@@ -10,7 +12,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class TableNameCfg {
+public class TableNameCfg implements IGeneratorTableModel {
+
+    public static final String[] HEADER = {"表名", "Model名"};
 
     private String tableName;
 
@@ -24,6 +28,18 @@ public class TableNameCfg {
     public TableNameCfg(String tableName, String modelName) {
         this.tableName = tableName;
         this.modelName = modelName;
+    }
+
+
+    @Override
+    public String getValueAtColumn(int column) {
+        if (column == 0) {
+            return getTableName();
+        }
+        if (column == 1) {
+            return getModelName();
+        }
+        return StringUtils.EMPTY;
     }
 
     @Override
