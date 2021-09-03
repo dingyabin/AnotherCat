@@ -85,6 +85,8 @@ public class CatIcons {
 
     public static final ImageIcon mybatis = new ImageIcon(CatIcons.class.getResource("/icons/mybatis.png"));
 
+    public static final ImageIcon doublelink = new ImageIcon(CatIcons.class.getResource("/icons/double_link.png"));
+
 
 
 

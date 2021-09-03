@@ -117,8 +117,9 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
         modelPathInputField.setText(Const.GENERATOR_DEFAULT_CODE_PATH);
         modelInputPanel.add(GuiUtils.createHorizontalBox(modelPackageLabel, modelPackageInputField, Box.createHorizontalStrut(10), modelPathLabel, modelPathInputField), BorderLayout.NORTH);
 
-        modelInputPanel.add(GuiUtils.createVerticalBox(GuiUtils.createLabel("表名与Model名映射(双击可编辑)", JLabel.LEFT, 13), new CatList<>(tableNameCfgList)), BorderLayout.WEST);
-        modelInputPanel.add(GuiUtils.createVerticalBox(GuiUtils.createLabel("列名与Model字段名映射(双击可编辑)", JLabel.LEFT, 13), new CatList<>(tableNameCfgList)), BorderLayout.EAST);
+        modelInputPanel.add(new CatList<>(tableNameCfgList), BorderLayout.WEST);
+        modelInputPanel.add(GuiUtils.createLabel("双击可编辑", JLabel.BOTTOM, JLabel.CENTER, JLabel.CENTER, CatIcons.doublelink));
+        modelInputPanel.add(new CatList<>(tableNameCfgList), BorderLayout.EAST);
 
         //DAO配置
         daoInputPanel.setBorder(new TitledBorder(lineBorder, "DAO配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.GENERATOR_WINDOW_BORDER));

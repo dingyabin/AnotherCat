@@ -122,6 +122,23 @@ public class GuiUtils {
     }
 
 
+
+    /**
+     * 创建一个Label
+     * @param text 文字
+     * @param verticalTextPosition 对齐方式
+     * @param icon 图标
+     * @return label
+     */
+    public static JLabel createLabel(String text, int verticalTextPosition, int horizontalTextPosition, int horizontalAlignment, Icon icon) {
+        JLabel jLabel = new JLabel(text, icon, horizontalAlignment);
+        jLabel.setVerticalTextPosition(verticalTextPosition);
+        jLabel.setHorizontalTextPosition(horizontalTextPosition);
+        return jLabel;
+    }
+
+
+
     /**
      * 创建按钮
      * @param text 文字
