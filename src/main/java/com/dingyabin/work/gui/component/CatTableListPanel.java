@@ -2,7 +2,6 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
-import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.generator.bean.TableNameCfg;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.DataBaseSchema;
@@ -24,6 +23,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -458,6 +458,6 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         }
         java.util.List<TableNameCfg> tableNameCfg = new ArrayList<>();
         selectedValues.forEach(tableSchema -> tableNameCfg.add(new TableNameCfg(tableSchema.getTableName())));
-        new MybatisGeneratorDialog(tableNameCfg).showSelf();
+        new MybatisGeneratorDialog(tableNameCfg, Collections.emptyList()).showSelf();
     }
 }

@@ -1,8 +1,10 @@
 package com.dingyabin.work.gui.component;
 
 import com.alee.extended.filechooser.WebDirectoryChooser;
+import com.alee.laf.filechooser.IFileChooserPainter;
 import com.alee.managers.style.StyleId;
 import com.dingyabin.work.common.cons.Const;
+import com.dingyabin.work.common.generator.bean.ColumnNameCfg;
 import com.dingyabin.work.common.generator.bean.TableNameCfg;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.DataBaseSchema;
@@ -13,7 +15,10 @@ import com.dingyabin.work.gui.utils.GuiUtils;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +33,10 @@ import java.util.List;
 public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
     private java.util.List<TableNameCfg> tableNameCfgList;
+
+    private java.util.List<ColumnNameCfg> columnNameCfgList;
+
+
 
     private ConnectConfig connectConfig;
 
@@ -90,9 +99,10 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
     private JTextField xmlPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus);
 
 
-    public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList) {
+    public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList, java.util.List<ColumnNameCfg> columnNameCfgList) {
         super(ComContextManager.getMainFrame());
         this.tableNameCfgList = tableNameCfgList;
+        this.columnNameCfgList = columnNameCfgList;
         init();
     }
 
@@ -100,8 +110,8 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
     private void init() {
         //初始化table
-        commonInitTable(modelNameTable, TableNameCfg.HEADER, tableNameCfgList);
-        commonInitTable(columnNameTable, TableNameCfg.HEADER, tableNameCfgList);
+        commonInitTable(modelNameTable, TableNameCfg.HEADER, TableNameCfg.EDIT_COLUMN_INDEX, tableNameCfgList);
+        commonInitTable(columnNameTable, ColumnNameCfg.HEADER, ColumnNameCfg.EDIT_COLUMN_INDEX, columnNameCfgList);
         //组装组件
         generateComponent();
         //自适应大小
@@ -189,8 +199,16 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
 
 
-    private void commonInitTable(JTable table, String[] header, List<? extends IGeneratorTableModel> models ) {
+    private void commonInitTable(JTable table, String[] header, int editColumn, List<? extends IGeneratorTableModel> models ) {
         table.setModel(new ModelGeneratorTableModel(models, header));
+
+        //设置渲染器
+        if (editColumn >= 0) {
+            JTextField jTextField = new JTextField();
+            jTextField.setFont(CatFonts.CONSOLAS_15);
+            table.getColumnModel().getColumn(editColumn).setCellEditor(new DefaultCellEditor(jTextField));
+        }
+
         //表格字体设置
         table.setFont(CatFonts.CONSOLAS_15);
         table.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.table);

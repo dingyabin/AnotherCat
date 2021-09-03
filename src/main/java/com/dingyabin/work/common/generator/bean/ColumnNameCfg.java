@@ -4,6 +4,7 @@ import com.dingyabin.work.gui.component.model.IGeneratorTableModel;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.mybatis.generator.internal.util.JavaBeansUtil;
 
 /**
  * @author 丁亚宾
@@ -16,6 +17,8 @@ public class ColumnNameCfg implements IGeneratorTableModel {
 
     public static final String[] HEADER = {"列名", "Model字段名"};
 
+    public static final int  EDIT_COLUMN_INDEX = 1;
+
     private String columnName;
 
     private String fieldName;
@@ -23,6 +26,7 @@ public class ColumnNameCfg implements IGeneratorTableModel {
 
     public ColumnNameCfg(String columnName) {
         this.columnName = columnName;
+        this.fieldName =  JavaBeansUtil.getCamelCaseString(columnName, true);
     }
 
     public ColumnNameCfg(String columnName, String fieldName) {
@@ -52,7 +56,6 @@ public class ColumnNameCfg implements IGeneratorTableModel {
         if (column == 1) {
             setFieldName(value);
         }
-
     }
 
 
