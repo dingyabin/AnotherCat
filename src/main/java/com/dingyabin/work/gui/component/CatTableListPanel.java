@@ -458,6 +458,8 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         }
         java.util.List<TableNameCfg> tableNameCfg = new ArrayList<>();
         selectedValues.forEach(tableSchema -> tableNameCfg.add(new TableNameCfg(tableSchema.getTableName())));
+
+
         new MybatisGeneratorDialog(tableNameCfg, Collections.emptyList()).showSelf();
     }
 }

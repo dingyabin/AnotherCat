@@ -37,7 +37,6 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
     private java.util.List<ColumnNameCfg> columnNameCfgList;
 
 
-
     private ConnectConfig connectConfig;
 
     private DataBaseSchema dataBaseSchema;
