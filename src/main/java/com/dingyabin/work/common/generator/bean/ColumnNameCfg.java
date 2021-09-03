@@ -44,6 +44,19 @@ public class ColumnNameCfg implements IGeneratorTableModel {
 
 
     @Override
+    public void setValueAt(Object aValue, int column) {
+        String value = (aValue == null) ? StringUtils.EMPTY : aValue.toString();
+        if (column == 0) {
+            setColumnName(value);
+        }
+        if (column == 1) {
+            setFieldName(value);
+        }
+
+    }
+
+
+    @Override
     public String toString() {
         return  "columnName='" + columnName + '\'';
     }

@@ -59,4 +59,14 @@ public class ModelGeneratorTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         return header[column];
     }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        IGeneratorTableModel iGeneratorTableModel = models.get(rowIndex);
+        if (iGeneratorTableModel == null) {
+            return;
+        }
+        iGeneratorTableModel.setValueAt(aValue, columnIndex);
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
 }

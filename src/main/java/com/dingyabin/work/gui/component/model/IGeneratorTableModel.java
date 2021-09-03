@@ -10,4 +10,6 @@ public interface IGeneratorTableModel {
 
     String getValueAtColumn(int column);
 
+    void setValueAt(Object aValue, int columnIndex);
+
 }

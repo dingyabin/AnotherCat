@@ -43,6 +43,17 @@ public class TableNameCfg implements IGeneratorTableModel {
     }
 
     @Override
+    public void setValueAt(Object aValue, int column) {
+        String value = (aValue == null) ? StringUtils.EMPTY : aValue.toString();
+        if (column == 0) {
+            setTableName(value);
+        }
+        if (column == 1) {
+            setModelName(value);
+        }
+    }
+
+    @Override
     public String toString() {
         return  "tableName='" + tableName + '\'';
     }
