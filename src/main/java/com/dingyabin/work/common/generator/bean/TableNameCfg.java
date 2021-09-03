@@ -17,6 +17,8 @@ public class TableNameCfg implements IGeneratorTableModel {
 
     public static final String[] HEADER = {"表名", "Model名"};
 
+    public static final int  UN_EDIT_COLUMN_INDEX = 0;
+
     public static final int  EDIT_COLUMN_INDEX = 1;
 
     private String tableName;

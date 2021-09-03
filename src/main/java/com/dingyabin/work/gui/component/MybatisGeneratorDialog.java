@@ -1,45 +1,46 @@
 package com.dingyabin.work.gui.component;
 
 import com.alee.extended.filechooser.WebDirectoryChooser;
-import com.alee.laf.filechooser.IFileChooserPainter;
 import com.alee.managers.style.StyleId;
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.generator.bean.ColumnNameCfg;
 import com.dingyabin.work.common.generator.bean.TableNameCfg;
+import com.dingyabin.work.common.model.ColumnSchema;
 import com.dingyabin.work.common.model.ConnectConfig;
-import com.dingyabin.work.common.model.DataBaseSchema;
+import com.dingyabin.work.common.model.TableSchema;
+import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.component.model.IGeneratorTableModel;
 import com.dingyabin.work.gui.component.model.ModelGeneratorTableModel;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author 丁亚宾
  * Date: 2021/8/29.
  * Time:22:15
  */
-public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
+public class MybatisGeneratorDialog extends JDialog  implements ActionListener, ListSelectionListener {
 
     private java.util.List<TableNameCfg> tableNameCfgList;
 
-    private java.util.List<ColumnNameCfg> columnNameCfgList;
-
+    private Map<Object, List<ColumnNameCfg>> columnNameCfgMap;
 
     private ConnectConfig connectConfig;
-
-    private DataBaseSchema dataBaseSchema;
 
     private LineBorder lineBorder = new LineBorder(CatColors.GENERATOR_WINDOW_BORDER, 2, true);
 
@@ -98,10 +99,10 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
     private JTextField xmlPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus);
 
 
-    public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList, java.util.List<ColumnNameCfg> columnNameCfgList) {
+    public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList, ConnectConfig connectConfig) {
         super(ComContextManager.getMainFrame());
         this.tableNameCfgList = tableNameCfgList;
-        this.columnNameCfgList = columnNameCfgList;
+        this.connectConfig = connectConfig;
         init();
     }
 
@@ -109,8 +110,8 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
     private void init() {
         //初始化table
-        commonInitTable(modelNameTable, TableNameCfg.HEADER, TableNameCfg.EDIT_COLUMN_INDEX, tableNameCfgList);
-        commonInitTable(columnNameTable, ColumnNameCfg.HEADER, ColumnNameCfg.EDIT_COLUMN_INDEX, columnNameCfgList);
+        commonInitTable(modelNameTable, TableNameCfg.HEADER, TableNameCfg.EDIT_COLUMN_INDEX, tableNameCfgList,true);
+        //commonInitTable(columnNameTable, ColumnNameCfg.HEADER, ColumnNameCfg.EDIT_COLUMN_INDEX, columnNameCfgList,false);
         //组装组件
         generateComponent();
         //自适应大小
@@ -180,7 +181,26 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
         if (source == projectInputBtn) {
             selectProjectPath();
         }
+    }
 
+
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        Object source = e.getSource();
+        if (source == modelNameTable.getSelectionModel() && e.getValueIsAdjusting()) {
+            int selectedRow = modelNameTable.getSelectedRow();
+            Object value = modelNameTable.getValueAt(selectedRow, TableNameCfg.UN_EDIT_COLUMN_INDEX);
+            //查询这个表下面的列
+            if (columnNameCfgMap == null) {
+                columnNameCfgMap = new HashMap<>(tableNameCfgList.size());
+            }
+            List<ColumnNameCfg> columnNameCfgs = columnNameCfgMap.computeIfAbsent(value, o -> {
+                List<ColumnSchema> columns = SpringBeanHolder.getCatAdapter().getColumnOnTableChange(connectConfig, new TableSchema(value.toString()));
+                return columns.stream().map(columnSchema -> new ColumnNameCfg(columnSchema.getColumnName())).collect(Collectors.toList());
+            });
+            commonInitTable(columnNameTable, ColumnNameCfg.HEADER, ColumnNameCfg.EDIT_COLUMN_INDEX, columnNameCfgs,false);
+        }
     }
 
 
@@ -198,7 +218,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
 
 
-    private void commonInitTable(JTable table, String[] header, int editColumn, List<? extends IGeneratorTableModel> models ) {
+    private void commonInitTable(JTable table, String[] header, int editColumn, List<? extends IGeneratorTableModel> models , boolean needListener) {
         table.setModel(new ModelGeneratorTableModel(models, header));
 
         //设置渲染器
@@ -206,6 +226,13 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
             JTextField jTextField = new JTextField();
             jTextField.setFont(CatFonts.CONSOLAS_15);
             table.getColumnModel().getColumn(editColumn).setCellEditor(new DefaultCellEditor(jTextField));
+        }
+
+        //设置监听器
+        if (needListener) {
+            ListSelectionModel selectionModel = table.getSelectionModel();
+            selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            selectionModel.addListSelectionListener(this);
         }
 
         //表格字体设置
@@ -221,7 +248,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
         //行高
         table.setRowHeight(25);
         //大小设置
-        table.setPreferredScrollableViewportSize(new Dimension(400, (int) Math.min(table.getPreferredSize().getHeight(), 400)));
+        table.setPreferredScrollableViewportSize(new Dimension(400, (int) Math.min(table.getPreferredSize().getHeight(), 50)));
     }
 
 

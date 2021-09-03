@@ -14,11 +14,19 @@ import java.io.Serializable;
 @Setter
 public class TableSchema implements Serializable {
 
+    private static final long serialVersionUID = -6571760774872910737L;
+
     /**
      * 表名字
      */
     private String tableName;
 
+    public TableSchema() {
+    }
+
+    public TableSchema(String tableName) {
+        this.tableName = tableName;
+    }
 
     @Override
     public String toString() {

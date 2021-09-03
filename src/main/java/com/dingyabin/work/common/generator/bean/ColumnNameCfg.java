@@ -17,6 +17,8 @@ public class ColumnNameCfg implements IGeneratorTableModel {
 
     public static final String[] HEADER = {"列名", "Model字段名"};
 
+    public static final int  UN_EDIT_COLUMN_INDEX = 0;
+
     public static final int  EDIT_COLUMN_INDEX = 1;
 
     private String columnName;
@@ -26,7 +28,7 @@ public class ColumnNameCfg implements IGeneratorTableModel {
 
     public ColumnNameCfg(String columnName) {
         this.columnName = columnName;
-        this.fieldName =  JavaBeansUtil.getCamelCaseString(columnName, true);
+        this.fieldName =  JavaBeansUtil.getCamelCaseString(columnName, false);
     }
 
     public ColumnNameCfg(String columnName, String fieldName) {
