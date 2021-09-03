@@ -28,8 +28,6 @@ public class TableNameCfg {
 
     @Override
     public String toString() {
-        return "TableNameCfg{" +
-                "tableName='" + tableName + '\'' +
-                '}';
+        return  "tableName='" + tableName + '\'';
     }
 }
