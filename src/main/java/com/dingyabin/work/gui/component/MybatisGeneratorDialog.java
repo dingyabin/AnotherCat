@@ -12,7 +12,6 @@ import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.component.model.IGeneratorTableModel;
 import com.dingyabin.work.gui.component.model.ModelGeneratorTableModel;
 import com.dingyabin.work.gui.utils.GuiUtils;
-import org.apache.commons.collections4.CollectionUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -24,6 +23,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +111,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     private void init() {
         //初始化table
         commonInitTable(modelNameTable, TableNameCfg.HEADER, TableNameCfg.EDIT_COLUMN_INDEX, tableNameCfgList,true);
-        //commonInitTable(columnNameTable, ColumnNameCfg.HEADER, ColumnNameCfg.EDIT_COLUMN_INDEX, columnNameCfgList,false);
+        commonInitTable(columnNameTable, ColumnNameCfg.HEADER, ColumnNameCfg.EDIT_COLUMN_INDEX, Collections.emptyList(),false);
         //组装组件
         generateComponent();
         //自适应大小
@@ -248,7 +248,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         //行高
         table.setRowHeight(25);
         //大小设置
-        table.setPreferredScrollableViewportSize(new Dimension(400, (int) Math.min(table.getPreferredSize().getHeight(), 50)));
+        table.setPreferredScrollableViewportSize(new Dimension(400, (int) Math.min(table.getPreferredSize().getHeight(), 280)));
     }
 
 
