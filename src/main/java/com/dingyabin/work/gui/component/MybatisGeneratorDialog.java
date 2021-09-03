@@ -33,47 +33,53 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
     private JPanel projectInputPanel = new JPanel(new BorderLayout(10,5));
 
-     private JLabel projectLabel = GuiUtils.createLabel("选择工程目录：", SwingConstants.RIGHT, 15);
+     private JLabel projectLabel = GuiUtils.createLabel("选择工程目录：", JLabel.RIGHT, 15);
 
-    private JTextField projectInputField = GuiUtils.createTextField(50, StyleId.textfieldNoFocus);
+    private JTextField projectInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus);
 
     private JButton projectInputBtn = GuiUtils.createButton("选择目录...", CatIcons.open, StyleId.button, this);
 
 
-    //Model&Bean配置
+    /**
+     * Model&Bean配置
+     */
     private JPanel modelInputPanel = new JPanel(new BorderLayout(10,5));
 
     private JLabel modelPackageLabel = GuiUtils.createLabel("包名(Package)：", SwingConstants.RIGHT, 14);
 
-    private JTextField modelPackageInputField = GuiUtils.createTextField(40, StyleId.textfieldNoFocus);
+    private JTextField modelPackageInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus);
 
-    private JLabel modelPathLabel = GuiUtils.createLabel("Path：", SwingConstants.RIGHT, 14);
+    private JLabel modelPathLabel = GuiUtils.createLabel("Path：", JLabel.RIGHT, 14);
 
-    private JTextField modelPathInputField = GuiUtils.createTextField(20, StyleId.textfieldNoFocus);
+    private JTextField modelPathInputField = GuiUtils.createTextField(15, StyleId.textfieldNoFocus);
 
 
-    //DAO配置
+    /**
+     * DAO配置
+     */
     private JPanel daoInputPanel = new JPanel(new BorderLayout(10,5));
 
     private JLabel daoPackageLabel = GuiUtils.createLabel("包名(Package)：", SwingConstants.RIGHT, 14);
 
-    private JTextField daoPackageInputField = GuiUtils.createTextField(40, StyleId.textfieldNoFocus);
+    private JTextField daoPackageInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus);
 
-    private JLabel daoPathLabel = GuiUtils.createLabel("Path：", SwingConstants.RIGHT, 14);
+    private JLabel daoPathLabel = GuiUtils.createLabel("Path：", JLabel.RIGHT, 14);
 
-    private JTextField daoPathInputField = GuiUtils.createTextField(20, StyleId.textfieldNoFocus);
+    private JTextField daoPathInputField = GuiUtils.createTextField(15, StyleId.textfieldNoFocus);
 
 
-
+    /**
+     * XML配置
+     */
     private JPanel sqlXmlInputPanel = new JPanel(new BorderLayout(10,5));
 
     private JLabel xmlPackageLabel = GuiUtils.createLabel("包名(Package)：", SwingConstants.RIGHT, 14);
 
-    private JTextField xmlPackageInputField = GuiUtils.createTextField(40, StyleId.textfieldNoFocus);
+    private JTextField xmlPackageInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus);
 
-    private JLabel xmlPathLabel = GuiUtils.createLabel("Path：", SwingConstants.RIGHT, 14);
+    private JLabel xmlPathLabel = GuiUtils.createLabel("Path：", JLabel.RIGHT, 14);
 
-    private JTextField xmlPathInputField = GuiUtils.createTextField(20, StyleId.textfieldNoFocus);
+    private JTextField xmlPathInputField = GuiUtils.createTextField(15, StyleId.textfieldNoFocus);
 
 
     public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList) {
