@@ -23,8 +23,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -187,24 +189,29 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     public void valueChanged(ListSelectionEvent e) {
         Object source = e.getSource();
         if (source == modelNameTable.getSelectionModel() && e.getValueIsAdjusting()) {
-            int selectedRow = modelNameTable.getSelectedRow();
-            Object value = modelNameTable.getValueAt(selectedRow, TableNameCfg.UN_EDIT_COLUMN_INDEX);
-            //查询这个表下面的列
-            if (columnNameCfgMap == null) {
-                columnNameCfgMap = new HashMap<>(tableNameCfgList.size());
-            }
-            List<ColumnNameCfg> columnNameCfgs = columnNameCfgMap.computeIfAbsent(value, o -> {
-                List<ColumnSchema> columns = SpringBeanHolder.getCatAdapter().getColumnOnTableChange(connectConfig, new TableSchema(value.toString()));
-                List<ColumnNameCfg> columnNameCfgList = new ArrayList<>();
-                for (ColumnSchema column : columns) {
-                    ColumnNameCfg columnNameCfg = new ColumnNameCfg(column.getColumnName());
-                    columnNameCfgList.add(columnNameCfg);
-                }
-                return columnNameCfgList;
-            });
-            commonInitTable(columnNameTable, ColumnNameCfg.HEADER, ColumnNameCfg.EDIT_COLUMN_INDEX, columnNameCfgs,false);
+            onSelectTableName();
         }
     }
+
+
+
+    /**
+     * 选中某一行表名时
+     */
+    private void onSelectTableName() {
+        int selectedRow = modelNameTable.getSelectedRow();
+        Object tableName = modelNameTable.getValueAt(selectedRow, TableNameCfg.UN_EDIT_COLUMN_INDEX);
+        //查询这个表下面的列
+        if (columnNameCfgMap == null) {
+            columnNameCfgMap = new HashMap<>(tableNameCfgList.size());
+        }
+        List<ColumnNameCfg> columnNameCfgs = columnNameCfgMap.computeIfAbsent(tableName, o -> {
+            List<ColumnSchema> columns = SpringBeanHolder.getCatAdapter().getColumnOnTableChange(connectConfig, new TableSchema(tableName.toString()));
+            return columns.stream().map(column -> new ColumnNameCfg(column.getColumnName())).collect(Collectors.toList());
+        });
+        commonInitTable(columnNameTable, ColumnNameCfg.HEADER, ColumnNameCfg.EDIT_COLUMN_INDEX, columnNameCfgs, false);
+    }
+
 
 
 
