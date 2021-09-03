@@ -51,7 +51,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
     private JLabel modelPathLabel = GuiUtils.createLabel("Path：", JLabel.LEFT, 14);
 
-    private JTextField modelPathInputField = GuiUtils.createTextField(15, StyleId.textfieldNoFocus);
+    private JTextField modelPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus);
 
 
     /**
@@ -65,7 +65,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
     private JLabel daoPathLabel = GuiUtils.createLabel("Path：", JLabel.LEFT, 14);
 
-    private JTextField daoPathInputField = GuiUtils.createTextField(15, StyleId.textfieldNoFocus);
+    private JTextField daoPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus);
 
 
     /**
@@ -79,7 +79,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener {
 
     private JLabel xmlPathLabel = GuiUtils.createLabel("Path：", JLabel.LEFT, 14);
 
-    private JTextField xmlPathInputField = GuiUtils.createTextField(15, StyleId.textfieldNoFocus);
+    private JTextField xmlPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus);
 
 
     public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList) {
