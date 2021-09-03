@@ -23,10 +23,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -197,7 +195,12 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
             }
             List<ColumnNameCfg> columnNameCfgs = columnNameCfgMap.computeIfAbsent(value, o -> {
                 List<ColumnSchema> columns = SpringBeanHolder.getCatAdapter().getColumnOnTableChange(connectConfig, new TableSchema(value.toString()));
-                return columns.stream().map(columnSchema -> new ColumnNameCfg(columnSchema.getColumnName())).collect(Collectors.toList());
+                List<ColumnNameCfg> columnNameCfgList = new ArrayList<>();
+                for (ColumnSchema column : columns) {
+                    ColumnNameCfg columnNameCfg = new ColumnNameCfg(column.getColumnName());
+                    columnNameCfgList.add(columnNameCfg);
+                }
+                return columnNameCfgList;
             });
             commonInitTable(columnNameTable, ColumnNameCfg.HEADER, ColumnNameCfg.EDIT_COLUMN_INDEX, columnNameCfgs,false);
         }

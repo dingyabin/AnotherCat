@@ -52,10 +52,10 @@ public class ColumnNameCfg implements IGeneratorTableModel {
     @Override
     public void setValueAt(Object aValue, int column) {
         String value = (aValue == null) ? StringUtils.EMPTY : aValue.toString();
-        if (column == 0) {
+        if (column == UN_EDIT_COLUMN_INDEX) {
             setColumnName(value);
         }
-        if (column == 1) {
+        if (column == EDIT_COLUMN_INDEX) {
             setFieldName(value);
         }
     }
