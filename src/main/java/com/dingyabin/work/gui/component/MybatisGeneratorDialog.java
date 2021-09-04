@@ -2,8 +2,8 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.extended.filechooser.WebDirectoryChooser;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
+import com.dingyabin.work.common.generator.CatMybatisGenerator;
 import com.dingyabin.work.common.generator.bean.ColumnNameCfg;
 import com.dingyabin.work.common.generator.bean.TableNameCfg;
 import com.dingyabin.work.common.model.ColumnSchema;
@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -155,14 +154,6 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     private JButton xmlBtn = GuiUtils.createButton("查看/修改XML后执行", CatIcons.xml, StyleId.button, this, CatFonts.MICRO_SOFT_14);
 
 
-    /**
-     * xml预览窗口
-     */
-    private JPanel xmlBtnInputPanel = new JPanel();
-
-    private JButton xmlExecuteBtn = GuiUtils.createButton("执行", CatIcons.excute, StyleId.button, this, CatFonts.MICRO_SOFT_14);
-
-
 
     public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList, ConnectConfig connectConfig) {
         super(ComContextManager.getMainFrame());
@@ -237,9 +228,6 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         btnInputPanel.add(executeBtn);
         btnInputPanel.add(xmlBtn);
 
-        //xml预览窗口内的按钮
-        xmlBtnInputPanel.add(xmlExecuteBtn);
-
         contentPane.add(projectInputPanel);
         contentPane.add(Box.createVerticalStrut(10));
         contentPane.add(modelInputPanel);
@@ -275,10 +263,6 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
             return;
         }
         if (source == xmlBtn) {
-            previewXml();
-            return;
-        }
-        if (source == xmlExecuteBtn) {
             previewXml();
         }
     }
@@ -332,15 +316,21 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
      */
     private void previewXml() {
         JDialog jDialog = new JDialog();
-        JEditorPane jEditorPane =  new JEditorPane();
+        JEditorPane jEditorPane = new JEditorPane();
         //初始化
         initPreviewXmlWindow(jDialog, jEditorPane);
         //设置XML文件
-        jEditorPane.setText( createXmlString());
+        jEditorPane.setText(createXmlString());
         //添加组件
         jDialog.add(GuiUtils.createJscrollPane(jEditorPane), BorderLayout.CENTER);
 
-
+        JPanel xmlBtnInputPanel = new JPanel();
+        ActionListener actionListener= e -> {
+            String xml = jEditorPane.getText();
+            String message = CatMybatisGenerator.getInstance().generate(xml)? "代码生成完毕！":"生成错误，请检查配置！";
+            GuiUtils.createOptionPane(jDialog, message, JOptionPane.DEFAULT_OPTION);
+        };
+        xmlBtnInputPanel.add(GuiUtils.createButton("执行", CatIcons.excute, StyleId.button, actionListener, CatFonts.MICRO_SOFT_14));
         jDialog.add(xmlBtnInputPanel, BorderLayout.SOUTH);
         //显示
         jDialog.setVisible(true);
@@ -367,6 +357,13 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     }
 
 
+
+
+    private String createXmlString(){
+        return "<xml></xml>";
+    }
+
+
     /**
      * 执行
      */
@@ -375,11 +372,6 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     }
 
-
-
-    private String createXmlString(){
-        return "<xml></xml>";
-    }
 
 
 
