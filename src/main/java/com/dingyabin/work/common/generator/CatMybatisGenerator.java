@@ -10,6 +10,7 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class CatMybatisGenerator {
             }
             List<String> warnings = new ArrayList<>();
 
-            Configuration config = new ConfigurationParser(warnings).parseConfiguration(new ByteArrayInputStream(makeCfgXml.getBytes()));
+            Configuration config = new ConfigurationParser(warnings).parseConfiguration(new ByteArrayInputStream(makeCfgXml.getBytes(StandardCharsets.UTF_8)));
 
             DefaultShellCallback callback = new DefaultShellCallback(true);
             MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);

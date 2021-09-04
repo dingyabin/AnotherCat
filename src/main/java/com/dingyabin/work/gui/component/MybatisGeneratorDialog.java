@@ -133,7 +133,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     private JCheckBox forceBigDecimals = GuiUtils.createCheckBox("强制使用BigDecimal", false, Const.FORCE_BIG_DECIMALS);
 
-    private JCheckBox useDateInModel = GuiUtils.createCheckBox("强制使用java.util.Date", false, Const.USE_DATE_IN_MODEL);
+    private JCheckBox useDateInModel = GuiUtils.createCheckBox("强制使用java.util.Date", true, Const.USE_DATE_IN_MODEL);
 
     private JCheckBox trimBeforeGet = GuiUtils.createCheckBox("getter方法返回前先trim", false);
 
