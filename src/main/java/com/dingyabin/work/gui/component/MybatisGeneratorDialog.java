@@ -398,6 +398,13 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         javaClientGenerator.setTargetProject(CatUtils.joinSystemPath(projectPath, daoPath));
         javaClientGenerator.setTargetPackage(daoPackage);
 
+
+        TableCfgProcessor tableCfgProcessor = new TableCfgProcessor(tableNameCfgList, columnNameCfgMap, daoReNameField.getText());
+        tableCfgProcessor.setEnableCountByExample(enableCountByExample.isSelected());
+        tableCfgProcessor.setEnableDeleteByExample(enableDeleteByExample.isSelected());
+        tableCfgProcessor.setEnableSelectByExample(enableSelectByExample.isSelected());
+        tableCfgProcessor.setEnableUpdateByExample(enableUpdateByExample.isSelected());
+
         configXmlProcessors.add(commentGenerator);
         configXmlProcessors.add(javaClientGenerator);
         configXmlProcessors.add(javaModelGenerator);
@@ -405,6 +412,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         configXmlProcessors.add(jdbcConnection);
         configXmlProcessors.add(pluginGenerator);
         configXmlProcessors.add(sqlMapGenerator);
+        configXmlProcessors.add(tableCfgProcessor);
 
         return CatMybatisGenerator.getInstance().makeCfgXml(configXmlProcessors);
     }
