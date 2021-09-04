@@ -95,9 +95,9 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     private JTextField daoPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT);
 
-    private JLabel daoReNameLabel = GuiUtils.createLabel("DAO后缀:", JLabel.RIGHT, 14);
+    private JLabel daoReNameLabel = GuiUtils.createLabel("DAO名字后缀:", JLabel.RIGHT, 14);
 
-    private JTextField daoReNameField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT,"Mapper");
+    private JTextField daoReNameField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT,"Mapper", Const.DAO_RENAME_DESC);
 
 
 
@@ -118,7 +118,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     /**
      * option 配置
      */
-    private JPanel optionInputPanel = new JPanel(new GridLayout(3,3,10,10));
+    private JPanel optionInputPanel = new JPanel(new GridLayout(4,3,10,10));
 
     private JCheckBox overrideToString = GuiUtils.createCheckBox("重写toString", false);
 
@@ -133,6 +133,14 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     private JCheckBox useDateInModel = GuiUtils.createCheckBox("强制使用java.util.Date", false, Const.USE_DATE_IN_MODEL);
 
     private JCheckBox useDateInModelInComment = GuiUtils.createCheckBox("注释里使用时间戳", false);
+
+    private JCheckBox enableCountByExample = GuiUtils.createCheckBox("启用CountByExample", false);
+
+    private JCheckBox enableDeleteByExample = GuiUtils.createCheckBox("启用DeleteByExample", false);
+
+    private JCheckBox enableSelectByExample = GuiUtils.createCheckBox("启用SelectByExample", false);
+
+    private JCheckBox enableUpdateByExample = GuiUtils.createCheckBox("启用UpdateByExample", false);
 
 
 
@@ -198,7 +206,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
         //SQL XML配置
         sqlXmlInputPanel.setBorder(new TitledBorder(xmlPanelLineBorder, "XMLMapper配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
-        xmlPathInputField.setText(Const.GENERATOR_DEFAULT_CODE_PATH);
+        xmlPathInputField.setText(Const.GENERATOR_DEFAULT_RESOURCES);
         sqlXmlInputPanel.add(GuiUtils.createHorizontalBox(xmlPackageLabel, xmlPackageInputField, Box.createHorizontalStrut(10), xmlPathLabel, xmlPathInputField), BorderLayout.NORTH);
 
         //选项
@@ -210,6 +218,10 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         optionInputPanel.add(forceBigDecimals);
         optionInputPanel.add(useDateInModel);
         optionInputPanel.add(useDateInModelInComment);
+        optionInputPanel.add(enableCountByExample);
+        optionInputPanel.add(enableDeleteByExample);
+        optionInputPanel.add(enableSelectByExample);
+        optionInputPanel.add(enableUpdateByExample);
 
         //按钮
         btnInputPanel.add(executeBtn);
@@ -321,7 +333,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         //行高
         table.setRowHeight(25);
         //大小设置
-        int height = Math.max(Math.min((int)table.getPreferredSize().getHeight(), 250), 45);
+        int height = Math.max(Math.min((int)table.getPreferredSize().getHeight(), 300), 45);
         table.setPreferredScrollableViewportSize(new Dimension(380, height));
     }
 
