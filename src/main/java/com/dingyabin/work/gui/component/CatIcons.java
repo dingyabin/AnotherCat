@@ -87,6 +87,10 @@ public class CatIcons {
 
     public static final ImageIcon doublelink = new ImageIcon(CatIcons.class.getResource("/icons/double_link.png"));
 
+    public static final ImageIcon excute = new ImageIcon(CatIcons.class.getResource("/icons/execute.png"));
+
+    public static final ImageIcon xml = new ImageIcon(CatIcons.class.getResource("/icons/xml.png"));
+
 
 
 

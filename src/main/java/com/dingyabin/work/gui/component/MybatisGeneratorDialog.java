@@ -2,6 +2,7 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.extended.filechooser.WebDirectoryChooser;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.generator.bean.ColumnNameCfg;
 import com.dingyabin.work.common.generator.bean.TableNameCfg;
@@ -27,6 +28,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -42,7 +44,16 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     private ConnectConfig connectConfig;
 
-    private LineBorder lineBorder = new LineBorder(CatColors.GENERATOR_WINDOW_BORDER, 2, true);
+    private LineBorder projectPanelLineBorder = new LineBorder(CatColors.COLOR_2, 3, true);
+
+    private LineBorder modelPanelLineBorder = new LineBorder(CatColors.COLOR_4, 3, true);
+
+    private LineBorder daoPanelLineBorder = new LineBorder(CatColors.COLOR_8, 3, true);
+
+    private LineBorder xmlPanelLineBorder = new LineBorder(CatColors.COLOR_7, 3, true);
+
+    private LineBorder optionPanelLineBorder = new LineBorder(CatColors.COLOR_5, 3, true);
+
 
     private JPanel projectInputPanel = new JPanel(new BorderLayout(10,5));
 
@@ -88,7 +99,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     /**
      * XML配置
      */
-    private JPanel sqlXmlInputPanel = new JPanel(new BorderLayout(10,5));
+    private JPanel sqlXmlInputPanel = new JPanel(new BorderLayout(3,3));
 
     private JLabel xmlPackageLabel = GuiUtils.createLabel("包名(Package)：", JLabel.LEFT, 14);
 
@@ -97,6 +108,37 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     private JLabel xmlPathLabel = GuiUtils.createLabel("Path：", JLabel.LEFT, 14);
 
     private JTextField xmlPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus);
+
+
+    /**
+     * option 配置
+     */
+    private JPanel optionInputPanel = new JPanel(new GridLayout(3,3,10,10));
+
+    private JCheckBox overrideToString = GuiUtils.createCheckBox("重写toString", false);
+
+    private JCheckBox imSerializable = GuiUtils.createCheckBox("实现Serializable接口", true);
+
+    private JCheckBox ovEqualsHashCode = GuiUtils.createCheckBox("重写equals和hashCode", false);
+
+    private JCheckBox addRemarkComments = GuiUtils.createCheckBox("使用表里的注释", true, Const.ADD_REMARK_COMMENTS);
+
+    private JCheckBox forceBigDecimals = GuiUtils.createCheckBox("强制使用BigDecimal", false, Const.FORCE_BIG_DECIMALS);
+
+    private JCheckBox useDateInModel = GuiUtils.createCheckBox("强制使用java.util.Date", false, Const.USE_DATE_IN_MODEL);
+
+    private JCheckBox useDateInModelInComment = GuiUtils.createCheckBox("注释里使用时间戳", false);
+
+
+
+    /**
+     * 按钮
+     */
+    private JPanel btnInputPanel = new JPanel();
+
+    private JButton executeBtn = FontMethodsImpl.setFontSize(new JButton("执行", CatIcons.excute), 14);
+
+    private JButton xmlBtn = FontMethodsImpl.setFontSize(new JButton("查看/修改XML清单", CatIcons.xml), 14);
 
 
     public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList, ConnectConfig connectConfig) {
@@ -130,12 +172,12 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
         //工程路径选择
-        projectInputPanel.setBorder(new TitledBorder(lineBorder, "工程目录", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
+        projectInputPanel.setBorder(new TitledBorder(projectPanelLineBorder, "工程目录", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
         projectInputPanel.add(GuiUtils.createHorizontalBox(projectLabel, projectInputField, Box.createHorizontalStrut(20), projectInputBtn), BorderLayout.NORTH);
 
 
         //Model配置
-        modelInputPanel.setBorder(new TitledBorder(lineBorder, "Model&Bean配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
+        modelInputPanel.setBorder(new TitledBorder(modelPanelLineBorder, "Model&Bean配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
         modelPathInputField.setText(Const.GENERATOR_DEFAULT_CODE_PATH);
         modelInputPanel.add(GuiUtils.createHorizontalBox(modelPackageLabel, modelPackageInputField, Box.createHorizontalStrut(10), modelPathLabel, modelPathInputField), BorderLayout.NORTH);
 
@@ -145,16 +187,28 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         modelInputPanel.add(GuiUtils.createJscrollPane(columnNameTable), BorderLayout.EAST);
 
         //DAO配置
-        daoInputPanel.setBorder(new TitledBorder(lineBorder, "DAO配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
+        daoInputPanel.setBorder(new TitledBorder(daoPanelLineBorder, "DAO配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
         daoPathInputField.setText(Const.GENERATOR_DEFAULT_CODE_PATH);
         daoInputPanel.add(GuiUtils.createHorizontalBox(daoPackageLabel, daoPackageInputField, Box.createHorizontalStrut(10), daoPathLabel, daoPathInputField), BorderLayout.NORTH);
 
         //SQL XML配置
-        sqlXmlInputPanel.setBorder(new TitledBorder(lineBorder, "XMLMapper配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
+        sqlXmlInputPanel.setBorder(new TitledBorder(xmlPanelLineBorder, "XMLMapper配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
         xmlPathInputField.setText(Const.GENERATOR_DEFAULT_CODE_PATH);
         sqlXmlInputPanel.add(GuiUtils.createHorizontalBox(xmlPackageLabel, xmlPackageInputField, Box.createHorizontalStrut(10), xmlPathLabel, xmlPathInputField), BorderLayout.NORTH);
 
+        //选项
+        optionInputPanel.setBorder(new TitledBorder(optionPanelLineBorder, "高级选项", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
+        optionInputPanel.add(overrideToString);
+        optionInputPanel.add(imSerializable);
+        optionInputPanel.add(ovEqualsHashCode);
+        optionInputPanel.add(addRemarkComments);
+        optionInputPanel.add(forceBigDecimals);
+        optionInputPanel.add(useDateInModel);
+        optionInputPanel.add(useDateInModelInComment);
 
+        //按钮
+        btnInputPanel.add(executeBtn);
+        btnInputPanel.add(xmlBtn);
 
         contentPane.add(projectInputPanel);
         contentPane.add(Box.createVerticalStrut(10));
@@ -163,6 +217,10 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         contentPane.add(daoInputPanel);
         contentPane.add(Box.createVerticalStrut(10));
         contentPane.add(sqlXmlInputPanel);
+        contentPane.add(Box.createVerticalStrut(10));
+        contentPane.add(optionInputPanel);
+        contentPane.add(Box.createVerticalStrut(10));
+        contentPane.add(btnInputPanel);
         setContentPane(GuiUtils.createJscrollPane(contentPane));
     }
 
@@ -259,7 +317,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         table.setRowHeight(25);
         //大小设置
         int height = Math.max(Math.min((int)table.getPreferredSize().getHeight(), 250), 45);
-        table.setPreferredScrollableViewportSize(new Dimension(400, height));
+        table.setPreferredScrollableViewportSize(new Dimension(380, height));
     }
 
 

@@ -257,4 +257,32 @@ public class GuiUtils {
         return verticalBox;
     }
 
+
+    /**
+     * 复选框
+     * @param text 文字
+     * @param selected 是否选中
+     * @return 复选框
+     */
+    public static JCheckBox createCheckBox (String text, boolean selected) {
+        JCheckBox checkBox = new JCheckBox(text, selected );
+        checkBox.setFont(CatFonts.MICRO_SOFT_13);
+        checkBox.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.checkbox);
+        return checkBox;
+    }
+
+
+    /**
+     * 复选框
+     * @param text 文字
+     * @param selected 是否选中
+     * @param toolTip 提示
+     * @return 复选框
+     */
+    public static JCheckBox createCheckBox (String text, boolean selected, String toolTip) {
+        JCheckBox checkBox = createCheckBox(text, selected);
+        checkBox.setToolTipText(toolTip);
+        return checkBox;
+    }
+
 }

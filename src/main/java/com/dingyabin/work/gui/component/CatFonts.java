@@ -19,4 +19,6 @@ public class CatFonts {
 
     public static final Font MICRO_SOFT_14 = new Font("微软雅黑", Font.PLAIN,14);
 
+    public static final Font MICRO_SOFT_13 = new Font("微软雅黑", Font.PLAIN,13);
+
 }

@@ -100,7 +100,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     private void generateComponent() {
 
         //设置border
-        LineBorder lineBorder = new LineBorder(CatColors.CONNECT_WINDOW_BORDER, 5, true);
+        LineBorder lineBorder = new LineBorder(CatColors.COLOR_1, 5, true);
         inputPanel.setBorder(new TitledBorder(lineBorder, dataBaseType.getType(), TitledBorder.CENTER, TitledBorder.TOP, CatFonts.CONNECT_WINDOW_BORDER));
 
         inputPanel.add(conNameLabel);

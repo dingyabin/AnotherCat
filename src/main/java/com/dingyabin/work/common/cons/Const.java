@@ -44,6 +44,13 @@ public class Const {
     public static final String GENERATOR_DEFAULT_CODE_PATH = "src/main/java";
 
 
+    public static final String ADD_REMARK_COMMENTS = "是否把表和字段的注释加到javaModel里";
+
+    public static final String FORCE_BIG_DECIMALS = "对于数据库里的DECIMAL 和 NUMERIC 字段，javaModel是否强制使用BigDecimal与之对应，选中表示是，否则的话则智能选择Long或者Integer、Short";
+
+    public static final String USE_DATE_IN_MODEL = "对于数据库里的DATE, TIME, and TIMESTAMP字段，javaModel是否使用java.time.LocalDate或者java.time.LocalDateTime与之对应，选中表示是，否则的话则统一使用java.util.Date";
+
+
 
 
 }
