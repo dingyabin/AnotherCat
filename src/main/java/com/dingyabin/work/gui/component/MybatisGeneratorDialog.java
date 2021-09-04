@@ -355,8 +355,8 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         jDialog.setIconImage(CatIcons.cat.getImage());
         //title
         jDialog.setTitle("预览/修改 配置文件并执行");
-        //自适应
-        jDialog.pack();
+        //大小
+        jDialog.setSize(new Dimension(1200,800));
         //居中显示
         jDialog.setLocationRelativeTo(null);
         //关闭
