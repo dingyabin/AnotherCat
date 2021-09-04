@@ -332,7 +332,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         jDialog.add(GuiUtils.createJscrollPane(jEditorPane), BorderLayout.CENTER);
 
         JPanel xmlBtnInputPanel = new JPanel();
-        ActionListener actionListener = e -> execute(jEditorPane.getText());
+        ActionListener actionListener = e -> execute(jEditorPane.getText(), jDialog);
         xmlBtnInputPanel.add(GuiUtils.createButton("执行", CatIcons.excute, StyleId.button, actionListener, CatFonts.MICRO_SOFT_14));
         jDialog.add(xmlBtnInputPanel, BorderLayout.SOUTH);
 
@@ -422,7 +422,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
      * 执行
      */
     private void execute() {
-        execute(createXmlString());
+        execute(createXmlString(), this);
     }
 
 
@@ -430,7 +430,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     /**
      * 执行xml
      */
-    private void execute(String xml) {
+    private void execute(String xml, Component container) {
         String message = CatMybatisGenerator.getInstance().generate(xml) ? "代码生成完毕！" : "生成错误，请检查配置！";
         GuiUtils.createOptionPane(this, message, JOptionPane.DEFAULT_OPTION);
     }
