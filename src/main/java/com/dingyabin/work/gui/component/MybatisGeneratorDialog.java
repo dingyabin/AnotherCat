@@ -12,6 +12,7 @@ import com.dingyabin.work.common.model.TableSchema;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.component.model.IGeneratorTableModel;
 import com.dingyabin.work.gui.component.model.ModelGeneratorTableModel;
+import com.dingyabin.work.gui.component.xmledit.XMLEditorKit;
 import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
@@ -149,9 +150,9 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
      */
     private JPanel btnInputPanel = new JPanel();
 
-    private JButton executeBtn = FontMethodsImpl.setFontSize(new JButton("执行", CatIcons.excute), 14);
+    private JButton executeBtn = GuiUtils.createButton("直接执行", CatIcons.excute, StyleId.button, this, CatFonts.MICRO_SOFT_14);
 
-    private JButton xmlBtn = FontMethodsImpl.setFontSize(new JButton("查看/修改XML清单", CatIcons.xml), 14);
+    private JButton xmlBtn = GuiUtils.createButton("查看/修改XML后执行", CatIcons.xml, StyleId.button, this, CatFonts.MICRO_SOFT_14);
 
 
     public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList, ConnectConfig connectConfig) {
@@ -255,6 +256,14 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         Object source = e.getSource();
         if (source == projectInputBtn) {
             selectProjectPath();
+            return;
+        }
+        if (source == executeBtn) {
+            execute();
+            return;
+        }
+        if (source == xmlBtn) {
+            previewXml();
         }
     }
 
@@ -298,6 +307,59 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         if (file != null) {
             projectInputField.setText(file.getAbsolutePath());
         }
+    }
+
+
+
+    /**
+     * 预览XML
+     */
+    private void previewXml() {
+        JDialog jDialog = new JDialog();
+        JEditorPane jEditorPane =  new JEditorPane();
+        //初始化
+        initPreviewXmlWindow(jDialog, jEditorPane);
+        //设置XML文件
+        jEditorPane.setText( createXmlString());
+        //添加组件
+        jDialog.add(GuiUtils.createJscrollPane(jEditorPane), BorderLayout.CENTER);
+        //显示
+        jDialog.setVisible(true);
+    }
+
+
+
+    /**
+     * 初始化预览组件
+     */
+    private void initPreviewXmlWindow(JDialog jDialog, JEditorPane jEditorPane) {
+        jEditorPane.setEditorKit(new XMLEditorKit());
+        jEditorPane.setFont(CatFonts.MICRO_SOFT_15);
+        //窗口logo
+        jDialog.setIconImage(CatIcons.cat.getImage());
+        //title
+        jDialog.setTitle("预览/修改 配置文件并执行");
+        //自适应
+        jDialog.pack();
+        //居中显示
+        jDialog.setLocationRelativeTo(null);
+        //关闭
+        jDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    }
+
+
+    /**
+     * 执行
+     */
+    private void execute() {
+
+
+    }
+
+
+
+    private String createXmlString(){
+        return "<xml></xml>";
     }
 
 

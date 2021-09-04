@@ -190,10 +190,9 @@ public class GuiUtils {
      * @param styleId 样式
      * @return 按钮
      */
-    public static JButton createButton(String text, Icon icon, StyleId styleId, int fontSize){
-        JButton jButton = new JButton(text,icon);
-        jButton.putClientProperty(StyleId.STYLE_PROPERTY, styleId);
-        FontMethodsImpl.setFontSize(jButton,fontSize);
+    public static JButton createButton(String text, Icon icon, StyleId styleId, ActionListener listener,  Font font){
+        JButton jButton = createButton(text, icon, styleId, listener);
+        jButton.setFont(font);
         return jButton;
     }
 
