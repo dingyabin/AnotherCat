@@ -57,9 +57,9 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     private JPanel projectInputPanel = new JPanel(new BorderLayout(10,5));
 
-     private JLabel projectLabel = GuiUtils.createLabel("选择工程目录：", JLabel.LEFT, 15);
+    private JLabel projectLabel = GuiUtils.createLabel("选择工程目录：", JLabel.LEFT, 15);
 
-    private JTextField projectInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus);
+    private JTextField projectInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT);
 
     private JButton projectInputBtn = GuiUtils.createButton("选择目录...", CatIcons.open, StyleId.button, this);
 
@@ -71,11 +71,11 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     private JLabel modelPackageLabel = GuiUtils.createLabel("包名(Package)：", JLabel.LEFT, 14);
 
-    private JTextField modelPackageInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus);
+    private JTextField modelPackageInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT);
 
     private JLabel modelPathLabel = GuiUtils.createLabel("Path：", JLabel.LEFT, 14);
 
-    private JTextField modelPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus);
+    private JTextField modelPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT);
 
     private JTable modelNameTable = new JTable();
 
@@ -89,11 +89,16 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     private JLabel daoPackageLabel = GuiUtils.createLabel("包名(Package)：", JLabel.LEFT, 14);
 
-    private JTextField daoPackageInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus);
+    private JTextField daoPackageInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT);
 
     private JLabel daoPathLabel = GuiUtils.createLabel("Path：", JLabel.LEFT, 14);
 
-    private JTextField daoPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus);
+    private JTextField daoPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT);
+
+    private JLabel daoReNameLabel = GuiUtils.createLabel("DAO后缀:", JLabel.RIGHT, 14);
+
+    private JTextField daoReNameField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT,"Mapper");
+
 
 
     /**
@@ -103,11 +108,11 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     private JLabel xmlPackageLabel = GuiUtils.createLabel("包名(Package)：", JLabel.LEFT, 14);
 
-    private JTextField xmlPackageInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus);
+    private JTextField xmlPackageInputField = GuiUtils.createTextField(30, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT);
 
     private JLabel xmlPathLabel = GuiUtils.createLabel("Path：", JLabel.LEFT, 14);
 
-    private JTextField xmlPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus);
+    private JTextField xmlPathInputField = GuiUtils.createTextField(10, StyleId.textfieldNoFocus, CatFonts.MICRO_SOFT);
 
 
     /**
@@ -189,7 +194,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         //DAO配置
         daoInputPanel.setBorder(new TitledBorder(daoPanelLineBorder, "DAO配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));
         daoPathInputField.setText(Const.GENERATOR_DEFAULT_CODE_PATH);
-        daoInputPanel.add(GuiUtils.createHorizontalBox(daoPackageLabel, daoPackageInputField, Box.createHorizontalStrut(10), daoPathLabel, daoPathInputField), BorderLayout.NORTH);
+        daoInputPanel.add(GuiUtils.createHorizontalBox(daoPackageLabel, daoPackageInputField, Box.createHorizontalStrut(10), daoPathLabel, daoPathInputField, Box.createHorizontalStrut(10), daoReNameLabel, daoReNameField), BorderLayout.NORTH);
 
         //SQL XML配置
         sqlXmlInputPanel.setBorder(new TitledBorder(xmlPanelLineBorder, "XMLMapper配置", TitledBorder.LEFT, TitledBorder.TOP, CatFonts.MICRO_SOFT_15));

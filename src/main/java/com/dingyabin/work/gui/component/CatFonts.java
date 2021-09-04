@@ -13,12 +13,14 @@ public class CatFonts {
 
     public static final String DEFAULT_FONT_NAME = "Consolas";
 
+    public static final String MICRO_SOFT = "微软雅黑";
+
     public static final Font CONSOLAS_15 = new Font("Consolas", Font.PLAIN,15);
 
-    public static final Font MICRO_SOFT_15 = new Font("微软雅黑", Font.PLAIN,15);
+    public static final Font MICRO_SOFT_15 = new Font(MICRO_SOFT, Font.PLAIN,15);
 
-    public static final Font MICRO_SOFT_14 = new Font("微软雅黑", Font.PLAIN,14);
+    public static final Font MICRO_SOFT_14 = new Font(MICRO_SOFT, Font.PLAIN,14);
 
-    public static final Font MICRO_SOFT_13 = new Font("微软雅黑", Font.PLAIN,13);
+    public static final Font MICRO_SOFT_13 = new Font(MICRO_SOFT, Font.PLAIN,13);
 
 }

@@ -209,6 +209,20 @@ public class GuiUtils {
     }
 
 
+
+    /**
+     * 创建输入框
+     * @param column 宽度
+     * @param styleId 样式
+     * @return 输入框
+     */
+    public static JTextField createTextField(int column, StyleId styleId, String fontName, String text) {
+        JTextField textField = createTextField(column, styleId, fontName);
+        textField.setText(text);
+        return textField;
+    }
+
+
     /**
      * 创建输入框
      * @param column 宽度
