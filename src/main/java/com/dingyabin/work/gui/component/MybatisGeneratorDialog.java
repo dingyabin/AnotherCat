@@ -348,6 +348,9 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     private void initPreviewXmlWindow(JDialog jDialog, JEditorPane jEditorPane) {
         jEditorPane.setEditorKit(new XMLEditorKit());
         jEditorPane.setFont(CatFonts.MICRO_SOFT_15);
+        jEditorPane.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.editorpane);
+        //在最上面
+        jDialog.setAlwaysOnTop(true);
         //窗口logo
         jDialog.setIconImage(CatIcons.cat.getImage());
         //title
@@ -376,13 +379,13 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
         List<ConfigXmlProcessor> configXmlProcessors = new ArrayList<>();
 
-        PluginGeneratorProcessor pluginGenerator = new PluginGeneratorProcessor(,,);
+        PluginGeneratorProcessor pluginGenerator = new PluginGeneratorProcessor(overrideToString.isSelected(), imSerializable.isSelected(), ovEqualsHashCode.isSelected());
 
-        CommentGeneratorProcessor commentGenerator = new CommentGeneratorProcessor(,,);
+        CommentGeneratorProcessor commentGenerator = new CommentGeneratorProcessor(!useDateInModelInComment.isSelected(), false, addRemarkComments.isSelected());
         JdbcConnectionProcessor jdbcConnection = new JdbcConnectionProcessor(connectConfig, dataBaseSchema.getSchemaName());
-        JavaTypeResolverProcessor javaTypeResolver = new JavaTypeResolverProcessor(,);
+        JavaTypeResolverProcessor javaTypeResolver = new JavaTypeResolverProcessor(forceBigDecimals.isSelected(), !useDateInModel.isSelected());
 
-        JavaModelGeneratorProcessor javaModelGenerator = new JavaModelGeneratorProcessor(true,true);
+        JavaModelGeneratorProcessor javaModelGenerator = new JavaModelGeneratorProcessor(true,trimBeforeGet.isSelected());
         javaModelGenerator.setTargetProject(CatUtils.joinSystemPath(projectPath, modelPath));
         javaModelGenerator.setTargetPackage(modelPackage);
 
