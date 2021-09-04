@@ -6,8 +6,10 @@ import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.generator.CatMybatisGenerator;
 import com.dingyabin.work.common.generator.bean.ColumnNameCfg;
 import com.dingyabin.work.common.generator.bean.TableNameCfg;
+import com.dingyabin.work.common.generator.processor.*;
 import com.dingyabin.work.common.model.ColumnSchema;
 import com.dingyabin.work.common.model.ConnectConfig;
+import com.dingyabin.work.common.model.DataBaseSchema;
 import com.dingyabin.work.common.model.TableSchema;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.component.model.IGeneratorTableModel;
@@ -25,10 +27,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +43,8 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     private Map<Object, List<ColumnNameCfg>> columnNameCfgMap;
 
     private ConnectConfig connectConfig;
+
+    private DataBaseSchema dataBaseSchema;
 
     private LineBorder projectPanelLineBorder = new LineBorder(CatColors.COLOR_2, 3, true);
 
@@ -155,10 +157,11 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
 
 
-    public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList, ConnectConfig connectConfig) {
+    public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList, ConnectConfig connectConfig, DataBaseSchema dataBaseSchema) {
         super(ComContextManager.getMainFrame());
         this.tableNameCfgList = tableNameCfgList;
         this.connectConfig = connectConfig;
+        this.dataBaseSchema = dataBaseSchema;
         init();
     }
 
@@ -325,13 +328,10 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         jDialog.add(GuiUtils.createJscrollPane(jEditorPane), BorderLayout.CENTER);
 
         JPanel xmlBtnInputPanel = new JPanel();
-        ActionListener actionListener= e -> {
-            String xml = jEditorPane.getText();
-            String message = CatMybatisGenerator.getInstance().generate(xml)? "代码生成完毕！":"生成错误，请检查配置！";
-            GuiUtils.createOptionPane(jDialog, message, JOptionPane.DEFAULT_OPTION);
-        };
+        ActionListener actionListener = e -> execute(jEditorPane.getText());
         xmlBtnInputPanel.add(GuiUtils.createButton("执行", CatIcons.excute, StyleId.button, actionListener, CatFonts.MICRO_SOFT_14));
         jDialog.add(xmlBtnInputPanel, BorderLayout.SOUTH);
+
         //显示
         jDialog.setVisible(true);
     }
@@ -358,9 +358,26 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
 
 
+    private String createXmlString() {
+        List<ConfigXmlProcessor> configXmlProcessors = new ArrayList<>();
 
-    private String createXmlString(){
-        return "<xml></xml>";
+        CommentGeneratorProcessor commentGeneratorProcessor = new CommentGeneratorProcessor();
+        JavaClientGeneratorProcessor javaClientGeneratorProcessor = new JavaClientGeneratorProcessor();
+        JavaModelGeneratorProcessor javaModelGeneratorProcessor = new JavaModelGeneratorProcessor();
+        JavaTypeResolverProcessor javaTypeResolverProcessor = new JavaTypeResolverProcessor();
+        JdbcConnectionProcessor jdbcConnectionProcessor = new JdbcConnectionProcessor(connectConfig, dataBaseSchema.getSchemaName());
+        PluginGeneratorProcessor pluginGeneratorProcessor = new PluginGeneratorProcessor();
+        SqlMapGeneratorProcessor sqlMapGeneratorProcessor = new SqlMapGeneratorProcessor();
+
+        configXmlProcessors.add(commentGeneratorProcessor);
+        configXmlProcessors.add(javaClientGeneratorProcessor);
+        configXmlProcessors.add(javaModelGeneratorProcessor);
+        configXmlProcessors.add(javaTypeResolverProcessor);
+        configXmlProcessors.add(jdbcConnectionProcessor);
+        configXmlProcessors.add(pluginGeneratorProcessor);
+        configXmlProcessors.add(sqlMapGeneratorProcessor);
+
+        return CatMybatisGenerator.getInstance().makeCfgXml(configXmlProcessors);
     }
 
 
@@ -368,11 +385,18 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
      * 执行
      */
     private void execute() {
-
-
+        execute(createXmlString());
     }
 
 
+
+    /**
+     * 执行xml
+     */
+    private void execute(String xml) {
+        String message = CatMybatisGenerator.getInstance().generate(xml) ? "代码生成完毕！" : "生成错误，请检查配置！";
+        GuiUtils.createOptionPane(this, message, JOptionPane.DEFAULT_OPTION);
+    }
 
 
 

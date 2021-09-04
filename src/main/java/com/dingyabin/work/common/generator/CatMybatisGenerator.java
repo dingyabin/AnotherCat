@@ -1,14 +1,6 @@
 package com.dingyabin.work.common.generator;
 
-import com.alee.utils.swing.extensions.FontMethodsImpl;
-import com.dingyabin.work.common.generator.processor.CommentGeneratorProcessor;
 import com.dingyabin.work.common.generator.processor.ConfigXmlProcessor;
-import com.dingyabin.work.common.generator.processor.JavaModelGeneratorProcessor;
-import com.dingyabin.work.common.generator.processor.JdbcConnectionProcessor;
-import com.dingyabin.work.common.model.ConnectConfig;
-import com.dingyabin.work.gui.component.CatColors;
-import com.dingyabin.work.gui.component.xmledit.XMLEditorKit;
-import com.dingyabin.work.gui.utils.GuiUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
@@ -16,10 +8,7 @@ import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -87,28 +76,4 @@ public class CatMybatisGenerator {
         return CatMybatisGeneratorHolder.INSTANCE;
     }
 
-
-//    public static void main(String[] args) throws IOException {
-//       // JdbcConnectionProcessor jdbcConnectionProcessor = new JdbcConnectionProcessor(new ConnectConfig("xxx","MYSQL","127.0.0.1","3306","root","12345678"),"weight_manager");
-//        CommentGeneratorProcessor commentGeneratorProcessor = new CommentGeneratorProcessor();
-//        JavaModelGeneratorProcessor javaModelGeneratorProcessor = new JavaModelGeneratorProcessor();
-//        javaModelGeneratorProcessor.setTargetPackage("com");
-//        javaModelGeneratorProcessor.setTargetProject("F:\\demo1");
-//        List<ConfigXmlProcessor> xmlProcessors = new ArrayList<>();
-//       // xmlProcessors.add(jdbcConnectionProcessor);
-//        xmlProcessors.add(commentGeneratorProcessor);
-//        xmlProcessors.add(javaModelGeneratorProcessor);
-//        String s = CatMybatisGenerator.getInstance().makeCfgXml(xmlProcessors);
-//        //System.out.println(s);
-//        //CatMybatisGenerator.getInstance().generate(s);
-//
-//        JFrame j= new JFrame();
-//        JEditorPane jEditorPane = new JEditorPane();
-//        JScrollPane scroller = new JScrollPane(jEditorPane);
-//        XMLEditorKit xmlEditorKit = new XMLEditorKit();
-//        jEditorPane.setEditorKit(xmlEditorKit);
-//        jEditorPane.setText(s);
-//        j.add(scroller);
-//        GuiUtils.jFrameCommonAction(j);
-//    }
 }
