@@ -13,8 +13,9 @@ import org.mybatis.generator.plugins.ToStringPlugin;
  */
 public class PluginGeneratorProcessor extends PluginConfiguration implements ConfigXmlProcessor {
 
+    private static final String EMPTY_TAB = "        ";
 
-    private static final String PLUGIN_TYPE = "        <plugin type= \"%s\"></plugin>    \n";
+    private static final String PLUGIN_TYPE = EMPTY_TAB + "<plugin type= \"%s\"></plugin>    \n" + EMPTY_TAB;
 
 
     private boolean needToString;

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.mybatis.generator.internal.util.JavaBeansUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -56,14 +57,14 @@ public class TableCfgProcessor implements ConfigXmlProcessor{
 
     @Override
     public String process(String xmlString) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(StringUtils.EMPTY);
         for (TableNameCfg tableNameCfg : tableNameCfgList) {
             //处理表
             String tableCfg = processTable(tableNameCfg);
             //处理列
             String columnCfg = processColumn(tableNameCfg);
             if (StringUtils.isNotBlank(columnCfg)) {
-                columnCfg = ENTER + columnCfg;
+                columnCfg = ENTER + columnCfg + EMPTY_STR;
             }
             //列添加到表里
             tableCfg = tableCfg.replace("${columnMsg}",  columnCfg);
@@ -100,8 +101,12 @@ public class TableCfgProcessor implements ConfigXmlProcessor{
         if (CollectionUtils.isEmpty(columnCfg)) {
             return StringUtils.EMPTY;
         }
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(StringUtils.EMPTY);
         for (ColumnNameCfg columnNameCfg : columnCfg) {
+            //是否需要重写
+            if (!shouldColumnOverride(columnNameCfg)) {
+                continue;
+            }
             String column = COLUMN;
             column = column.replace("${column}", columnNameCfg.getColumnName());
             column = column.replace("${property}", columnNameCfg.getFieldName());
@@ -112,13 +117,20 @@ public class TableCfgProcessor implements ConfigXmlProcessor{
             stringBuilder.append(column);
             stringBuilder.append(ENTER);
         }
-        stringBuilder.append(EMPTY_STR);
         return stringBuilder.toString();
     }
 
 
+
     private List<ColumnNameCfg> getColumnCfg(String tableName) {
         return (columnNameCfgMap != null) ? columnNameCfgMap.get(tableName) : null;
+    }
+
+
+
+    private boolean shouldColumnOverride(ColumnNameCfg columnNameCfg) {
+        String autoFieldName = JavaBeansUtil.getCamelCaseString(columnNameCfg.getColumnName(), false);
+        return !autoFieldName.equals(columnNameCfg.getFieldName());
     }
 
 
