@@ -38,7 +38,7 @@ public class TableCfgProcessor implements ConfigXmlProcessor{
 
     private static final String EMPTY_STR = "        ";
 
-    private static final String TABLE = "<table tableName=\"${tableName}\" domainObjectName=\"${domainObjectName}\"  mapperName=\"${mapperName}\"    enableCountByExample=\"${enableCountByExample}\"  enableDeleteByExample=\"${enableDeleteByExample}\" enableSelectByExample=\"${enableSelectByExample}\" enableUpdateByExample=\"${enableUpdateByExample}\">${columnMsg}</table>";
+    private static final String TABLE = "<table tableName=\"${tableName}\" domainObjectName=\"${domainObjectName}\" mapperName=\"${mapperName}\" enableCountByExample=\"${enableCountByExample}\"  enableDeleteByExample=\"${enableDeleteByExample}\" enableSelectByExample=\"${enableSelectByExample}\" enableUpdateByExample=\"${enableUpdateByExample}\">${columnMsg}</table>";
 
     private static final String COLUMN = "<columnOverride column=\"${column}\" property=\"${property}\"/>";
 
