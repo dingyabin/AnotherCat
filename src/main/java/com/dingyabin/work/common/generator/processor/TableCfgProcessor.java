@@ -4,6 +4,8 @@ import com.dingyabin.work.common.generator.bean.ColumnNameCfg;
 import com.dingyabin.work.common.generator.bean.TableNameCfg;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -31,11 +33,13 @@ public class TableCfgProcessor implements ConfigXmlProcessor{
 
     private boolean enableUpdateByExample;
 
+    private static final String ENTER = "\n";
+
     private static final String EMPTY_STR = "        ";
 
     private static final String TABLE = "<table tableName=\"${tableName}\" domainObjectName=\"${domainObjectName}\"  mapperName=\"${mapperName}\"    enableCountByExample=\"${enableCountByExample}\"  enableDeleteByExample=\"${enableDeleteByExample}\" enableSelectByExample=\"${enableSelectByExample}\" enableUpdateByExample=\"${enableUpdateByExample}\">${columnMsg}</table>";
 
-    private static final String COLUMN = "                <columnOverride column=\"${column}\" property=\"${property}\"/>";
+    private static final String COLUMN = "<columnOverride column=\"${column}\" property=\"${property}\"/>";
 
 
     public TableCfgProcessor() {
@@ -54,21 +58,68 @@ public class TableCfgProcessor implements ConfigXmlProcessor{
     public String process(String xmlString) {
         StringBuilder stringBuilder = new StringBuilder();
         for (TableNameCfg tableNameCfg : tableNameCfgList) {
-            String tableCfg = TABLE;
-            tableCfg = tableCfg.replace("${tableName}", tableNameCfg.getTableName());
-            tableCfg = tableCfg.replace("${domainObjectName}", tableNameCfg.getModelName());
-            tableCfg = tableCfg.replace("${mapperName}", tableNameCfg.getModelName() + mapperSuffix);
+            //处理表
+            String tableCfg = processTable(tableNameCfg);
+            //处理列
+            String columnCfg = processColumn(tableNameCfg);
+            if (StringUtils.isNotBlank(columnCfg)) {
+                columnCfg = ENTER + columnCfg;
+            }
+            //列添加到表里
+            tableCfg = tableCfg.replace("${columnMsg}",  columnCfg);
 
-            tableCfg = tableCfg.replace("${enableCountByExample}", String.valueOf(enableCountByExample));
-            tableCfg = tableCfg.replace("${enableDeleteByExample}", String.valueOf(enableDeleteByExample));
-            tableCfg = tableCfg.replace("${enableSelectByExample}", String.valueOf(enableSelectByExample));
-            tableCfg = tableCfg.replace("${enableUpdateByExample}", String.valueOf(enableUpdateByExample));
             stringBuilder.append(tableCfg);
-            stringBuilder.append("\n" + EMPTY_STR);
+            stringBuilder.append("\n\n");
+            stringBuilder.append(EMPTY_STR);
         }
         return xmlString.replace("${table}", stringBuilder.toString());
     }
 
+
+
+
+
+    private String processTable(TableNameCfg tableNameCfg) {
+        String tableCfg = TABLE;
+
+        tableCfg = tableCfg.replace("${tableName}", tableNameCfg.getTableName());
+        tableCfg = tableCfg.replace("${domainObjectName}", tableNameCfg.getModelName());
+        tableCfg = tableCfg.replace("${mapperName}", tableNameCfg.getModelName() + mapperSuffix);
+
+        tableCfg = tableCfg.replace("${enableCountByExample}", String.valueOf(enableCountByExample));
+        tableCfg = tableCfg.replace("${enableDeleteByExample}", String.valueOf(enableDeleteByExample));
+        tableCfg = tableCfg.replace("${enableSelectByExample}", String.valueOf(enableSelectByExample));
+        tableCfg = tableCfg.replace("${enableUpdateByExample}", String.valueOf(enableUpdateByExample));
+
+        return tableCfg;
+    }
+
+
+    private String processColumn(TableNameCfg tableNameCfg) {
+        List<ColumnNameCfg> columnCfg = getColumnCfg(tableNameCfg.getTableName());
+        if (CollectionUtils.isEmpty(columnCfg)) {
+            return StringUtils.EMPTY;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (ColumnNameCfg columnNameCfg : columnCfg) {
+            String column = COLUMN;
+            column = column.replace("${column}", columnNameCfg.getColumnName());
+            column = column.replace("${property}", columnNameCfg.getFieldName());
+
+            stringBuilder.append(EMPTY_STR);
+            stringBuilder.append(EMPTY_STR);
+
+            stringBuilder.append(column);
+            stringBuilder.append(ENTER);
+        }
+        stringBuilder.append(EMPTY_STR);
+        return stringBuilder.toString();
+    }
+
+
+    private List<ColumnNameCfg> getColumnCfg(String tableName) {
+        return (columnNameCfgMap != null) ? columnNameCfgMap.get(tableName) : null;
+    }
 
 
 }
