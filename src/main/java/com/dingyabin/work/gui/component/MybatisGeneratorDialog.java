@@ -155,6 +155,15 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     private JButton xmlBtn = GuiUtils.createButton("查看/修改XML后执行", CatIcons.xml, StyleId.button, this, CatFonts.MICRO_SOFT_14);
 
 
+    /**
+     * xml预览窗口
+     */
+    private JPanel xmlBtnInputPanel = new JPanel();
+
+    private JButton xmlExecuteBtn = GuiUtils.createButton("执行", CatIcons.excute, StyleId.button, this, CatFonts.MICRO_SOFT_14);
+
+
+
     public MybatisGeneratorDialog(java.util.List<TableNameCfg> tableNameCfgList, ConnectConfig connectConfig) {
         super(ComContextManager.getMainFrame());
         this.tableNameCfgList = tableNameCfgList;
@@ -228,6 +237,9 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         btnInputPanel.add(executeBtn);
         btnInputPanel.add(xmlBtn);
 
+        //xml预览窗口内的按钮
+        xmlBtnInputPanel.add(xmlExecuteBtn);
+
         contentPane.add(projectInputPanel);
         contentPane.add(Box.createVerticalStrut(10));
         contentPane.add(modelInputPanel);
@@ -263,6 +275,10 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
             return;
         }
         if (source == xmlBtn) {
+            previewXml();
+            return;
+        }
+        if (source == xmlExecuteBtn) {
             previewXml();
         }
     }
@@ -323,6 +339,9 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         jEditorPane.setText( createXmlString());
         //添加组件
         jDialog.add(GuiUtils.createJscrollPane(jEditorPane), BorderLayout.CENTER);
+
+
+        jDialog.add(xmlBtnInputPanel, BorderLayout.SOUTH);
         //显示
         jDialog.setVisible(true);
     }
