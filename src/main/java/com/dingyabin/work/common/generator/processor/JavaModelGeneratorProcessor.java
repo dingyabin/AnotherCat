@@ -18,8 +18,12 @@ public class JavaModelGeneratorProcessor extends JavaModelGeneratorConfiguration
 
 
     public JavaModelGeneratorProcessor() {
-        addProperty(ENABLE_SUB_PACKAGES, "true");
-        addProperty(TRIM_STRINGS, "false");
+        this(true,false);
+    }
+
+    public JavaModelGeneratorProcessor(boolean enableSubPackages, boolean trimStrings) {
+        addProperty(ENABLE_SUB_PACKAGES, String.valueOf(enableSubPackages));
+        addProperty(TRIM_STRINGS, String.valueOf(trimStrings));
     }
 
 

@@ -15,7 +15,11 @@ public class SqlMapGeneratorProcessor extends SqlMapGeneratorConfiguration imple
 
 
     public SqlMapGeneratorProcessor() {
-        addProperty(ENABLE_SUB_PACKAGES, "true");
+        this(true);
+    }
+
+    public SqlMapGeneratorProcessor(boolean enableSubPackages) {
+        addProperty(ENABLE_SUB_PACKAGES, String.valueOf(enableSubPackages));
     }
 
 

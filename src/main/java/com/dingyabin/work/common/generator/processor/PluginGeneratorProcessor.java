@@ -23,6 +23,12 @@ public class PluginGeneratorProcessor extends PluginConfiguration implements Con
 
     private boolean needEqualsHashCode;
 
+    public PluginGeneratorProcessor(boolean needToString, boolean needSerializable, boolean needEqualsHashCode) {
+        this.needToString = needToString;
+        this.needSerializable = needSerializable;
+        this.needEqualsHashCode = needEqualsHashCode;
+    }
+
 
     @Override
     public String process(String xmlString) {

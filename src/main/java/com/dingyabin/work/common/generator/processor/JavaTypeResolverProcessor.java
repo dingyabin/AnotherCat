@@ -17,8 +17,13 @@ public class JavaTypeResolverProcessor extends JavaTypeResolverConfiguration imp
 
 
     public JavaTypeResolverProcessor() {
-        addProperty(FORCE_BIG_DECIMALS, "true");
-        addProperty(USE_JSR_310_TYPES, "false");
+        this(true, false);
+    }
+
+
+    public JavaTypeResolverProcessor(boolean forceBigDecimals, boolean useJSR310Types) {
+        addProperty(FORCE_BIG_DECIMALS, String.valueOf(forceBigDecimals));
+        addProperty(USE_JSR_310_TYPES, String.valueOf(useJSR310Types));
     }
 
 

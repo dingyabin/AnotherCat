@@ -14,7 +14,12 @@ public class JavaClientGeneratorProcessor extends JavaClientGeneratorConfigurati
 
 
     public JavaClientGeneratorProcessor() {
-        addProperty(ENABLE_SUB_PACKAGES, "true");
+        this(true);
+    }
+
+
+    public JavaClientGeneratorProcessor(boolean enableSubPackages) {
+        addProperty(ENABLE_SUB_PACKAGES, String.valueOf(enableSubPackages));
     }
 
 

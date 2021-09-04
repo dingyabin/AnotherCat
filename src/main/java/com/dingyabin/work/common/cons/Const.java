@@ -41,9 +41,9 @@ public class Const {
 
     public static  final String JLIST_CURRENT_SELECTED_INDEX = "jlist.selected.index";
 
-    public static final String GENERATOR_DEFAULT_CODE_PATH = "src/main/java";
+    public static final String GENERATOR_DEFAULT_CODE_PATH = "src" + File.separator + "main" + File.separator + "java";
 
-    public static final String GENERATOR_DEFAULT_RESOURCES = "src/main/resources";
+    public static final String GENERATOR_DEFAULT_RESOURCES = "src" + File.separator + "main" + File.separator + "resources";
 
 
     public static final String ADD_REMARK_COMMENTS = "是否把表和字段的注释加到javaModel里";

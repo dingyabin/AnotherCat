@@ -17,11 +17,18 @@ public class CommentGeneratorProcessor extends CommentGeneratorConfiguration imp
 
     public static final String ADD_REMARK_COMMENTS = "addRemarkComments";
 
+
     public CommentGeneratorProcessor() {
-        addProperty(SUPPRESS_DATE,"false");
-        addProperty(SUPPRESS_ALL_COMMENTS,"false");
-        addProperty(ADD_REMARK_COMMENTS,"true");
+        this(false, false, true);
     }
+
+
+    public CommentGeneratorProcessor(boolean suppressDate, boolean suppressAllComments, boolean addRemarkComments) {
+        addProperty(SUPPRESS_DATE, String.valueOf(suppressDate));
+        addProperty(SUPPRESS_ALL_COMMENTS, String.valueOf(suppressAllComments));
+        addProperty(ADD_REMARK_COMMENTS, String.valueOf(addRemarkComments));
+    }
+
 
     @Override
     public String process(String xmlString) {

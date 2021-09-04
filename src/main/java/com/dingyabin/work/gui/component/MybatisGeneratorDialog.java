@@ -11,6 +11,7 @@ import com.dingyabin.work.common.model.ColumnSchema;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.DataBaseSchema;
 import com.dingyabin.work.common.model.TableSchema;
+import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.component.model.IGeneratorTableModel;
 import com.dingyabin.work.gui.component.model.ModelGeneratorTableModel;
@@ -134,6 +135,8 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     private JCheckBox useDateInModel = GuiUtils.createCheckBox("强制使用java.util.Date", false, Const.USE_DATE_IN_MODEL);
 
+    private JCheckBox trimBeforeGet = GuiUtils.createCheckBox("getter方法返回前先trim", false);
+
     private JCheckBox useDateInModelInComment = GuiUtils.createCheckBox("注释里使用时间戳", false);
 
     private JCheckBox enableCountByExample = GuiUtils.createCheckBox("启用CountByExample", false);
@@ -221,6 +224,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         optionInputPanel.add(addRemarkComments);
         optionInputPanel.add(forceBigDecimals);
         optionInputPanel.add(useDateInModel);
+        optionInputPanel.add(trimBeforeGet);
         optionInputPanel.add(useDateInModelInComment);
         optionInputPanel.add(enableCountByExample);
         optionInputPanel.add(enableDeleteByExample);
@@ -359,23 +363,45 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
 
     private String createXmlString() {
+        String projectPath = projectInputField.getText();
+
+        String modelPath = modelPathInputField.getText();
+        String modelPackage = CatUtils.pathToPackage(modelPackageInputField.getText());
+
+        String daoPath = daoPathInputField.getText();
+        String daoPackage = CatUtils.pathToPackage(daoPackageInputField.getText());
+
+        String xmlPath = xmlPathInputField.getText();
+        String xmlPackage = CatUtils.pathToPackage(xmlPackageInputField.getText());
+
         List<ConfigXmlProcessor> configXmlProcessors = new ArrayList<>();
 
-        CommentGeneratorProcessor commentGeneratorProcessor = new CommentGeneratorProcessor();
-        JavaClientGeneratorProcessor javaClientGeneratorProcessor = new JavaClientGeneratorProcessor();
-        JavaModelGeneratorProcessor javaModelGeneratorProcessor = new JavaModelGeneratorProcessor();
-        JavaTypeResolverProcessor javaTypeResolverProcessor = new JavaTypeResolverProcessor();
-        JdbcConnectionProcessor jdbcConnectionProcessor = new JdbcConnectionProcessor(connectConfig, dataBaseSchema.getSchemaName());
-        PluginGeneratorProcessor pluginGeneratorProcessor = new PluginGeneratorProcessor();
-        SqlMapGeneratorProcessor sqlMapGeneratorProcessor = new SqlMapGeneratorProcessor();
+        PluginGeneratorProcessor pluginGenerator = new PluginGeneratorProcessor(,,);
 
-        configXmlProcessors.add(commentGeneratorProcessor);
-        configXmlProcessors.add(javaClientGeneratorProcessor);
-        configXmlProcessors.add(javaModelGeneratorProcessor);
-        configXmlProcessors.add(javaTypeResolverProcessor);
-        configXmlProcessors.add(jdbcConnectionProcessor);
-        configXmlProcessors.add(pluginGeneratorProcessor);
-        configXmlProcessors.add(sqlMapGeneratorProcessor);
+        CommentGeneratorProcessor commentGenerator = new CommentGeneratorProcessor(,,);
+        JdbcConnectionProcessor jdbcConnection = new JdbcConnectionProcessor(connectConfig, dataBaseSchema.getSchemaName());
+        JavaTypeResolverProcessor javaTypeResolver = new JavaTypeResolverProcessor(,);
+
+        JavaModelGeneratorProcessor javaModelGenerator = new JavaModelGeneratorProcessor(true,true);
+        javaModelGenerator.setTargetProject(CatUtils.joinSystemPath(projectPath, modelPath));
+        javaModelGenerator.setTargetPackage(modelPackage);
+
+        SqlMapGeneratorProcessor sqlMapGenerator = new SqlMapGeneratorProcessor();
+        sqlMapGenerator.setTargetProject(CatUtils.joinSystemPath(projectPath, xmlPath));
+        sqlMapGenerator.setTargetPackage(xmlPackage);
+
+
+        JavaClientGeneratorProcessor javaClientGenerator = new JavaClientGeneratorProcessor();
+        javaClientGenerator.setTargetProject(CatUtils.joinSystemPath(projectPath, daoPath));
+        javaClientGenerator.setTargetPackage(daoPackage);
+
+        configXmlProcessors.add(commentGenerator);
+        configXmlProcessors.add(javaClientGenerator);
+        configXmlProcessors.add(javaModelGenerator);
+        configXmlProcessors.add(javaTypeResolver);
+        configXmlProcessors.add(jdbcConnection);
+        configXmlProcessors.add(pluginGenerator);
+        configXmlProcessors.add(sqlMapGenerator);
 
         return CatMybatisGenerator.getInstance().makeCfgXml(configXmlProcessors);
     }

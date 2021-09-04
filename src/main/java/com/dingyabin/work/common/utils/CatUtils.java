@@ -10,14 +10,13 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.io.File;
 import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
 
 /**
  * @author 丁亚宾
@@ -119,6 +118,28 @@ public class CatUtils {
     }
 
 
+
+    public static String joinSystemPath(String... paths){
+        StringBuilder builder = new StringBuilder();
+        for (String path : paths) {
+            if (builder.length() > 0 && !builder.toString().endsWith(File.separator)) {
+                builder.append(File.separator);
+            }
+            builder.append(path);
+        }
+        return builder.toString();
+    }
+
+
+    public static String pathToPackage(String path) {
+        if (StringUtils.isBlank(path)) {
+            return path;
+        }
+        if (path.contains(File.separator)) {
+            return path.replaceAll(Matcher.quoteReplacement(File.separator), ".");
+        }
+        return path;
+    }
 }
 
 
