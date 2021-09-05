@@ -103,7 +103,6 @@ public class GuiUtils {
      * @param container 父容器
      * @param message 提示信息
      * @param optionType optionType
-     * @return 选中
      */
     public static void createOptionPane(Component container, String message, int optionType) {
         JOptionPane.showConfirmDialog(container, message, "确认信息", optionType);

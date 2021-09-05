@@ -152,7 +152,7 @@ public class CatUtils {
 
 
     /**
-     * 创建文件夹
+     * 创建文件夹(如果不存在的话)
      * @param path 路径
      * @return 结果
      */

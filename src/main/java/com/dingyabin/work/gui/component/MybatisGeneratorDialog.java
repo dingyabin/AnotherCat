@@ -421,10 +421,11 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
      * 执行
      */
     private void execute() {
-//        RetMsg<String> retMsg = validateInput();
-//        if (retMsg.isFail()) {
-//            GuiUtils.createOptionPane(MybatisGeneratorDialog.this, retMsg.getMsg(), JOptionPane.DEFAULT_OPTION);
-//        }
+        RetMsg<String> retMsg = validateInput();
+        if (retMsg.isFail()) {
+            GuiUtils.createOptionPane(MybatisGeneratorDialog.this, retMsg.getMsg(), JOptionPane.DEFAULT_OPTION);
+            return;
+        }
         execute(createXmlString(), MybatisGeneratorDialog.this);
     }
 
@@ -440,11 +441,44 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     }
 
 
-
-
-
+    /**
+     * 校验参数
+     * @return 结果
+     */
     private RetMsg<String> validateInput() {
-        return null;
+        //校验工程路径
+        String projectPath = projectInputField.getText();
+        if (StringUtils.isBlank(projectPath)) {
+            return RetMsg.fail("请选择工程路径！");
+        }
+        //校验Model路径
+        String modelPackage = CatUtils.pathToPackage(modelPackageInputField.getText());
+        if (StringUtils.isBlank(modelPackage)) {
+            return RetMsg.fail("请填Java Model包名(Package)！");
+        }
+        String modelPlacePath = CatUtils.joinSystemPath(projectPath, modelPathInputField.getText());
+        if (CatUtils.createDirectory(modelPlacePath)){
+            return RetMsg.fail(modelPlacePath + " 创建失败！");
+        }
+        //校验DAO路径
+        String daoPackage = CatUtils.pathToPackage(daoPackageInputField.getText());
+        if (StringUtils.isBlank(daoPackage)) {
+            return RetMsg.fail("请填DAO包名(Package)！");
+        }
+        String daoPlacePath = CatUtils.joinSystemPath(projectPath, daoPathInputField.getText());
+        if (CatUtils.createDirectory(daoPlacePath)){
+            return RetMsg.fail(daoPlacePath + " 创建失败！");
+        }
+        //校验XML路径
+        String xmlPackage = CatUtils.pathToPackage(xmlPackageInputField.getText());
+        if (StringUtils.isBlank(xmlPackage)) {
+            return RetMsg.fail("请填XML Mapper包名(Package)！");
+        }
+        String xmlPlacePath = CatUtils.joinSystemPath(projectPath, xmlPathInputField.getText());
+        if (CatUtils.createDirectory(xmlPlacePath)){
+            return RetMsg.fail(xmlPlacePath + " 创建失败！");
+        }
+        return RetMsg.success();
     }
 
 
