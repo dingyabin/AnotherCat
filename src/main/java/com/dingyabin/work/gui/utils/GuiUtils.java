@@ -127,12 +127,13 @@ public class GuiUtils {
      * 创建一个Label
      * @param text 文字
      * @param horizontalAlignment 对齐方式
-     * @param fontName 字体名字
+     * @param font 字体
      * @return label
      */
-    public static JLabel createLabel(String text, int horizontalAlignment, String fontName) {
-        JLabel jLabel = new JLabel(text, horizontalAlignment);
-        return FontMethodsImpl.setFontName(jLabel, fontName);
+    public static JLabel createLabel(String text, Icon icon, int horizontalAlignment, Font font) {
+        JLabel jLabel = new JLabel(text, icon, horizontalAlignment);
+        jLabel.setFont(font);
+        return jLabel;
     }
 
 
@@ -309,6 +310,20 @@ public class GuiUtils {
         JCheckBox checkBox = createCheckBox(text, selected);
         checkBox.setToolTipText(toolTip);
         return checkBox;
+    }
+
+
+    /**
+     * 创建JMenuItem
+     * @param text 文字
+     * @param icon 图标
+     * @param listener 监听
+     * @return JMenuItem
+     */
+    public static JMenuItem createJMenuItem(String text, Icon icon, ActionListener listener){
+        JMenuItem jMenuItem = new JMenuItem(text, icon);
+        jMenuItem.addActionListener(listener);
+        return jMenuItem;
     }
 
 }

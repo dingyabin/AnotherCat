@@ -23,4 +23,6 @@ public class CatFonts {
 
     public static final Font MICRO_SOFT_13 = new Font(MICRO_SOFT, Font.PLAIN,13);
 
+    public static final Font MICRO_SOFT_12 = new Font(MICRO_SOFT, Font.PLAIN,12);
+
 }

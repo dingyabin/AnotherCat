@@ -23,7 +23,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +40,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
     private CatList<TableSchema> tableCatList;
 
-    private JLabel bottomBar =  FontMethodsImpl.setFontSize(new JLabel(CatIcons.dbcon),13);
+    private JLabel bottomBar = GuiUtils.createLabel(StringUtils.EMPTY, CatIcons.dbcon, JLabel.CENTER, CatFonts.MICRO_SOFT_13);
 
     private JDialog renameDialog = new JDialog(ComContextManager.getMainFrame(), "重命名", true);
 
@@ -55,37 +54,37 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
     private JButton okToRename = FontMethodsImpl.setFontSize(new JButton("确定", CatIcons.ok), 14);
 
-    private JButton cancelToRename =FontMethodsImpl.setFontSize(new JButton("取消", CatIcons.cancel), 14);
+    private JButton cancelToRename = FontMethodsImpl.setFontSize(new JButton("取消", CatIcons.cancel), 14);
 
 
-    private JMenuItem copyMenu = new JMenuItem("复制", CatIcons.copy);
+    private JMenuItem copyMenu =  GuiUtils.createJMenuItem("复制", CatIcons.copy, this);
 
-    private JMenuItem openMenu = new JMenuItem("打开", CatIcons.open);
+    private JMenuItem openMenu = GuiUtils.createJMenuItem("打开", CatIcons.open, this);
 
-    private JMenuItem deleteMenu = new JMenuItem("删除", CatIcons.delete);
+    private JMenuItem deleteMenu = GuiUtils.createJMenuItem("删除", CatIcons.delete, this);
 
-    private JMenuItem modifyMenu = new JMenuItem("设计", CatIcons.design);
+    private JMenuItem modifyMenu = GuiUtils.createJMenuItem("设计", CatIcons.design, this);
 
-    private JMenuItem reNameMenu = new JMenuItem("重命名", CatIcons.edit);
+    private JMenuItem reNameMenu = GuiUtils.createJMenuItem("重命名", CatIcons.edit, this);
 
-    private JMenuItem mybatisMenu = new JMenuItem("Mybatis代码生成", CatIcons.mybatis);
+    private JMenuItem mybatisMenu = GuiUtils.createJMenuItem("Mybatis代码生成", CatIcons.mybatis, this);
 
-    private JMenuItem reFreshMenu = new JMenuItem("刷新", CatIcons.refresh);
+    private JMenuItem reFreshMenu = GuiUtils.createJMenuItem("刷新", CatIcons.refresh, this);
 
     private JPopupMenu jPopupMenu = new JPopupMenu();
 
 
-    private JButton openTableBtn = GuiUtils.createButton("打开表", CatIcons.open, StyleId.buttonIconHover);
+    private JButton openTableBtn = GuiUtils.createButton("打开表", CatIcons.open, StyleId.buttonIconHover, this, CatFonts.MICRO_SOFT_12);
 
-    private JButton designTableBtn = GuiUtils.createButton("设计表", CatIcons.design, StyleId.buttonIconHover);
+    private JButton designTableBtn = GuiUtils.createButton("设计表", CatIcons.design, StyleId.buttonIconHover, this, CatFonts.MICRO_SOFT_12);
 
-    private JButton newTableBtn = GuiUtils.createButton("新建表", CatIcons.newone, StyleId.buttonIconHover);
+    private JButton newTableBtn = GuiUtils.createButton("新建表", CatIcons.newone, StyleId.buttonIconHover, this, CatFonts.MICRO_SOFT_12);
 
-    private JButton reNameTableBtn = GuiUtils.createButton("重命名", CatIcons.edit, StyleId.buttonIconHover);
+    private JButton reNameTableBtn = GuiUtils.createButton("重命名", CatIcons.edit, StyleId.buttonIconHover, this, CatFonts.MICRO_SOFT_12);
 
-    private JButton deleteTableBtn = GuiUtils.createButton("删除表", CatIcons.delete, StyleId.buttonIconHover);
+    private JButton deleteTableBtn = GuiUtils.createButton("删除表", CatIcons.delete, StyleId.buttonIconHover, this, CatFonts.MICRO_SOFT_12);
 
-    private JButton searchBtnBtn = GuiUtils.createButton(StringUtils.EMPTY, CatIcons.search, StyleId.buttonIconHover);
+    private JButton searchBtnBtn = GuiUtils.createButton(StringUtils.EMPTY, CatIcons.search, StyleId.buttonIconHover, this, CatFonts.MICRO_SOFT_12);
 
     private JTextField searchInput = GuiUtils.createTextField(25, StyleId.textfieldNoFocus, CatFonts.DEFAULT_FONT_NAME);
 
@@ -123,17 +122,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
         //右键菜单弹框设置监听
         jPopupMenu.addPopupMenuListener(this);
+
         //列表右键菜单
         tableCatList.setComponentPopupMenu(jPopupMenu);
-
-        //右键菜单项设置监听
-        copyMenu.addActionListener(this);
-        openMenu.addActionListener(this);
-        modifyMenu.addActionListener(this);
-        reNameMenu.addActionListener(this);
-        deleteMenu.addActionListener(this);
-        reFreshMenu.addActionListener(this);
-        mybatisMenu.addActionListener(this);
 
         //安装右键菜单项
         jPopupMenu.add(copyMenu);
@@ -149,14 +140,6 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
         //左侧的按钮区
         JPanel leftToolBarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-
-        //设置监听
-        openTableBtn.addActionListener(this);
-        designTableBtn.addActionListener(this);
-        newTableBtn.addActionListener(this);
-        reNameTableBtn.addActionListener(this);
-        deleteTableBtn.addActionListener(this);
-        searchBtnBtn.addActionListener(this);
 
         //组装按钮
         leftToolBarPanel.add(openTableBtn);
