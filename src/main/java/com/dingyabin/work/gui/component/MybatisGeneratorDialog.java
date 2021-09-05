@@ -320,6 +320,12 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
      * 预览XML
      */
     private void previewXml() {
+        //校验
+        RetMsg<String> retMsg = validateInput();
+        if (retMsg.isFail()) {
+            GuiUtils.createOptionPane(MybatisGeneratorDialog.this, retMsg.getMsg(), JOptionPane.DEFAULT_OPTION);
+            return;
+        }
         JDialog jDialog = new JDialog();
         JEditorPane jEditorPane = new JEditorPane();
         //初始化
