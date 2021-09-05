@@ -7,16 +7,14 @@ import com.dingyabin.work.common.generator.CatMybatisGenerator;
 import com.dingyabin.work.common.generator.bean.ColumnNameCfg;
 import com.dingyabin.work.common.generator.bean.TableNameCfg;
 import com.dingyabin.work.common.generator.processor.*;
-import com.dingyabin.work.common.model.ColumnSchema;
-import com.dingyabin.work.common.model.ConnectConfig;
-import com.dingyabin.work.common.model.DataBaseSchema;
-import com.dingyabin.work.common.model.TableSchema;
+import com.dingyabin.work.common.model.*;
 import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.component.model.IGeneratorTableModel;
 import com.dingyabin.work.gui.component.model.ModelGeneratorTableModel;
 import com.dingyabin.work.gui.component.xmledit.XMLEditorKit;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -365,6 +363,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
 
 
+
     private String createXmlString() {
         String projectPath = projectInputField.getText();
 
@@ -422,7 +421,11 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
      * 执行
      */
     private void execute() {
-        execute(createXmlString(), this);
+//        RetMsg<String> retMsg = validateInput();
+//        if (retMsg.isFail()) {
+//            GuiUtils.createOptionPane(MybatisGeneratorDialog.this, retMsg.getMsg(), JOptionPane.DEFAULT_OPTION);
+//        }
+        execute(createXmlString(), MybatisGeneratorDialog.this);
     }
 
 
@@ -431,9 +434,21 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
      * 执行xml
      */
     private void execute(String xml, Component container) {
-        String message = CatMybatisGenerator.getInstance().generate(xml) ? "代码生成完毕！" : "生成错误，请检查配置！";
-        GuiUtils.createOptionPane(this, message, JOptionPane.DEFAULT_OPTION);
+        RetMsg<String> retMsg = CatMybatisGenerator.getInstance().generate(xml);
+        String message = retMsg.isSuccess() && StringUtils.isBlank(retMsg.getMsg()) ? "代码生成完毕！" : retMsg.getMsg();
+        GuiUtils.createOptionPane(container, message, JOptionPane.DEFAULT_OPTION);
     }
+
+
+
+
+
+    private RetMsg<String> validateInput() {
+        return null;
+    }
+
+
+
 
 
 
@@ -467,7 +482,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         //行高
         table.setRowHeight(25);
         //大小设置
-        int height = Math.max(Math.min((int)table.getPreferredSize().getHeight(), 300), 60);
+        int height = Math.max(Math.min((int)table.getPreferredSize().getHeight(), 300), 80);
         table.setPreferredScrollableViewportSize(new Dimension(380, height));
     }
 

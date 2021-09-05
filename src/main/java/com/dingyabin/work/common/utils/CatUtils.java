@@ -118,7 +118,11 @@ public class CatUtils {
     }
 
 
-
+    /**
+     * 拼接路径
+     * @param paths 路径
+     * @return 拼接后的路径
+     */
     public static String joinSystemPath(String... paths){
         StringBuilder builder = new StringBuilder();
         for (String path : paths) {
@@ -131,6 +135,11 @@ public class CatUtils {
     }
 
 
+    /**
+     * 路径转包名(如果不是路径，直接返回原样)
+     * @param path 路径
+     * @return 包名
+     */
     public static String pathToPackage(String path) {
         if (StringUtils.isBlank(path)) {
             return path;
@@ -139,6 +148,25 @@ public class CatUtils {
             return path.replaceAll(Matcher.quoteReplacement(File.separator), ".");
         }
         return path;
+    }
+
+
+    /**
+     * 创建文件夹
+     * @param path 路径
+     * @return 结果
+     */
+    public static boolean createDirectory(String path) {
+        try {
+            File file = new File(path);
+            if (file.exists()) {
+                return true;
+            }
+            return file.mkdirs();
+        } catch (Exception e) {
+            log.error("createDirectory error, path={}", path, e);
+        }
+        return false;
     }
 }
 

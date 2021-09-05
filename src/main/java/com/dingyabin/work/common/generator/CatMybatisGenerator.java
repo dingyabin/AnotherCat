@@ -1,6 +1,7 @@
 package com.dingyabin.work.common.generator;
 
 import com.dingyabin.work.common.generator.processor.ConfigXmlProcessor;
+import com.dingyabin.work.common.model.RetMsg;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
@@ -38,11 +39,10 @@ public class CatMybatisGenerator {
     }
 
 
-
-    public boolean generate(String makeCfgXml) {
+    public RetMsg<String> generate(String makeCfgXml) {
         try {
             if (StringUtils.isBlank(makeCfgXml)) {
-                return false;
+                return RetMsg.fail("配置文件空！");
             }
             List<String> warnings = new ArrayList<>();
 
@@ -51,11 +51,15 @@ public class CatMybatisGenerator {
             DefaultShellCallback callback = new DefaultShellCallback(true);
             MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
             myBatisGenerator.generate(null);
-            return true;
+            RetMsg<String> retMsg = RetMsg.success();
+            if (!warnings.isEmpty()) {
+                retMsg.setMsg(String.join("\n", warnings));
+            }
+            return retMsg;
         } catch (Exception e) {
             //ignore
         }
-        return false;
+        return RetMsg.fail("系统异常，请检查配置或重试！");
     }
 
 
