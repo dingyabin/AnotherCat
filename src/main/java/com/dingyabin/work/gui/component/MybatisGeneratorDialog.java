@@ -135,7 +135,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     private JCheckBox trimBeforeGet = GuiUtils.createCheckBox("getter方法返回前先trim", false);
 
-    private JCheckBox useDateInModelInComment = GuiUtils.createCheckBox("注释里使用时间戳", false);
+    private JCheckBox useDateInModelInComment = GuiUtils.createCheckBox("注释里使用时间戳", true);
 
     private JCheckBox enableCountByExample = GuiUtils.createCheckBox("启用CountByExample", false);
 

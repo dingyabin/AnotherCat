@@ -8,6 +8,8 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.DefaultCommentGenerator;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -24,6 +26,9 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
 
     private boolean addRemarkComments;
 
+    private boolean suppressDate;
+
+    private SimpleDateFormat dateFormat;
 
     private static final String SERIAL_VERSION_UID = "serialVersionUID";
 
@@ -37,6 +42,7 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
 
     public CatCommentGenerator() {
         super();
+        suppressDate = false;
         suppressAllComments = false;
         addRemarkComments = true;
     }
@@ -45,8 +51,12 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
     @Override
     public void addConfigurationProperties(Properties properties) {
         super.addConfigurationProperties(properties);
+        suppressDate = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_DATE));
         suppressAllComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS));
         addRemarkComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_ADD_REMARK_COMMENTS));
+        if (!suppressDate) {
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }
     }
 
 
@@ -148,7 +158,7 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
         javaElement.addJavaDocLine("  *"); //$NON-NLS-1$
         StringBuilder sb = new StringBuilder();
         sb.append("  * create by "); //$NON-NLS-1$
-        sb.append(System.getProperty( " user.name "));
+        sb.append(System.getProperty( "user.name"));
         String date = getDateString();
         if (date != null) {
             sb.append(' ');
@@ -156,6 +166,17 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
         }
         javaElement.addJavaDocLine(sb.toString());
     }
+
+
+
+
+    protected String getDateString() {
+        if (suppressDate || dateFormat == null) {
+            return null;
+        }
+        return dateFormat.format(new Date());
+    }
+
 
 
     private void generalMethodComment(Method method, IntrospectedTable introspectedTable) {
