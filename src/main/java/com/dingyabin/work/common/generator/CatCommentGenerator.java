@@ -10,7 +10,8 @@ import org.mybatis.generator.internal.DefaultCommentGenerator;
 import org.mybatis.generator.internal.util.StringUtility;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.List;
+import java.util.Properties;
 
 import static org.mybatis.generator.internal.util.StringUtility.isTrue;
 
@@ -21,14 +22,14 @@ import static org.mybatis.generator.internal.util.StringUtility.isTrue;
  */
 public class CatCommentGenerator extends DefaultCommentGenerator {
 
-    private boolean suppressDate;
-
     private boolean suppressAllComments;
 
     private boolean addRemarkComments;
 
     private SimpleDateFormat dateFormat;
 
+
+    private static final String SERIAL_VERSION_UID = "serialVersionUID";
 
     private static final String BR = "  <br/>";
     private static final String COLUMN_NAME = "* 字段名：";
@@ -40,7 +41,6 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
 
     public CatCommentGenerator() {
         super();
-        suppressDate = false;
         suppressAllComments = false;
         addRemarkComments = true;
     }
@@ -49,7 +49,6 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
     @Override
     public void addConfigurationProperties(Properties properties) {
         super.addConfigurationProperties(properties);
-        suppressDate = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_DATE));
         suppressAllComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS));
         addRemarkComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_ADD_REMARK_COMMENTS));
         String dateFormatString = properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_DATE_FORMAT);
@@ -78,9 +77,11 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
         if (suppressAllComments) {
             return;
         }
-        field.addJavaDocLine("/**");
-        field.addJavaDocLine(" *此字段在" + introspectedTable.getFullyQualifiedTable() + "中无对应字段" + BR);
-        field.addJavaDocLine("*/");
+        if (SERIAL_VERSION_UID.equals(field.getName())) {
+            field.addJavaDocLine("/**");
+            field.addJavaDocLine("* 序列化Id");
+            field.addJavaDocLine("*/");
+        }
     }
 
 
