@@ -7,9 +7,7 @@ import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.DefaultCommentGenerator;
-import org.mybatis.generator.internal.util.StringUtility;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Properties;
 
@@ -25,8 +23,6 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
     private boolean suppressAllComments;
 
     private boolean addRemarkComments;
-
-    private SimpleDateFormat dateFormat;
 
 
     private static final String SERIAL_VERSION_UID = "serialVersionUID";
@@ -51,10 +47,6 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
         super.addConfigurationProperties(properties);
         suppressAllComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS));
         addRemarkComments = isTrue(properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_ADD_REMARK_COMMENTS));
-        String dateFormatString = properties.getProperty(PropertyRegistry.COMMENT_GENERATOR_DATE_FORMAT);
-        if (StringUtility.stringHasValue(dateFormatString)) {
-            dateFormat = new SimpleDateFormat(dateFormatString);
-        }
     }
 
 
@@ -97,6 +89,8 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
         topLevelClass.addJavaDocLine("  *");
 
         topLevelClass.addJavaDocLine("  *  本Model对应数据库中的: " + introspectedTable.getFullyQualifiedTable() + "表");
+
+        addJavadocTag(topLevelClass, false);
 
         topLevelClass.addJavaDocLine("  */");
     }
@@ -148,8 +142,19 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
     }
 
 
+
     @Override
     protected void addJavadocTag(JavaElement javaElement, boolean markAsDoNotDelete) {
+        javaElement.addJavaDocLine("  *"); //$NON-NLS-1$
+        StringBuilder sb = new StringBuilder();
+        sb.append("  * create by "); //$NON-NLS-1$
+        sb.append(System.getProperty( " user.name "));
+        String date = getDateString();
+        if (date != null) {
+            sb.append(' ');
+            sb.append(date);
+        }
+        javaElement.addJavaDocLine(sb.toString());
     }
 
 
