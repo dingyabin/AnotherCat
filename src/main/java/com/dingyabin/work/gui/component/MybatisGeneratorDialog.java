@@ -437,7 +437,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     private void execute(String xml, Component container) {
         RetMsg<String> retMsg = CatMybatisGenerator.getInstance().generate(xml);
         String message = retMsg.isSuccess() && StringUtils.isBlank(retMsg.getMsg()) ? "代码生成完毕！" : retMsg.getMsg();
-        GuiUtils.createOptionPane(container, message, JOptionPane.DEFAULT_OPTION);
+        GuiUtils.createOptionPane(MybatisGeneratorDialog.this, message, JOptionPane.DEFAULT_OPTION);
     }
 
 
@@ -457,7 +457,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
             return RetMsg.fail("请填Java Model包名(Package)！");
         }
         String modelPlacePath = CatUtils.joinSystemPath(projectPath, modelPathInputField.getText());
-        if (CatUtils.createDirectory(modelPlacePath)){
+        if (!CatUtils.createDirectory(modelPlacePath)){
             return RetMsg.fail(modelPlacePath + " 创建失败！");
         }
         //校验DAO路径
@@ -466,7 +466,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
             return RetMsg.fail("请填DAO包名(Package)！");
         }
         String daoPlacePath = CatUtils.joinSystemPath(projectPath, daoPathInputField.getText());
-        if (CatUtils.createDirectory(daoPlacePath)){
+        if (!CatUtils.createDirectory(daoPlacePath)){
             return RetMsg.fail(daoPlacePath + " 创建失败！");
         }
         //校验XML路径
@@ -475,7 +475,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
             return RetMsg.fail("请填XML Mapper包名(Package)！");
         }
         String xmlPlacePath = CatUtils.joinSystemPath(projectPath, xmlPathInputField.getText());
-        if (CatUtils.createDirectory(xmlPlacePath)){
+        if (!CatUtils.createDirectory(xmlPlacePath)){
             return RetMsg.fail(xmlPlacePath + " 创建失败！");
         }
         return RetMsg.success();
