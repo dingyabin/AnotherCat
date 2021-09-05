@@ -96,7 +96,7 @@ public class CatCommentGenerator extends DefaultCommentGenerator {
         }
         topLevelClass.addJavaDocLine("  *");
 
-        topLevelClass.addJavaDocLine("*  本Model对应数据库中的: " + introspectedTable.getFullyQualifiedTable() + "表");
+        topLevelClass.addJavaDocLine("  *  本Model对应数据库中的: " + introspectedTable.getFullyQualifiedTable() + "表");
 
         topLevelClass.addJavaDocLine("  */");
     }
