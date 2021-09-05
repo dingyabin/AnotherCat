@@ -516,7 +516,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         //行高
         table.setRowHeight(25);
         //大小设置
-        int height = Math.max(Math.min((int)table.getPreferredSize().getHeight(), 300), 80);
+        int height = Math.max(Math.min((int)table.getPreferredSize().getHeight(), 300), 100);
         table.setPreferredScrollableViewportSize(new Dimension(380, height));
     }
 
