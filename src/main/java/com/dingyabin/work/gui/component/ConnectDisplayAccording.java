@@ -315,7 +315,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         //设置字体
         JComponent header = accordionPane.getHeader();
         FontMethodsImpl.setFontSize(header.getComponent(0), 13);
-        FontMethodsImpl.setFontName(header.getComponent(0), "微软雅黑");
+        FontMethodsImpl.setFontName(header.getComponent(0), CatFonts.MICRO_SOFT);
         //添加右键菜单
         addPopupMenu(accordionPane);
         return accordionPane;

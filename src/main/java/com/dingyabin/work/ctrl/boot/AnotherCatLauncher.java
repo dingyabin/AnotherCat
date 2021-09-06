@@ -5,7 +5,6 @@ import com.dingyabin.work.gui.component.*;
 import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author 丁亚宾
@@ -63,6 +62,9 @@ public class AnotherCatLauncher {
         jf.add(mainSplitPane);
 
         GuiUtils.jFrameCommonAction(jf);
+
+        //设置tabPane的左侧宽度，注意，这个方法要在jf.setVisible之后执行
+        mainSplitPane.setDividerLocation(170);
     }
 
 
