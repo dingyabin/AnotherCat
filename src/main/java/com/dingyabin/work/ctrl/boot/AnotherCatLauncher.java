@@ -75,11 +75,8 @@ public class AnotherCatLauncher {
         //窗口logo
         jf.setIconImage(CatIcons.cat.getImage());
         //屏幕大小
-        Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-        //设置窗口大小
-        jf.setPreferredSize(new Dimension((int) bounds.getWidth(), (int) bounds.getHeight()));
+        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        connectDisplay.setPreferredSize(new Dimension(200,1000));
         connectDisplay.setConnectConfigs(ConnectConfigManager.getConnectConfigs());
 
         //左右分割栏设置一键收起
