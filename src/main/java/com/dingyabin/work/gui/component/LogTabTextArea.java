@@ -10,7 +10,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,20 +26,17 @@ import java.util.Map;
  * Time:0:24
  */
 @Slf4j
-public class LogTabTextArea extends JTextArea {
+public class LogTabTextArea extends JTextArea implements ActionListener {
 
     private int rows = 0;
 
-    private final ActionListener copyActionListener = e -> copy();
+    private JPopupMenu jPopupMenu = new JPopupMenu();
 
-    private final ActionListener selectActionListener = e -> selectAll();
+    private JMenuItem selectItem = GuiUtils.createJMenuItem("全选", CatIcons.selectAll, this);
 
-    private final ActionListener clearActionListener = e -> {
-        if (GuiUtils.createYesNoOptionPane(LogTabTextArea.this, Const.CONFIRM_TO_CLEAR_LOG) && clearLogFile()) {
-            setText(StringUtils.EMPTY);
-            rows = 0;
-        }
-    };
+    private JMenuItem copyItem = GuiUtils.createJMenuItem("复制", CatIcons.copy, this);
+
+    private JMenuItem clearItem = GuiUtils.createJMenuItem("清空日志", CatIcons.clear, this);
 
 
     public LogTabTextArea() {
@@ -154,17 +153,6 @@ public class LogTabTextArea extends JTextArea {
      * 添加右键菜单
      */
     public LogTabTextArea addPopupMenu() {
-        JPopupMenu jPopupMenu = new JPopupMenu();
-
-        JMenuItem selectItem = new JMenuItem("全选", CatIcons.selectAll);
-        selectItem.addActionListener(selectActionListener);
-
-        JMenuItem copyItem = new JMenuItem("复制", CatIcons.copy);
-        copyItem.addActionListener(copyActionListener);
-
-        JMenuItem clearItem = new JMenuItem("清空日志", CatIcons.clear);
-        clearItem.addActionListener(clearActionListener);
-
         jPopupMenu.add(selectItem);
         jPopupMenu.add(copyItem);
         jPopupMenu.addSeparator();
@@ -176,4 +164,20 @@ public class LogTabTextArea extends JTextArea {
     }
 
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source == selectItem) {
+            selectAll();
+            return;
+        }
+        if (source == copyItem) {
+            copy();
+            return;
+        }
+        if (source == clearItem && GuiUtils.createYesNoOptionPane(this, Const.CONFIRM_TO_CLEAR_LOG) && clearLogFile()) {
+            setText(StringUtils.EMPTY);
+            rows = 0;
+        }
+    }
 }
