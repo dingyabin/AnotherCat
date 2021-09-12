@@ -1,6 +1,11 @@
 package com.dingyabin.work.ctrl.event;
 
-import com.google.common.eventbus.EventBus;
+import com.dingyabin.work.common.listeners.CatSystemListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author 丁亚宾
@@ -9,21 +14,38 @@ import com.google.common.eventbus.EventBus;
  */
 public class SystemEventDispatcher {
 
-    private static final EventBus EVENT_BUS = new EventBus(SystemEventDispatcher.class.getSimpleName());
+    private static final Map<Class, List<CatSystemListener>> CAT_SYSTEM_LISTENER_MAP = new HashMap<>();
 
 
-    public static void register(Object object) {
-        EVENT_BUS.register(object);
+
+    public static <T> void register(CatSystemListener<T> listener) {
+        Class<T> listenType = listener.getListenType();
+        List<CatSystemListener> catSystemListeners = CAT_SYSTEM_LISTENER_MAP.get(listenType);
+        if (catSystemListeners == null) {
+            catSystemListeners = new ArrayList<>();
+        }
+        catSystemListeners.add(listener);
+        CAT_SYSTEM_LISTENER_MAP.put(listenType, catSystemListeners);
     }
 
 
-    public static void unRegister(Object object) {
-        EVENT_BUS.unregister(object);
+    public static void unRegister(Class event) {
+        CAT_SYSTEM_LISTENER_MAP.remove(event);
     }
 
 
-    public static void post(Object object) {
-        EVENT_BUS.post(object);
+    @SuppressWarnings("unchecked")
+    public static void post(Object event) {
+        List<CatSystemListener> catSystemListeners = CAT_SYSTEM_LISTENER_MAP.get(event.getClass());
+        if (catSystemListeners == null) {
+            return;
+        }
+        for (CatSystemListener catSystemListener : catSystemListeners) {
+            if (catSystemListener.getListenType() != event.getClass()) {
+                continue;
+            }
+            catSystemListener.process(event);
+        }
     }
 
 }
