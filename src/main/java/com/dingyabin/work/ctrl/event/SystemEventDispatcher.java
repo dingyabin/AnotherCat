@@ -1,6 +1,6 @@
 package com.dingyabin.work.ctrl.event;
 
-import com.dingyabin.work.common.listeners.CatSystemListener;
+import com.dingyabin.work.common.listeners.CatActionListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,13 +14,13 @@ import java.util.Map;
  */
 public class SystemEventDispatcher {
 
-    private static final Map<Class, List<CatSystemListener>> CAT_SYSTEM_LISTENER_MAP = new HashMap<>();
+    private static final Map<Class, List<CatActionListener>> CAT_SYSTEM_LISTENER_MAP = new HashMap<>();
 
 
 
-    public static <T> void register(CatSystemListener<T> listener) {
+    public static <T> void register(CatActionListener<T> listener) {
         Class<T> listenType = listener.getListenType();
-        List<CatSystemListener> catSystemListeners = CAT_SYSTEM_LISTENER_MAP.get(listenType);
+        List<CatActionListener> catSystemListeners = CAT_SYSTEM_LISTENER_MAP.get(listenType);
         if (catSystemListeners == null) {
             catSystemListeners = new ArrayList<>();
         }
@@ -36,11 +36,11 @@ public class SystemEventDispatcher {
 
     @SuppressWarnings("unchecked")
     public static void post(Object event) {
-        List<CatSystemListener> catSystemListeners = CAT_SYSTEM_LISTENER_MAP.get(event.getClass());
+        List<CatActionListener> catSystemListeners = CAT_SYSTEM_LISTENER_MAP.get(event.getClass());
         if (catSystemListeners == null) {
             return;
         }
-        for (CatSystemListener catSystemListener : catSystemListeners) {
+        for (CatActionListener catSystemListener : catSystemListeners) {
             if (catSystemListener.getListenType() != event.getClass()) {
                 continue;
             }

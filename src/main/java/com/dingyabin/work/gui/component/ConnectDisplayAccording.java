@@ -10,7 +10,7 @@ import com.alee.extended.collapsible.AbstractTitleLabel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
-import com.dingyabin.work.common.listeners.CatSystemListener;
+import com.dingyabin.work.common.listeners.CatActionListener;
 import com.dingyabin.work.common.model.*;
 import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
@@ -35,11 +35,7 @@ import static com.dingyabin.work.common.model.ConnectConfigManager.removeConnect
  * Date: 2021/8/15.
  * Time:13:00
  */
-public class ConnectDisplayAccording extends WebAccordion implements AccordionPaneListener, ActionListener, CatSystemListener<SaveConnectEvent> {
-
-    private JFrame jFrame;
-
-    private CatTabPane tabbedPane;
+public class ConnectDisplayAccording extends WebAccordion implements AccordionPaneListener, ActionListener, CatActionListener<SaveConnectEvent> {
 
     private JLabel boomLabel = new JLabel(CatIcons.boom);
 
@@ -54,10 +50,8 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     private JPopupMenu jPopupMenu = new JPopupMenu();
 
 
-    public ConnectDisplayAccording(JFrame jFrame, CatTabPane tabbedPane) {
+    public ConnectDisplayAccording() {
         super(StyleId.accordion, BoxOrientation.top, 0, 1);
-        this.jFrame = jFrame;
-        this.tabbedPane = tabbedPane;
         initPopupMenu();
         SystemEventDispatcher.register(this);
     }
@@ -98,12 +92,12 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             CatRet<List<DataBaseSchema>> catRet =  SpringBeanHolder.getCatAdapter().getDbsWithConnect(connectConfig);
             if (!catRet.isSuccess()) {
                 pane.setContent(boomLabel);
-                GuiUtils.createOptionPane(jFrame, catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
+                GuiUtils.createOptionPane(ComContextManager.getMainFrame(), catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
                 return;
             }
             if (CollectionUtils.isEmpty(catRet.getData())) {
                 pane.setContent(boomLabel);
-                GuiUtils.createOptionPane(jFrame, "该连接下暂无数据库!", JOptionPane.DEFAULT_OPTION);
+                GuiUtils.createOptionPane(ComContextManager.getMainFrame(), "该连接下暂无数据库!", JOptionPane.DEFAULT_OPTION);
                 return;
             }
             JList<DataBaseSchema> dataBaseList = getDataBaseList(catRet, connectConfig);
@@ -200,7 +194,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             return;
         }
         ConnectConfig connectConfig = ((ConnectConfig) conMeta).copy();
-        CatNewConnectDialog dialog = new CatNewConnectDialog(jFrame, connectConfig.typeEnum(), e.getActionCommand(), false);
+        CatNewConnectDialog dialog = new CatNewConnectDialog(ComContextManager.getMainFrame(), connectConfig.typeEnum(), e.getActionCommand(), false);
         //设置paneId
         dialog.putClientProperty(Const.ACCORDING_PANE_ID, accordionPaneId.toString());
         //设置编辑模式
@@ -245,7 +239,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         //收起
         collapsePane(accordionPane.getId());
         SpringBeanHolder.getCatAdapter().closeConnect(connectConfig);
-        tabbedPane.closeAllTabExceptFirst();
+        ComContextManager.getTabbedPane().closeAllTabExceptFirst();
     }
 
 
@@ -372,7 +366,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             //查询这个库下面的表
             List<TableSchema> tables = SpringBeanHolder.getCatAdapter().getTablesWithDb(connectConfig, dataBaseSchema);
             //刷新List
-            tabbedPane.setTablePanelWithNewDBSchema(tables, connectConfig, dataBaseSchema);
+            ComContextManager.getTabbedPane().setTablePanelWithNewDBSchema(tables, connectConfig, dataBaseSchema);
         });
         return schemaCatList;
     }

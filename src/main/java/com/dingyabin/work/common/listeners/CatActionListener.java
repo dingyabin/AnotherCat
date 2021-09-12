@@ -5,7 +5,7 @@ package com.dingyabin.work.common.listeners;
  * Date: 2021/9/12.
  * Time:21:42
  */
-public interface CatSystemListener<T> {
+public interface CatActionListener<T> {
 
 
     void process(T object);

@@ -37,7 +37,7 @@ public class AnotherCatLauncher {
     /**
      * 左侧的连接展示页
      */
-    private ConnectDisplayAccording connectDisplay = new ConnectDisplayAccording(jf, tabbedPane);
+    private ConnectDisplayAccording connectDisplay = new ConnectDisplayAccording();
 
 
     private AnotherCatLauncher() {
