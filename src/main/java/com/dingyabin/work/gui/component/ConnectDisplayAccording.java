@@ -10,12 +10,12 @@ import com.alee.extended.collapsible.AbstractTitleLabel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
-import com.dingyabin.work.common.listeners.SaveConnectListener;
 import com.dingyabin.work.common.model.*;
 import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.ctrl.event.SystemEventDispatcher;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import com.google.common.eventbus.Subscribe;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,7 +35,7 @@ import static com.dingyabin.work.common.model.ConnectConfigManager.removeConnect
  * Date: 2021/8/15.
  * Time:13:00
  */
-public class ConnectDisplayAccording extends WebAccordion implements AccordionPaneListener, ActionListener, SaveConnectListener {
+public class ConnectDisplayAccording extends WebAccordion implements AccordionPaneListener, ActionListener {
 
     private JFrame jFrame;
 
@@ -132,7 +132,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
     }
 
 
-    @Override
+    @Subscribe
     public void onSaveFinish(SaveConnectEvent saveConnectEvent) {
         CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
         ConnectConfig savedConfig = saveConnectEvent.getSavedConnectConfig();
@@ -199,8 +199,6 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         dialog.putClientProperty(Const.ACCORDING_PANE_ID, accordionPaneId.toString());
         //设置编辑模式
         dialog.editMode(connectConfig);
-        //添加监听
-        dialog.addSaveConnectListener(this);
         //查看操作
         if (source == see) {
             seeConnect(dialog);

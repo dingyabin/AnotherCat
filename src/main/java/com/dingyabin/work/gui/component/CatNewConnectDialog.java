@@ -3,7 +3,6 @@ package com.dingyabin.work.gui.component;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
-import com.dingyabin.work.common.listeners.SaveConnectListener;
 import com.dingyabin.work.common.model.CatNewConModel;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.ConnectConfigManager;
@@ -11,7 +10,6 @@ import com.dingyabin.work.common.model.SaveConnectEvent;
 import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.ctrl.event.SystemEventDispatcher;
 import com.dingyabin.work.gui.utils.GuiUtils;
-import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,9 +20,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 新建连接对话框
@@ -37,8 +33,6 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
     private CatNewConModel catNewConModel;
 
     private DataBaseTypeEnum dataBaseType;
-
-    private Set<SaveConnectListener> saveConnectListeners;
 
     private Map<String, String> propertyMap;
 
@@ -201,22 +195,6 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
 
     /**
-     * 添加监听
-     * @param saveConnectListener 监听器
-     */
-    public CatNewConnectDialog addSaveConnectListener(SaveConnectListener saveConnectListener) {
-        if (saveConnectListener == null) {
-            return this;
-        }
-        if (this.saveConnectListeners == null) {
-            this.saveConnectListeners = new HashSet<>();
-        }
-        this.saveConnectListeners.add(saveConnectListener);
-        return this;
-    }
-
-
-    /**
      * 保存连接
      */
     private void saveConnect() {
@@ -247,11 +225,8 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
             //弹框
             GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
         }
-        //如果有回调的话,执行回调
+        //封装事件
         SaveConnectEvent saveConnectEvent = new SaveConnectEvent(catNewConModel, curConnect, this);
-        if (this.saveConnectListeners != null) {
-            saveConnectListeners.forEach(listener -> listener.onSaveFinish(saveConnectEvent));
-        }
         //发送全局事件消息
         SystemEventDispatcher.post(saveConnectEvent);
         //如果是编辑模式的话，就关闭
