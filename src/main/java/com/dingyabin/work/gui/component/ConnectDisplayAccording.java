@@ -16,8 +16,8 @@ import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.ctrl.event.SystemEventDispatcher;
 import com.dingyabin.work.gui.utils.GuiUtils;
-import com.google.common.eventbus.Subscribe;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -133,15 +133,41 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
 
     @Override
-    @Subscribe
     public void onSaveFinish(SaveConnectEvent saveConnectEvent) {
         CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
-        if (catNewConModel.isEditMode()) {
-            return;
+        ConnectConfig savedConfig = saveConnectEvent.getSavedConnectConfig();
+        CatNewConnectDialog dialog = saveConnectEvent.getSource();
+
+        //新增
+        if (catNewConModel.isSaveMode()) {
+            AccordionPane accordionPane = addPane(CatIcons.dbcon, savedConfig.getName(), null);
+            accordionPane.putClientProperty(Const.ACCORDING_META, savedConfig);
         }
-        ConnectConfig connect = saveConnectEvent.getSavedConnectConfig();
-        AccordionPane accordionPane = addPane(CatIcons.dbcon, connect.getName(), null);
-        accordionPane.putClientProperty(Const.ACCORDING_META, connect);
+
+        //修改
+        if (catNewConModel.isEditMode()) {
+            String paneId = dialog.getClientProperty(Const.ACCORDING_PANE_ID);
+            if (StringUtils.isBlank(paneId)) {
+                return;
+            }
+            AccordionPane accordionPane = getPane(paneId);
+            if (accordionPane == null) {
+                return;
+            }
+            //如果没有变化，不处理
+            if (savedConfig.equals(catNewConModel.getOldConnectConfig())) {
+                return;
+            }
+            //更新连接信息
+            accordionPane.putClientProperty(Const.ACCORDING_META, savedConfig);
+            //如果只是名字变了,则只用修改名字就行了
+            if (savedConfig.onlyNameDifferent(catNewConModel.getOldConnectConfig()) && updatePaneText(accordionPane, savedConfig.getName())) {
+                return;
+            }
+            AccordionPane newAccordionPane = createAccordionPane(CatIcons.dbcon, savedConfig.getName(), null);
+            newAccordionPane.putClientProperty(Const.ACCORDING_META, savedConfig);
+            replaceAccordionPane(accordionPane, newAccordionPane);
+        }
     }
 
 
@@ -169,8 +195,12 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         }
         ConnectConfig connectConfig = ((ConnectConfig) conMeta).copy();
         CatNewConnectDialog dialog = new CatNewConnectDialog(jFrame, connectConfig.typeEnum(), e.getActionCommand(), false);
+        //设置paneId
+        dialog.putClientProperty(Const.ACCORDING_PANE_ID, accordionPaneId.toString());
         //设置编辑模式
         dialog.editMode(connectConfig);
+        //添加监听
+        dialog.addSaveConnectListener(this);
         //查看操作
         if (source == see) {
             seeConnect(dialog);
@@ -188,7 +218,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         }
         //编辑操作
         if (source == edit) {
-            editConnect(accordionPane, dialog);
+            editConnect(dialog);
         }
     }
 
@@ -214,34 +244,18 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         tabbedPane.closeAllTabExceptFirst();
     }
 
+
+
     /**
      * 编辑连接
-     * @param accordionPane accordionPane
+     *
      * @param dialog 对话框
      */
-    private void editConnect(AccordionPane accordionPane, CatNewConnectDialog dialog) {
-        dialog.addSaveConnectListener(saveConnectEvent -> {
-            CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
-            //保存-新建模式下，不处理
-            if (catNewConModel.isSaveMode()) {
-                return;
-            }
-            //只处理编辑模式
-            ConnectConfig savedConfig = saveConnectEvent.getSavedConnectConfig();
-            //如果没有变化，不处理
-            if (savedConfig.equals(catNewConModel.getOldConnectConfig())) {
-                return;
-            }
-            //如果只是名字变了,则只用修改名字就行了
-            if (savedConfig.onlyNameDifferent(catNewConModel.getOldConnectConfig()) && updatePaneText(accordionPane, savedConfig.getName())) {
-                return;
-            }
-            AccordionPane newAccordionPane = createAccordionPane(CatIcons.dbcon, savedConfig.getName(), null);
-            newAccordionPane.putClientProperty(Const.ACCORDING_META, savedConfig);
-            replaceAccordionPane(accordionPane, newAccordionPane);
-        });
+    private void editConnect(CatNewConnectDialog dialog) {
         dialog.showSelf();
     }
+
+
 
     /**
      * 删除连接

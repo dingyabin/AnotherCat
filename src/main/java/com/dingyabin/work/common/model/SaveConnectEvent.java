@@ -1,5 +1,6 @@
 package com.dingyabin.work.common.model;
 
+import com.dingyabin.work.gui.component.CatNewConnectDialog;
 import lombok.Getter;
 
 /**
@@ -9,6 +10,8 @@ import lombok.Getter;
  */
 @Getter
 public class SaveConnectEvent {
+
+    private CatNewConnectDialog source;
 
     /**
      * 当前的模式
@@ -21,9 +24,10 @@ public class SaveConnectEvent {
     private ConnectConfig savedConnectConfig;
 
 
-    public SaveConnectEvent(CatNewConModel catNewConModel, ConnectConfig savedConnectConfig) {
+    public SaveConnectEvent(CatNewConModel catNewConModel, ConnectConfig savedConnectConfig, CatNewConnectDialog catNewConnectDialog) {
         this.catNewConModel = catNewConModel;
         this.savedConnectConfig = savedConnectConfig;
+        this.source = catNewConnectDialog;
     }
 
 

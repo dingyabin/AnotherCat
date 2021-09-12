@@ -11,6 +11,7 @@ import com.dingyabin.work.common.model.SaveConnectEvent;
 import com.dingyabin.work.common.utils.CatUtils;
 import com.dingyabin.work.ctrl.event.SystemEventDispatcher;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,9 +21,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 新建连接对话框
@@ -36,7 +38,9 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
     private DataBaseTypeEnum dataBaseType;
 
-    private List<SaveConnectListener> saveConnectListeners;
+    private Set<SaveConnectListener> saveConnectListeners;
+
+    private Map<String, String> propertyMap;
 
     private JLabel conNameLabel = GuiUtils.createLabel("连接名：", SwingConstants.RIGHT, 14);
 
@@ -205,7 +209,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
             return this;
         }
         if (this.saveConnectListeners == null) {
-            this.saveConnectListeners = new ArrayList<>();
+            this.saveConnectListeners = new HashSet<>();
         }
         this.saveConnectListeners.add(saveConnectListener);
         return this;
@@ -244,7 +248,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
             GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
         }
         //如果有回调的话,执行回调
-        SaveConnectEvent saveConnectEvent = new SaveConnectEvent(catNewConModel, curConnect);
+        SaveConnectEvent saveConnectEvent = new SaveConnectEvent(catNewConModel, curConnect, this);
         if (this.saveConnectListeners != null) {
             saveConnectListeners.forEach(listener -> listener.onSaveFinish(saveConnectEvent));
         }
@@ -291,5 +295,23 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         okBtn.setEnabled(false);
     }
 
+
+
+    public String getClientProperty(String key) {
+        if (propertyMap == null) {
+            return null;
+        }
+        return propertyMap.get(key);
+    }
+
+
+
+
+    public void putClientProperty(String key, String value) {
+        if (propertyMap == null) {
+            propertyMap = new HashMap<>();
+        }
+        propertyMap.put(key, value);
+    }
 
 }
