@@ -14,7 +14,9 @@ import com.dingyabin.work.common.listeners.SaveConnectListener;
 import com.dingyabin.work.common.model.*;
 import com.dingyabin.work.ctrl.config.ExecutorUtils;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
+import com.dingyabin.work.ctrl.event.SystemEventDispatcher;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import com.google.common.eventbus.Subscribe;
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.swing.*;
@@ -57,6 +59,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         this.jFrame = jFrame;
         this.tabbedPane = tabbedPane;
         initPopupMenu();
+        SystemEventDispatcher.register(this);
     }
 
 
@@ -130,6 +133,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
 
     @Override
+    @Subscribe
     public void onSaveFinish(SaveConnectEvent saveConnectEvent) {
         CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
         if (catNewConModel.isEditMode()) {

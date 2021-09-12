@@ -9,6 +9,7 @@ import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.ConnectConfigManager;
 import com.dingyabin.work.common.model.SaveConnectEvent;
 import com.dingyabin.work.common.utils.CatUtils;
+import com.dingyabin.work.ctrl.event.SystemEventDispatcher;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -243,9 +244,12 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
             GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
         }
         //如果有回调的话,执行回调
+        SaveConnectEvent saveConnectEvent = new SaveConnectEvent(catNewConModel, curConnect);
         if (this.saveConnectListeners != null) {
-            saveConnectListeners.forEach(listener -> listener.onSaveFinish(new SaveConnectEvent(catNewConModel, curConnect)));
+            saveConnectListeners.forEach(listener -> listener.onSaveFinish(saveConnectEvent));
         }
+        //发送全局事件消息
+        SystemEventDispatcher.post(saveConnectEvent);
         //如果是编辑模式的话，就关闭
         if (catNewConModel.isEditMode()) {
             dispose();
