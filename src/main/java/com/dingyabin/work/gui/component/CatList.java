@@ -134,12 +134,12 @@ public class CatList<T> extends JList<T> {
 
 
 
-    public void addDoubleClickListener(Consumer<MouseEvent> eventConsumer) {
+    public void addDoubleClickListener(Consumer<List<T>> eventConsumer) {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
-                    eventConsumer.accept(e);
+                    eventConsumer.accept(getSelectedValuesList());
                 }
             }
         });

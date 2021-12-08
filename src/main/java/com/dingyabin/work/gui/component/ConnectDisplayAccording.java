@@ -360,9 +360,12 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         //数据库列表
         CatList<DataBaseSchema> schemaCatList = new CatList<>(CatIcons.db, catRet.getData()).fontSize(16).fontName(CatFonts.DEFAULT_FONT_NAME);
         //双击打开
-        schemaCatList.addDoubleClickListener(mouseEvent -> {
+        schemaCatList.addDoubleClickListener(dataBaseSchemaList -> {
+            if (CollectionUtils.isEmpty(dataBaseSchemaList)) {
+                return;
+            }
             //当前选中的数据库
-            DataBaseSchema dataBaseSchema = schemaCatList.getSelectedValue();
+            DataBaseSchema dataBaseSchema = dataBaseSchemaList.get(0);
             //查询这个库下面的表
             List<TableSchema> tables = SpringBeanHolder.getCatAdapter().getTablesWithDb(connectConfig, dataBaseSchema);
             //刷新List

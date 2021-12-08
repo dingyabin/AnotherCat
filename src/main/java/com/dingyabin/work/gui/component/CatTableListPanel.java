@@ -126,6 +126,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         //列表右键菜单
         tableCatList.setComponentPopupMenu(jPopupMenu);
 
+        //添加双击事件
+        addClickListenerToTableCatList();
+
         //安装右键菜单项
         jPopupMenu.add(copyMenu);
         jPopupMenu.add(openMenu);
@@ -208,6 +211,20 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         //添加组件
         renameDialog.add(reNameInputPanel);
         renameDialog.add(reNameButtonPanel, BorderLayout.SOUTH);
+    }
+
+
+    /**
+     * 添加双击事件
+     */
+    private void addClickListenerToTableCatList() {
+        tableCatList.addDoubleClickListener(tableSchemas -> {
+            if (CollectionUtils.size(tableSchemas) != 1) {
+                return;
+            }
+            TableSchema tableSchema = tableSchemas.get(0);
+
+        });
     }
 
 
