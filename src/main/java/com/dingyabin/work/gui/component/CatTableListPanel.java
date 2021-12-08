@@ -227,13 +227,14 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
             TableSchema tableSchema = tableSchemas.get(0);
 
-            CatTablePanel catTablePanel = new CatTablePanel(connectConfig, dataBaseSchema, tableSchema);
-
-            int index = tabbedPane.indexOfComponent(catTablePanel);
-            if (index != -1) {
+            //查看是否已经打开过了，是的话就直接转到
+            int index = tabbedPane.indexOfTab(tableSchema.getTableName());
+            Component oldComponent;
+            if (index != -1 && (oldComponent = tabbedPane.getComponentAt(index)) instanceof CatTablePanel && ((CatTablePanel) oldComponent).sameWith(connectConfig, dataBaseSchema.getSchemaName(), tableSchema.getTableName())) {
                 tabbedPane.setSelectedIndex(index);
                 return;
             }
+            CatTablePanel catTablePanel = new CatTablePanel(connectConfig, dataBaseSchema, tableSchema);
             tabbedPane.addTabWithTabComponent(tableSchema.getTableName(), CatIcons.table, catTablePanel,true);
         });
     }

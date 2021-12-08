@@ -33,22 +33,7 @@ public class CatTablePanel extends JPanel {
     }
 
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()){
-            return false;
-        }
-        CatTablePanel that = (CatTablePanel) o;
-        return (connectConfig!= null) && connectConfig.equals(that.connectConfig) && (dataBaseSchema!= null) && dataBaseSchema.getSchemaName().equals(that.dataBaseSchema.getSchemaName()) && (tableSchema!= null) && tableSchema.getTableName().equals(that.tableSchema.getTableName());
-    }
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(connectConfig, dataBaseSchema, tableSchema);
+    public boolean sameWith(ConnectConfig connectConfig, String schemaName, String tableName) {
+        return this.connectConfig.equals(connectConfig) && Objects.equals(dataBaseSchema.getSchemaName(), schemaName) && Objects.equals(tableSchema.getTableName(), tableName);
     }
 }
