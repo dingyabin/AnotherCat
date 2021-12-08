@@ -222,8 +222,19 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
             if (CollectionUtils.size(tableSchemas) != 1) {
                 return;
             }
+
+            CatTabPane tabbedPane = ComContextManager.getTabbedPane();
+
             TableSchema tableSchema = tableSchemas.get(0);
 
+            CatTablePanel catTablePanel = new CatTablePanel(connectConfig, dataBaseSchema, tableSchema);
+
+            int index = tabbedPane.indexOfComponent(catTablePanel);
+            if (index != -1) {
+                tabbedPane.setSelectedIndex(index);
+                return;
+            }
+            tabbedPane.addTabWithTabComponent(tableSchema.getTableName(), CatIcons.table, catTablePanel,true);
         });
     }
 

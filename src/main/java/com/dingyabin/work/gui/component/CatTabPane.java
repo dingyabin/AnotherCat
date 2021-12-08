@@ -4,6 +4,7 @@ import com.alee.managers.style.StyleId;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.DataBaseSchema;
 import com.dingyabin.work.common.model.TableSchema;
+import com.dingyabin.work.gui.utils.GuiUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -114,7 +115,7 @@ public class CatTabPane extends JTabbedPane {
         closeBtn.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.buttonIconHover);
         closeBtn.setPreferredSize(new Dimension(20, 20));
         //添加标签
-        tabHorizontalBox.add(new JLabel(title, icon, SwingConstants.CENTER));
+        tabHorizontalBox.add(GuiUtils.createLabel(title, icon, SwingConstants.CENTER, CatFonts.DEFAULT_FONT_NAME));
         //添加关闭按钮
         tabHorizontalBox.add(closeBtn);
         return tabHorizontalBox;

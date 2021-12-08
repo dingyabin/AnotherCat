@@ -127,6 +127,20 @@ public class GuiUtils {
      * 创建一个Label
      * @param text 文字
      * @param horizontalAlignment 对齐方式
+     * @param fontName 字体
+     * @return label
+     */
+    public static JLabel createLabel(String text, Icon icon, int horizontalAlignment, String fontName) {
+        JLabel jLabel = new JLabel(text, icon, horizontalAlignment);
+        FontMethodsImpl.setFontName(jLabel, fontName);
+        return jLabel;
+    }
+
+
+    /**
+     * 创建一个Label
+     * @param text 文字
+     * @param horizontalAlignment 对齐方式
      * @param font 字体
      * @return label
      */

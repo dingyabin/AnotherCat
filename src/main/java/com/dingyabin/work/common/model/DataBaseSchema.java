@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Setter
 public class DataBaseSchema implements Serializable {
 
+    private static final long serialVersionUID = -4083165509706852492L;
 
     /**
      * 库名字
