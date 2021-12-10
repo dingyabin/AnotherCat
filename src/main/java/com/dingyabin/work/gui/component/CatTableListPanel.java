@@ -57,13 +57,13 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     private JButton cancelToRename = FontMethodsImpl.setFontSize(new JButton("取消", CatIcons.cancel), 14);
 
 
-    private JMenuItem copyMenu =  GuiUtils.createJMenuItem("复制", CatIcons.copy, this);
-
     private JMenuItem openMenu = GuiUtils.createJMenuItem("打开", CatIcons.open, this);
 
     private JMenuItem deleteMenu = GuiUtils.createJMenuItem("删除", CatIcons.delete, this);
 
     private JMenuItem modifyMenu = GuiUtils.createJMenuItem("设计", CatIcons.design, this);
+
+    private JMenuItem copyMenu =  GuiUtils.createJMenuItem("复制表名", CatIcons.copy, this);
 
     private JMenuItem reNameMenu = GuiUtils.createJMenuItem("重命名", CatIcons.edit, this);
 
@@ -130,9 +130,10 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         tableCatList.addDoubleClickListener(this::openTable);
 
         //安装右键菜单项
-        jPopupMenu.add(copyMenu);
         jPopupMenu.add(openMenu);
         jPopupMenu.add(modifyMenu);
+        jPopupMenu.addSeparator();
+        jPopupMenu.add(copyMenu);
         jPopupMenu.add(reNameMenu);
         jPopupMenu.addSeparator();
         jPopupMenu.add(deleteMenu);
