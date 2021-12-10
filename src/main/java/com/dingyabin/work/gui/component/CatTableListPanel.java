@@ -271,6 +271,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         }
         if (source == mybatisMenu) {
             mybatisGenerator();
+            return;
         }
         if ((source == openMenu || source == openTableBtn) && tableCatList != null) {
             openTable(tableCatList.getSelectedValuesList());
@@ -473,7 +474,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
                 tabbedPane.setSelectedIndex(index);
                 continue;
             }
-            //创房新的tab
+            //创建新的tab
             CatTablePanel catTablePanel = new CatTablePanel(connectConfig, dataBaseSchema, tableSchema);
             tabbedPane.addTabWithTabComponent(tableSchema.getTableName(), CatIcons.table, catTablePanel, true);
         }
