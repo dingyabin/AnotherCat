@@ -115,7 +115,7 @@ public class CatTabPane extends JTabbedPane {
         closeBtn.putClientProperty(StyleId.STYLE_PROPERTY, StyleId.buttonIconHover);
         closeBtn.setPreferredSize(new Dimension(20, 20));
         //添加标签
-        tabHorizontalBox.add(GuiUtils.createLabel(title, icon, SwingConstants.CENTER, CatFonts.DEFAULT_FONT_NAME));
+        tabHorizontalBox.add(GuiUtils.createLabel(title, icon, SwingConstants.CENTER, CatFonts.MICRO_SOFT));
         //添加关闭按钮
         tabHorizontalBox.add(closeBtn);
         return tabHorizontalBox;
