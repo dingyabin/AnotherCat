@@ -127,7 +127,7 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         tableCatList.setComponentPopupMenu(jPopupMenu);
 
         //添加双击事件
-        addClickListenerToTableCatList();
+        tableCatList.addDoubleClickListener(this::openTable);
 
         //安装右键菜单项
         jPopupMenu.add(copyMenu);
@@ -214,30 +214,6 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     }
 
 
-    /**
-     * 添加双击事件
-     */
-    private void addClickListenerToTableCatList() {
-        tableCatList.addDoubleClickListener(tableSchemas -> {
-            if (CollectionUtils.size(tableSchemas) != 1) {
-                return;
-            }
-
-            CatTabPane tabbedPane = ComContextManager.getTabbedPane();
-
-            TableSchema tableSchema = tableSchemas.get(0);
-
-            //查看是否已经打开过了，是的话就直接转到
-            int index = tabbedPane.indexOfTab(tableSchema.getTableName());
-            Component oldComponent;
-            if (index != -1 && (oldComponent = tabbedPane.getComponentAt(index)) instanceof CatTablePanel && ((CatTablePanel) oldComponent).sameWith(connectConfig, dataBaseSchema.getSchemaName(), tableSchema.getTableName())) {
-                tabbedPane.setSelectedIndex(index);
-                return;
-            }
-            CatTablePanel catTablePanel = new CatTablePanel(connectConfig, dataBaseSchema, tableSchema);
-            tabbedPane.addTabWithTabComponent(tableSchema.getTableName(), CatIcons.table, catTablePanel,true);
-        });
-    }
 
 
 
@@ -295,6 +271,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         }
         if (source == mybatisMenu) {
             mybatisGenerator();
+        }
+        if ((source == openMenu || source == openTableBtn) && tableCatList != null) {
+            openTable(tableCatList.getSelectedValuesList());
         }
     }
 
@@ -472,5 +451,31 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
         selectedValues.forEach(tableSchema -> tableNameCfg.add(new TableNameCfg(tableSchema.getTableName())));
 
         new MybatisGeneratorDialog(tableNameCfg, connectConfig, dataBaseSchema).showSelf();
+    }
+
+
+    /**
+     * 打开表
+     * @param tableSchemas 表
+     */
+    private void openTable(List<TableSchema> tableSchemas) {
+        if (CollectionUtils.size(tableSchemas) == 0) {
+            return;
+        }
+
+        CatTabPane tabbedPane = ComContextManager.getTabbedPane();
+
+        for (TableSchema tableSchema : tableSchemas) {
+            //查看是否已经打开过了，是的话就直接转到
+            int index = tabbedPane.indexOfTab(tableSchema.getTableName());
+            Component oldComponent;
+            if (index != -1 && (oldComponent = tabbedPane.getComponentAt(index)) instanceof CatTablePanel && ((CatTablePanel) oldComponent).sameWith(connectConfig, dataBaseSchema.getSchemaName(), tableSchema.getTableName())) {
+                tabbedPane.setSelectedIndex(index);
+                continue;
+            }
+            //创房新的tab
+            CatTablePanel catTablePanel = new CatTablePanel(connectConfig, dataBaseSchema, tableSchema);
+            tabbedPane.addTabWithTabComponent(tableSchema.getTableName(), CatIcons.table, catTablePanel, true);
+        }
     }
 }
