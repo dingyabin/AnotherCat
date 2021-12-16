@@ -90,8 +90,8 @@ public class CatAdapterService implements InitializingBean {
     }
 
 
-    public List<Map<String,Object>> queryTable(DataSourceKey dataSourceKey, String tableName){
-        return tableContentDataService.queryTable(dataSourceKey ,tableName);
+    public List<Map<String,Object>> queryTable(DataSourceKey dataSourceKey, String tableName, int pageNum, int pageSize){
+        return tableContentDataService.queryTable(dataSourceKey, tableName, pageNum, pageSize);
     }
 
 

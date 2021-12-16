@@ -55,4 +55,10 @@ public class Const {
     public static final String DAO_RENAME_DESC = "DAO的命名规则是Model类名+后缀，例如: Model名字是Student，后缀是Mapper，则DAO名字是: StudentMapper";
 
 
+
+    //查询相关
+    public static final int DEFAULT_PAGE_SIZE = 50;
+
+
+
 }

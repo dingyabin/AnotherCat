@@ -5,7 +5,7 @@
 
 
   <select id="selectFromTable" resultType="hashmap">
-      SELECT * FROM   ${tableName}   LIMIT  100
+      SELECT * FROM   ${tableName}
   </select>
 
 
