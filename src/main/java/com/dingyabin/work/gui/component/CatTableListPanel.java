@@ -2,6 +2,7 @@ package com.dingyabin.work.gui.component;
 
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
+import com.alibaba.fastjson.JSON;
 import com.dingyabin.work.common.generator.bean.TableNameCfg;
 import com.dingyabin.work.common.model.ConnectConfig;
 import com.dingyabin.work.common.model.DataBaseSchema;
@@ -24,6 +25,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -478,6 +480,11 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
             //创建新的tab
             CatTablePanel catTablePanel = new CatTablePanel(connectConfig, dataBaseSchema, tableSchema);
             tabbedPane.addTabWithTabComponent(tableSchema.getTableName(), CatIcons.table, catTablePanel, true);
+
+            List<Map<String, Object>> maps = SpringBeanHolder.getCatAdapter().queryTable(connectConfig.dataSourceKey(dataBaseSchema.getSchemaName()), tableSchema.getTableName());
+            System.out.println(JSON.toJSONString(maps));
+
+
         }
     }
 }

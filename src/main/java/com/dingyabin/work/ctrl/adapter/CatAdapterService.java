@@ -84,6 +84,12 @@ public class CatAdapterService implements InitializingBean {
     }
 
 
+
+    public DataSourceKey addDataSource(ConnectConfig con, DataBaseSchema dataBaseSchema){
+        return dynamicDataSource.addDataSource(con.typeEnum(), con.getHost(), con.getPort(), con.getUserName(), con.getPwd(), dataBaseSchema.getSchemaName());
+    }
+
+
     public List<Map<String,Object>> queryTable(DataSourceKey dataSourceKey, String tableName){
         return tableContentDataService.queryTable(dataSourceKey ,tableName);
     }
@@ -93,7 +99,6 @@ public class CatAdapterService implements InitializingBean {
     public boolean reNameTable(ConnectConfig con, DataBaseSchema dataBaseSchema, String oldName, String newName) {
         try {
             DataBaseTypeEnum typeEnum = con.typeEnum();
-            addDataSource(typeEnum, con.getHost(), con.getPort(), con.getUserName(), con.getPwd(), dataBaseSchema.getSchemaName());
             systemMetaService.reNameTable(con.dataSourceKey(dataBaseSchema.getSchemaName()), typeEnum, oldName, newName);
             return true;
         } catch (Exception e) {
