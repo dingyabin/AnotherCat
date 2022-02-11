@@ -446,7 +446,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
     }
 
 
-
+    /**
+     * 弹出mybatisGenerator配置窗口
+     */
     private void mybatisGenerator(){
         List<TableSchema> selectedValues = tableCatList.getSelectedValuesList();
         if (CollectionUtils.isEmpty(selectedValues)) {

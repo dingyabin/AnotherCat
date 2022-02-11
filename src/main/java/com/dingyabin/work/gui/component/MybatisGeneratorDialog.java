@@ -295,7 +295,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
             columnNameCfgMap = new HashMap<>(tableNameCfgList.size());
         }
         List<ColumnNameCfg> columnNameCfgs = columnNameCfgMap.computeIfAbsent(tableName, o -> {
-            List<ColumnSchema> columns = SpringBeanHolder.getCatAdapter().getColumnOnTableChange(connectConfig, new TableSchema(tableName.toString()));
+            List<ColumnSchema> columns = SpringBeanHolder.getCatAdapter().getColumnSchema(connectConfig, new TableSchema(tableName.toString()));
             return columns.stream().map(column -> new ColumnNameCfg(column.getColumnName())).collect(Collectors.toList());
         });
         commonInitTable(columnNameTable, ColumnNameCfg.HEADER, ColumnNameCfg.EDIT_COLUMN_INDEX, columnNameCfgs, false);

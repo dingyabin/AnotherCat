@@ -66,7 +66,7 @@ public class CatAdapterService implements InitializingBean {
 
 
 
-    public List<ColumnSchema> getColumnOnTableChange(ConnectConfig connectConfig, TableSchema tableSchema){
+    public List<ColumnSchema> getColumnSchema(ConnectConfig connectConfig, TableSchema tableSchema){
         DataSourceKey dataSourceKey = connectConfig.defaultDataSourceKey();
         return systemMetaService.selectColumnSchema(dataSourceKey, connectConfig.typeEnum(), tableSchema.getTableName());
     }
