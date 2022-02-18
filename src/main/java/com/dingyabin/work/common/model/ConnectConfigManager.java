@@ -141,7 +141,7 @@ public class ConnectConfigManager implements CatActionListener<SaveConnectEvent>
             log.error("process error", e);
         } finally {
             //弹框提示
-            GuiUtils.createOptionPane(saveConnectEvent.getSource(), saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
+            GuiUtils.createOptionPane(saveConnectEvent.getSource(), saveRet ? "保存成功！" : "TMD，失败了！", JOptionPane.DEFAULT_OPTION);
         }
     }
 

@@ -2,6 +2,10 @@ package com.dingyabin.work.ctrl.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.dingyabin.work.common.enums.DataBaseTypeEnum;
+import com.dingyabin.work.common.listeners.CatActionListener;
+import com.dingyabin.work.common.model.CatNewConModel;
+import com.dingyabin.work.common.model.SaveConnectEvent;
+import com.dingyabin.work.ctrl.event.SystemEventDispatcher;
 import com.dingyabin.work.ctrl.meta.SchemaMeta;
 import com.dingyabin.work.ctrl.meta.SchemaMetaManager;
 import com.dingyabin.work.common.model.ConnectConfig;
@@ -19,7 +23,7 @@ import java.util.Map;
  * @date 2016/11/7
  */
 
-public class DynamicDataSource extends AbstractRoutingDataSource {
+public class DynamicDataSource extends AbstractRoutingDataSource implements CatActionListener<SaveConnectEvent> {
 
 
     private Map<Object, Object> dynamicDataSources = new HashMap<>();
@@ -27,6 +31,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     public DynamicDataSource() {
         setTargetDataSources(dynamicDataSources);
+        SystemEventDispatcher.register(this);
     }
 
 
@@ -130,4 +135,29 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
 
+    @Override
+    public void process(SaveConnectEvent saveConnectEvent) {
+        CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
+        //新增模式不处理
+        if (catNewConModel.isSaveMode()) {
+            return;
+        }
+        //修改模式的话，删除这个数据源
+        ConnectConfig oldConFig = catNewConModel.getOldConnectConfig();
+        if (oldConFig == null) {
+            return;
+        }
+        //如果只是名字不一样，就不操作
+        if (saveConnectEvent.getSavedConnectConfig().onlyNameDifferent(oldConFig)) {
+            return;
+        }
+        closeAndRemoveDatasource(oldConFig);
+    }
+
+
+
+    @Override
+    public Class<SaveConnectEvent> getListenType() {
+        return SaveConnectEvent.class;
+    }
 }
