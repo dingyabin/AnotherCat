@@ -49,27 +49,14 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     /**
      * 增加一个新的数据库连接池, 连接默认的库
      *
+     *
      * @param config 类型
      * @return dataSourceKey
      */
     public DataSourceKey addDefaultDataSource(ConnectConfig config) {
-        return addDefaultDataSource(config.typeEnum(), config.getHost(), config.getPort(), config.getUserName(), config.getPwd());
+        return addDataSource(config.typeEnum(), config.getHost(), config.getPort(), config.getUserName(), config.getPwd(), null);
     }
 
-
-    /**
-     * 增加一个新的数据库连接池, 连接默认的库
-     *
-     * @param dataBaseTypeEnum 类型
-     * @param host             主机地址
-     * @param port             端口
-     * @param userName         用户名
-     * @param pwd              密码
-     * @return dataSourceKey
-     */
-    public DataSourceKey addDefaultDataSource(DataBaseTypeEnum dataBaseTypeEnum, String host, String port, String userName, String pwd) {
-        return addDataSource(dataBaseTypeEnum, host, port, userName, pwd, null);
-    }
 
 
     /**

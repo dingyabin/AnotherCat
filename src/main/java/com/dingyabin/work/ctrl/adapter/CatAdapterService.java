@@ -47,8 +47,7 @@ public class CatAdapterService implements InitializingBean {
 
     public CatRet<List<DataBaseSchema>> getDbsWithConnect(ConnectConfig connectConfig) {
         try {
-            DataSourceKey dataSourceKey = connectConfig.defaultDataSourceKey();
-            addDefaultDataSource(connectConfig);
+            DataSourceKey dataSourceKey = dynamicDataSource.addDefaultDataSource(connectConfig);
             List<DataBaseSchema> dataBaseSchemas = systemMetaService.selectDataBaseSchema(dataSourceKey, connectConfig.typeEnum());
             return CatRet.success(dataBaseSchemas);
         } catch (Exception e) {
@@ -70,19 +69,6 @@ public class CatAdapterService implements InitializingBean {
         DataSourceKey dataSourceKey = connectConfig.defaultDataSourceKey();
         return systemMetaService.selectColumnSchema(dataSourceKey, connectConfig.typeEnum(), tableSchema.getTableName());
     }
-
-
-
-    public DataSourceKey addDefaultDataSource(ConnectConfig connectConfig){
-       return dynamicDataSource.addDefaultDataSource(connectConfig);
-    }
-
-
-
-    public DataSourceKey addDataSource(DataBaseTypeEnum dataBaseTypeEnum, String host, String port, String userName, String pwd, String dbName){
-        return dynamicDataSource.addDataSource(dataBaseTypeEnum, host, port, userName, pwd, dbName);
-    }
-
 
 
     public DataSourceKey addDataSource(ConnectConfig con, DataBaseSchema dataBaseSchema){
