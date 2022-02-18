@@ -28,8 +28,6 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Set;
 
-import static com.dingyabin.work.common.model.ConnectConfigManager.removeConnectConfig;
-
 /**
  * @author 丁亚宾
  * Date: 2021/8/15.
@@ -265,7 +263,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         dialog.enAbleInput(false);
         dialog.showSelf();
         //删除连接
-        boolean deleteRet = GuiUtils.createYesNoOptionPane(dialog, "确定要删除么") && removeConnectConfig(connectConfig);
+        boolean deleteRet = GuiUtils.createYesNoOptionPane(dialog, "确定要删除么") && ConnectConfigManager.getInstance().removeConnectConfig(connectConfig);
         if (deleteRet) {
             removePane(accordionPane);
         }

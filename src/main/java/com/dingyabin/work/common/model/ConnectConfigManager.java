@@ -1,9 +1,13 @@
 package com.dingyabin.work.common.model;
 
 import com.dingyabin.work.common.cons.Const;
+import com.dingyabin.work.common.listeners.CatActionListener;
+import com.dingyabin.work.ctrl.event.SystemEventDispatcher;
+import com.dingyabin.work.gui.utils.GuiUtils;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.Collections;
 import java.util.Optional;
@@ -15,19 +19,32 @@ import java.util.Set;
  * Time:10:42
  */
 @Slf4j
-public class ConnectConfigManager {
+public class ConnectConfigManager implements CatActionListener<SaveConnectEvent> {
 
-    private static Set<ConnectConfig> connectMetas = Sets.newLinkedHashSet();
+    private Set<ConnectConfig> connectMetas = Sets.newLinkedHashSet();
 
 
-    private static File getConfigFile() {
-        return new File(Const.CONNECT_CONFIG_FILE);
+    private static final ConnectConfigManager INSTANCE = new ConnectConfigManager();
+
+
+    private ConnectConfigManager() {
+        SystemEventDispatcher.register(this);
+    }
+
+
+    public static ConnectConfigManager getInstance() {
+        return INSTANCE;
     }
 
 
 
-    private static boolean saveConnectConfigs(Object object) {
-        try{
+    private File getConfigFile() {
+        return new File(Const.CONNECT_CONFIG_FILE);
+    }
+
+
+    private boolean saveConnectConfigs(Object object) {
+        try {
             File configFile = getConfigFile();
             File parentFile = configFile.getParentFile();
             if (!parentFile.exists()) {
@@ -41,16 +58,14 @@ public class ConnectConfigManager {
             outputStream.close();
             return true;
         } catch (Exception e) {
-            log.error("saveConnectConfigs error",e);
+            log.error("saveConnectConfigs error", e);
         }
         return false;
     }
 
 
-
-
     @SuppressWarnings("unchecked")
-    public static boolean loadConnectConfigs() {
+    public boolean loadConnectConfigs() {
         //如果配置文件存在则读取出来
         File configFile = getConfigFile();
         if (!configFile.exists()) {
@@ -63,18 +78,13 @@ public class ConnectConfigManager {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("loadConnectConfigs error", e);
         }
         return false;
     }
 
 
-    public static boolean addConnectConfig(String name, String type, String host, String port, String userName, String pwd) {
-        return addConnectConfig(new ConnectConfig(name, type, host, port, userName, pwd));
-    }
-
-
-    public static boolean addConnectConfig(ConnectConfig connectConfig) {
+    public boolean addConnectConfig(ConnectConfig connectConfig) {
         if (connectMetas.add(connectConfig)) {
             return saveConnectConfigs(connectMetas);
         }
@@ -82,14 +92,13 @@ public class ConnectConfigManager {
     }
 
 
-    public static boolean removeConnectConfig(ConnectConfig connectConfig) {
+    public boolean removeConnectConfig(ConnectConfig connectConfig) {
         connectMetas.remove(connectConfig);
         return saveConnectConfigs(connectMetas);
     }
 
 
-
-    public static boolean updateConnectConfig(ConnectConfig oldConnectConfig, ConnectConfig newConnectConfig){
+    public boolean updateConnectConfig(ConnectConfig oldConnectConfig, ConnectConfig newConnectConfig) {
         Optional<ConnectConfig> first = connectMetas.stream().filter(oldConnectConfig::equals).findFirst();
         if (first.isPresent()) {
             ConnectConfig connectConfig = first.get();
@@ -105,12 +114,41 @@ public class ConnectConfigManager {
     }
 
 
-
-
-    public static Set<ConnectConfig> getConnectConfigs() {
+    public Set<ConnectConfig> getConnectConfigs() {
         return Collections.unmodifiableSet(connectMetas);
     }
 
 
 
+    @Override
+    public void process(SaveConnectEvent saveConnectEvent) {
+        boolean saveRet = true;
+        try {
+            CatNewConModel catNewConModel = saveConnectEvent.getCatNewConModel();
+            ConnectConfig savedConfig = saveConnectEvent.getSavedConnectConfig();
+            //新增模式
+            if (catNewConModel.isSaveMode()) {
+                saveRet = addConnectConfig(savedConfig);
+                return;
+            }
+            //修改模式
+            ConnectConfig oldConFig = catNewConModel.getOldConnectConfig();
+            //如果相等，不做操作, 否则修改
+            if (!oldConFig.equals(savedConfig)) {
+                saveRet = updateConnectConfig(oldConFig, savedConfig);
+            }
+        } catch (Exception e) {
+            log.error("process error", e);
+        } finally {
+            //弹框提示
+            GuiUtils.createOptionPane(saveConnectEvent.getSource(), saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
+        }
+    }
+
+
+
+    @Override
+    public Class<SaveConnectEvent> getListenType() {
+        return SaveConnectEvent.class;
+    }
 }

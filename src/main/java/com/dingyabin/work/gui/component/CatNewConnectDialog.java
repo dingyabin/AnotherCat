@@ -172,12 +172,9 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
      * 测试连接
      */
     private void checkConnect() {
-        String host = hostField.getText();
-        String port = portField.getText();
-        String userName = userNameField.getText();
-        char[] password = pwdField.getPassword();
+        ConnectConfig curConnect = getConnectConfigParam();
         //校验参数信息
-        if (StringUtils.isAnyBlank(host, port, userName) || ArrayUtils.getLength(password) == 0) {
+        if (StringUtils.isAnyBlank(curConnect.getHost(), curConnect.getPort(), curConnect.getUserName(), curConnect.getPwd())) {
             GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息", JOptionPane.DEFAULT_OPTION);
             return;
         }
@@ -185,7 +182,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
         checkBtn.setEnabled(false);
         progressBar.setString("连接中...");
         //测试是否可以连接成功
-        CatUtils.checkNewConnect(dataBaseType, host, port, userName, new String(password), ok -> {
+        CatUtils.checkNewConnect(dataBaseType, curConnect.getHost(), curConnect.getPort(), curConnect.getUserName(), curConnect.getPwd(), ok -> {
             checkBtn.setEnabled(true);
             progressBar.setForeground(ok ? CatColors.CONNECT_OK : CatColors.CONNECT_ERR);
             progressBar.setString(ok ? "连接成功" : "连接失败...");
@@ -198,32 +195,11 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
      * 保存连接
      */
     private void saveConnect() {
-        String conName = conNameField.getText();
-        String host = hostField.getText();
-        String port = portField.getText();
-        String userName = userNameField.getText();
-        char[] password = pwdField.getPassword();
+        ConnectConfig curConnect = getConnectConfigParam();
         //校验参数信息
-        if (StringUtils.isAnyBlank(conName, host, port, userName) || ArrayUtils.getLength(password) == 0) {
+        if (StringUtils.isAnyBlank(curConnect.getName(), curConnect.getHost(), curConnect.getPort(), curConnect.getUserName(), curConnect.getPwd())) {
             GuiUtils.createOptionPane(inputPanel, "请填写完整的数据源信息!", JOptionPane.DEFAULT_OPTION);
             return;
-        }
-        String pwd = new String(password);
-
-        ConnectConfig curConnect = new ConnectConfig(conName, dataBaseType.getType(), host, port, userName, pwd);
-
-        boolean saveRet;
-        //编辑模式，进行修改操作, 否则才是新增操作
-        if (catNewConModel.isEditMode()) {
-            ConnectConfig oldConFig = catNewConModel.getOldConnectConfig();
-            saveRet = oldConFig.equals(curConnect) || ConnectConfigManager.updateConnectConfig(oldConFig, curConnect);
-        } else {
-            saveRet = ConnectConfigManager.addConnectConfig(curConnect);
-        }
-        //编辑模式不弹框
-        if (catNewConModel.isSaveMode()) {
-            //弹框
-            GuiUtils.createOptionPane(inputPanel, saveRet ? "保存成功！" : "情况不妙，失败了！", JOptionPane.DEFAULT_OPTION);
         }
         //封装事件
         SaveConnectEvent saveConnectEvent = new SaveConnectEvent(catNewConModel, curConnect, this);
@@ -237,7 +213,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
 
 
-    public void showSelf(){
+     void showSelf(){
         //弹出
         setVisible(true);
     }
@@ -249,7 +225,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
      *
      * @param oldConfig 编辑之前，老的ConnectConfig
      */
-    public void editMode(ConnectConfig oldConfig) {
+    void editMode(ConnectConfig oldConfig) {
         this.catNewConModel = CatNewConModel.editMode(oldConfig);
         conNameField.setText(oldConfig.getName());
         hostField.setText(oldConfig.getHost());
@@ -260,7 +236,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
 
 
-    public void enAbleInput( boolean enable){
+    void enAbleInput(boolean enable){
         conNameField.setEditable(enable);
         hostField.setEditable(enable);
         portField.setEditable(enable);
@@ -272,7 +248,7 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
 
 
-    public String getClientProperty(String key) {
+    String getClientProperty(String key) {
         if (propertyMap == null) {
             return null;
         }
@@ -282,11 +258,24 @@ public class CatNewConnectDialog extends JDialog implements ActionListener {
 
 
 
-    public void putClientProperty(String key, String value) {
+    void putClientProperty(String key, String value) {
         if (propertyMap == null) {
             propertyMap = new HashMap<>();
         }
         propertyMap.put(key, value);
+    }
+
+
+    /**
+     * 获取连接信息参数
+     * @return 连接信息参数
+     */
+    private ConnectConfig getConnectConfigParam() {
+        String conName = conNameField.getText();
+        String host = hostField.getText();
+        String port = portField.getText();
+        String userName = userNameField.getText();
+        return new ConnectConfig(conName, dataBaseType.getType(), host, port, userName, new String(pwdField.getPassword()));
     }
 
 }

@@ -79,7 +79,7 @@ public class AnotherCatLauncher {
         //屏幕大小
         jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        connectDisplay.setConnectConfigs(ConnectConfigManager.getConnectConfigs());
+        connectDisplay.setConnectConfigs(ConnectConfigManager.getInstance().getConnectConfigs());
 
         //左右分割栏设置一键收起
         mainSplitPane.setOneTouchExpandable(true);
