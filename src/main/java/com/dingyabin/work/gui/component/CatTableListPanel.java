@@ -11,6 +11,7 @@ import com.dingyabin.work.common.model.TableSchema;
 import com.dingyabin.work.ctrl.adapter.CatAdapterService;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.gui.utils.GuiUtils;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -484,8 +485,9 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
             CatTablePanel catTablePanel = new CatTablePanel(connectConfig, dataBaseSchema, tableSchema);
             tabbedPane.addTabWithTabComponent(tableSchema.getTableName(), CatIcons.table, catTablePanel, true);
 
-            List<Map<String, Object>> maps = SpringBeanHolder.getCatAdapter().queryTable(connectConfig.dataSourceKey(dataBaseSchema.getSchemaName()), tableSchema.getTableName(), 1, Const.DEFAULT_PAGE_SIZE);
-            System.out.println(JSON.toJSONString(maps));
+            PageInfo<Map<String, Object>> mapPageInfo = SpringBeanHolder.getCatAdapter().queryTableByPage(connectConfig.dataSourceKey(dataBaseSchema.getSchemaName()), tableSchema.getTableName(), 1, Const.DEFAULT_PAGE_SIZE);
+            System.out.println(JSON.toJSONString(mapPageInfo.getList()));
+            System.out.println("共" + mapPageInfo.getTotal() + "条");
 
 
         }

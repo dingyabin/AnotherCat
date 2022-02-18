@@ -6,6 +6,7 @@ import com.dingyabin.work.common.model.*;
 import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.ctrl.service.SystemMetaService;
 import com.dingyabin.work.ctrl.service.TableContentDataService;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
@@ -76,8 +77,9 @@ public class CatAdapterService implements InitializingBean {
     }
 
 
-    public List<Map<String,Object>> queryTable(DataSourceKey dataSourceKey, String tableName, int pageNum, int pageSize){
-        return tableContentDataService.queryTable(dataSourceKey, tableName, pageNum, pageSize);
+    public PageInfo<Map<String, Object>> queryTableByPage(DataSourceKey dataSourceKey, String tableName, int pageNum, int pageSize) {
+        List<Map<String, Object>> rows = tableContentDataService.queryTable(dataSourceKey, tableName, pageNum, pageSize);
+        return new PageInfo<>(rows);
     }
 
 
