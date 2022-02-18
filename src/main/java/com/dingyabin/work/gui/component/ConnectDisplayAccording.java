@@ -12,8 +12,8 @@ import com.alee.utils.swing.extensions.FontMethodsImpl;
 import com.dingyabin.work.common.cons.Const;
 import com.dingyabin.work.common.listeners.CatActionListener;
 import com.dingyabin.work.common.model.*;
+import com.dingyabin.work.ctrl.adapter.ConnectDisplayFunction;
 import com.dingyabin.work.ctrl.config.ExecutorUtils;
-import com.dingyabin.work.ctrl.config.SpringBeanHolder;
 import com.dingyabin.work.ctrl.event.SystemEventDispatcher;
 import com.dingyabin.work.gui.utils.GuiUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -33,7 +33,7 @@ import java.util.Set;
  * Date: 2021/8/15.
  * Time:13:00
  */
-public class ConnectDisplayAccording extends WebAccordion implements AccordionPaneListener, ActionListener, CatActionListener<SaveConnectEvent> {
+public class ConnectDisplayAccording extends WebAccordion implements AccordionPaneListener, ActionListener, CatActionListener<SaveConnectEvent>, ConnectDisplayFunction {
 
     private JLabel boomLabel = new JLabel(CatIcons.boom);
 
@@ -87,7 +87,7 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
 
         ExecutorUtils.execute(() -> {
             //查询对应的数据库
-            CatRet<List<DataBaseSchema>> catRet =  SpringBeanHolder.getCatAdapter().getDbsWithConnect(connectConfig);
+            CatRet<List<DataBaseSchema>> catRet = getDataBaseSchemasInConnectConfig(connectConfig);
             if (!catRet.isSuccess()) {
                 pane.setContent(boomLabel);
                 GuiUtils.createOptionPane(ComContextManager.getMainFrame(), catRet.getMsg(), JOptionPane.DEFAULT_OPTION);
@@ -236,7 +236,8 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
         accordionPane.putClientProperty(Const.ACCORDING_LOAD, Boolean.FALSE);
         //收起
         collapsePane(accordionPane.getId());
-        SpringBeanHolder.getCatAdapter().closeConnect(connectConfig);
+        //关连接
+        closeRemoveConnect(connectConfig);
         ComContextManager.getTabbedPane().closeAllTabExceptFirst();
     }
 
@@ -365,9 +366,9 @@ public class ConnectDisplayAccording extends WebAccordion implements AccordionPa
             //当前选中的数据库
             DataBaseSchema dataBaseSchema = dataBaseSchemaList.get(0);
             //查询这个库下面的表
-            List<TableSchema> tables = SpringBeanHolder.getCatAdapter().getTablesWithDb(connectConfig, dataBaseSchema);
+            List<TableSchema> tables = getTablesInDataBaseSchema(connectConfig, dataBaseSchema);
             //同时将数据源加入动态数据源
-            SpringBeanHolder.getCatAdapter().addDataSource(connectConfig, dataBaseSchema);
+            addDataSource(connectConfig, dataBaseSchema);
             //刷新List
             ComContextManager.getTabbedPane().setTablePanelWithNewDBSchema(tables, connectConfig, dataBaseSchema);
         });

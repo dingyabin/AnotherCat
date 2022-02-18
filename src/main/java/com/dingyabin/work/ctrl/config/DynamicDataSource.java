@@ -123,8 +123,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource implements CatA
                 if (!(value instanceof DruidDataSource)) {
                     continue;
                 }
-                DruidDataSource druid = (DruidDataSource) value;
-                druid.close();
+                ((DruidDataSource) value).close();
                 iterator.remove();
                 remove = true;
             }

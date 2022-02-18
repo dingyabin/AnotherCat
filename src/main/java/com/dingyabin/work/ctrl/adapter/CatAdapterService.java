@@ -40,7 +40,7 @@ public class CatAdapterService implements InitializingBean {
     }
 
 
-    public void closeConnect(ConnectConfig connectConfig){
+    public void closeRemoveConnect(ConnectConfig connectConfig){
         dynamicDataSource.closeAndRemoveDatasource(connectConfig);
     }
 
