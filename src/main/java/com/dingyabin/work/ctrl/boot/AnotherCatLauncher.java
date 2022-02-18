@@ -15,8 +15,11 @@ public class AnotherCatLauncher {
 
     private static final AnotherCatLauncher ANOTHER_CAT_LAUNCHER = new AnotherCatLauncher();
 
-    //单例模式
-    public static AnotherCatLauncher getInstance() {
+    /**
+     * 单例模式
+     * @return AnotherCatLauncher
+     */
+    static AnotherCatLauncher getInstance() {
         return AnotherCatLauncher.ANOTHER_CAT_LAUNCHER;
     }
 
