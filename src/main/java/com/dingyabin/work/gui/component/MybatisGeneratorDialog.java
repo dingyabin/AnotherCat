@@ -137,7 +137,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
     private JCheckBox useDateInModelInComment = GuiUtils.createCheckBox("注释里使用时间戳", true);
 
-    private JCheckBox enableCountByExample = GuiUtils.createCheckBox("启用CountByExample", false);
+    private JCheckBox enableLombok = GuiUtils.createCheckBox("lombok生成get和set", false);
 
     private JCheckBox enableDeleteByExample = GuiUtils.createCheckBox("启用DeleteByExample", false);
 
@@ -224,7 +224,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         optionInputPanel.add(useDateInModel);
         optionInputPanel.add(trimBeforeGet);
         optionInputPanel.add(useDateInModelInComment);
-        optionInputPanel.add(enableCountByExample);
+        optionInputPanel.add(enableLombok);
         optionInputPanel.add(enableDeleteByExample);
         optionInputPanel.add(enableSelectByExample);
         optionInputPanel.add(enableUpdateByExample);
@@ -384,7 +384,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
         List<ConfigXmlProcessor> configXmlProcessors = new ArrayList<>();
 
-        PluginGeneratorProcessor pluginGenerator = new PluginGeneratorProcessor(overrideToString.isSelected(), imSerializable.isSelected(), ovEqualsHashCode.isSelected());
+        PluginGeneratorProcessor pluginGenerator = new PluginGeneratorProcessor(overrideToString.isSelected(), imSerializable.isSelected(), ovEqualsHashCode.isSelected(), enableLombok.isSelected());
 
         CommentGeneratorProcessor commentGenerator = new CommentGeneratorProcessor(!useDateInModelInComment.isSelected(), false, addRemarkComments.isSelected());
         JdbcConnectionProcessor jdbcConnection = new JdbcConnectionProcessor(connectConfig, dataBaseSchema.getSchemaName());
@@ -405,7 +405,6 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
 
         TableCfgProcessor tableCfgProcessor = new TableCfgProcessor(tableNameCfgList, columnNameCfgMap, daoReNameField.getText());
-        tableCfgProcessor.setEnableCountByExample(enableCountByExample.isSelected());
         tableCfgProcessor.setEnableDeleteByExample(enableDeleteByExample.isSelected());
         tableCfgProcessor.setEnableSelectByExample(enableSelectByExample.isSelected());
         tableCfgProcessor.setEnableUpdateByExample(enableUpdateByExample.isSelected());
@@ -443,7 +442,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     private void execute(String xml, Component container) {
         RetMsg<String> retMsg = CatMybatisGenerator.getInstance().generate(xml);
         String message = retMsg.isSuccess() && StringUtils.isBlank(retMsg.getMsg()) ? "代码生成完毕！" : retMsg.getMsg();
-        GuiUtils.createOptionPane(MybatisGeneratorDialog.this, message, JOptionPane.DEFAULT_OPTION);
+        GuiUtils.createOptionPane(container, message, JOptionPane.DEFAULT_OPTION);
     }
 
 

@@ -26,8 +26,6 @@ public class TableCfgProcessor implements ConfigXmlProcessor{
 
     private String mapperSuffix;
 
-    private boolean enableCountByExample;
-
     private boolean enableDeleteByExample;
 
     private boolean enableSelectByExample;
@@ -87,7 +85,7 @@ public class TableCfgProcessor implements ConfigXmlProcessor{
         tableCfg = tableCfg.replace("${domainObjectName}", tableNameCfg.getModelName());
         tableCfg = tableCfg.replace("${mapperName}", tableNameCfg.getModelName() + mapperSuffix);
 
-        tableCfg = tableCfg.replace("${enableCountByExample}", String.valueOf(enableCountByExample));
+        tableCfg = tableCfg.replace("${enableCountByExample}", Boolean.FALSE.toString());
         tableCfg = tableCfg.replace("${enableDeleteByExample}", String.valueOf(enableDeleteByExample));
         tableCfg = tableCfg.replace("${enableSelectByExample}", String.valueOf(enableSelectByExample));
         tableCfg = tableCfg.replace("${enableUpdateByExample}", String.valueOf(enableUpdateByExample));
