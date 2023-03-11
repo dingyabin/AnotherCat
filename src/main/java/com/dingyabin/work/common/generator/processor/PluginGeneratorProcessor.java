@@ -1,5 +1,7 @@
 package com.dingyabin.work.common.generator.processor;
 
+import com.dingyabin.work.common.generator.plugin.DisableUpdateByPrimaryKeyPlugin;
+import com.dingyabin.work.common.generator.plugin.LombokPlugin;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.config.PluginConfiguration;
 import org.mybatis.generator.plugins.EqualsHashCodePlugin;
@@ -24,10 +26,13 @@ public class PluginGeneratorProcessor extends PluginConfiguration implements Con
 
     private boolean needEqualsHashCode;
 
-    public PluginGeneratorProcessor(boolean needToString, boolean needSerializable, boolean needEqualsHashCode) {
+    private boolean needLombok;
+
+    public PluginGeneratorProcessor(boolean needToString, boolean needSerializable, boolean needEqualsHashCode, boolean needLombok) {
         this.needToString = needToString;
         this.needSerializable = needSerializable;
         this.needEqualsHashCode = needEqualsHashCode;
+        this.needLombok = needLombok;
     }
 
 
@@ -46,6 +51,14 @@ public class PluginGeneratorProcessor extends PluginConfiguration implements Con
             stringBuilder.append("<!-- 重写equals 和 hashCode方法 -->\n");
             stringBuilder.append(String.format(PLUGIN_TYPE, EqualsHashCodePlugin.class.getName()));
         }
+        if (needLombok) {
+            stringBuilder.append("<!-- 使用lombok注解生成get和set -->\n");
+            stringBuilder.append(String.format(PLUGIN_TYPE, LombokPlugin.class.getName()));
+        }
+
+        stringBuilder.append("<!-- 不生成UpdateByPrimaryKey方法-->\n");
+        stringBuilder.append(String.format(PLUGIN_TYPE, DisableUpdateByPrimaryKeyPlugin.class.getName()));
+
         xmlString = xmlString.replace("${context.plugin}", stringBuilder.toString());
         return xmlString;
     }
