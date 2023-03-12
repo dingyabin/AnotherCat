@@ -119,7 +119,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     /**
      * option 配置
      */
-    private JPanel optionInputPanel = new JPanel(new GridLayout(4,3,10,10));
+    private JPanel optionInputPanel = new JPanel(new GridLayout(5,3,10,10));
 
     private JCheckBox overrideToString = GuiUtils.createCheckBox("重写toString", false);
 
@@ -144,6 +144,10 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
     private JCheckBox enableSelectByExample = GuiUtils.createCheckBox("启用SelectByExample", false);
 
     private JCheckBox enableUpdateByExample = GuiUtils.createCheckBox("启用UpdateByExample", false);
+
+    private JCheckBox enableCountByExample = GuiUtils.createCheckBox("启用CountByExample", false);
+
+    private JCheckBox disableUpdateByPrimaryKey = GuiUtils.createCheckBox("禁用UpdateByPrimaryKey", true, Const.DIS_UPDATE_BY_PRIMARY_KEY);
 
 
 
@@ -225,9 +229,13 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         optionInputPanel.add(trimBeforeGet);
         optionInputPanel.add(useDateInModelInComment);
         optionInputPanel.add(enableLombok);
+
         optionInputPanel.add(enableDeleteByExample);
         optionInputPanel.add(enableSelectByExample);
         optionInputPanel.add(enableUpdateByExample);
+        optionInputPanel.add(enableCountByExample);
+
+        optionInputPanel.add(disableUpdateByPrimaryKey);
 
         //按钮
         btnInputPanel.add(executeBtn);
@@ -384,7 +392,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
 
         List<ConfigXmlProcessor> configXmlProcessors = new ArrayList<>();
 
-        PluginGeneratorProcessor pluginGenerator = new PluginGeneratorProcessor(overrideToString.isSelected(), imSerializable.isSelected(), ovEqualsHashCode.isSelected(), enableLombok.isSelected());
+        PluginGeneratorProcessor pluginGenerator = new PluginGeneratorProcessor(overrideToString.isSelected(), imSerializable.isSelected(), ovEqualsHashCode.isSelected(), enableLombok.isSelected(), disableUpdateByPrimaryKey.isSelected());
 
         CommentGeneratorProcessor commentGenerator = new CommentGeneratorProcessor(!useDateInModelInComment.isSelected(), false, addRemarkComments.isSelected());
         JdbcConnectionProcessor jdbcConnection = new JdbcConnectionProcessor(connectConfig, dataBaseSchema.getSchemaName());
@@ -408,6 +416,7 @@ public class MybatisGeneratorDialog extends JDialog  implements ActionListener, 
         tableCfgProcessor.setEnableDeleteByExample(enableDeleteByExample.isSelected());
         tableCfgProcessor.setEnableSelectByExample(enableSelectByExample.isSelected());
         tableCfgProcessor.setEnableUpdateByExample(enableUpdateByExample.isSelected());
+        tableCfgProcessor.setEnableCountByExample(enableCountByExample.isSelected());
 
         configXmlProcessors.add(commentGenerator);
         configXmlProcessors.add(javaClientGenerator);

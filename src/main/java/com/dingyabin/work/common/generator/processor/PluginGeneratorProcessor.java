@@ -28,11 +28,14 @@ public class PluginGeneratorProcessor extends PluginConfiguration implements Con
 
     private boolean needLombok;
 
-    public PluginGeneratorProcessor(boolean needToString, boolean needSerializable, boolean needEqualsHashCode, boolean needLombok) {
+    private boolean disableUpdateByPrimaryKey;
+
+    public PluginGeneratorProcessor(boolean needToString, boolean needSerializable, boolean needEqualsHashCode, boolean needLombok, boolean disableUpdateByPrimaryKey) {
         this.needToString = needToString;
         this.needSerializable = needSerializable;
         this.needEqualsHashCode = needEqualsHashCode;
         this.needLombok = needLombok;
+        this.disableUpdateByPrimaryKey = disableUpdateByPrimaryKey;
     }
 
 
@@ -55,9 +58,10 @@ public class PluginGeneratorProcessor extends PluginConfiguration implements Con
             stringBuilder.append("<!-- 使用lombok注解生成get和set -->\n");
             stringBuilder.append(String.format(PLUGIN_TYPE, LombokPlugin.class.getName()));
         }
-
-        stringBuilder.append("<!-- 不生成UpdateByPrimaryKey方法-->\n");
-        stringBuilder.append(String.format(PLUGIN_TYPE, DisableUpdateByPrimaryKeyPlugin.class.getName()));
+        if (disableUpdateByPrimaryKey) {
+            stringBuilder.append("<!-- 不生成UpdateByPrimaryKey方法-->\n");
+            stringBuilder.append(String.format(PLUGIN_TYPE, DisableUpdateByPrimaryKeyPlugin.class.getName()));
+        }
 
         xmlString = xmlString.replace("${context.plugin}", stringBuilder.toString());
         return xmlString;

@@ -54,6 +54,8 @@ public class Const {
 
     public static final String DAO_RENAME_DESC = "DAO的命名规则是Model类名+后缀，例如: Model名字是Student，后缀是Mapper，则DAO名字是: StudentMapper";
 
+    public static final String DIS_UPDATE_BY_PRIMARY_KEY = "不需要生成UpdateByPrimaryKey方法，这个方法实际工作中基本不会需要";
+
 
 
     //查询相关
