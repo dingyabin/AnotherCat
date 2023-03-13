@@ -48,11 +48,11 @@ public class CatTableListPanel extends JPanel  implements ActionListener, ListSe
 
     private JDialog renameDialog = new JDialog(ComContextManager.getMainFrame(), "重命名", true);
 
-    private JTextField renameField = FontMethodsImpl.setFontName(new JTextField(35), CatFonts.DEFAULT_FONT_NAME);
+    private JTextField renameField = FontMethodsImpl.setFontName(new JTextField(20), CatFonts.DEFAULT_FONT_NAME);
 
     private JLabel renameLabel = FontMethodsImpl.setFontSize(new JLabel("新表名："),14);
 
-    private JPanel reNameInputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,5,20));
+    private JPanel reNameInputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,5,10));
 
     private JPanel reNameButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,10,10));
 
